@@ -22,7 +22,10 @@ When you use the AttributeEncryptor with the DynamoDB mapper, it transparently e
 
 ### Attribute actions for the DynamoDB Mapper<a name="attribute-action-java-mapper"></a>
 
-When you use the [DynamoDB mapper](http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBMapper.Methods.html) and [AttributeEncryptor](#attribute-encryptor) helper classes, you use annotations to specify the attribute actions\. The DynamoDB Encryption Client uses the [standard DynamoDB attribute annotations](http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBMapper.Annotations.html) that define the attribute type to determine how to protect an attribute\. By default, all attributes are encrypted and signed, except for primary keys, which are signed, but not encrypted\. 
+When you use the [DynamoDB mapper](http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBMapper.Methods.html) and [AttributeEncryptor](#attribute-encryptor) helper classes, you use annotations to specify the attribute actions\. The DynamoDB Encryption Client uses the [standard DynamoDB attribute annotations](http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBMapper.Annotations.html) that define the attribute type to determine how to protect an attribute\. By default, all attributes are encrypted and signed, except for primary keys, which are signed, but not encrypted\.
+
+**Note**  
+Do not encrypt the value of attributes with the [@DynamoDBVersionAttribute annotation](http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBMapper.OptimisticLocking.html), although you can \(and should\) sign them\. Otherwise, conditions that use its value will have unintended effects\.
 
 ```
 // Attributes are encrypted and signed
@@ -35,24 +38,24 @@ When you use the [DynamoDB mapper](http://docs.aws.amazon.com/amazondynamodb/lat
 @DynamoDBRangeKey(attributeName="Author")
 ```
 
-To specify exceptions, you use special encryption annotations that are defined in the DynamoDB Encryption Client for Java\.
+To specify exceptions, you use special encryption annotations that are defined in the DynamoDB Encryption Client for Java\. If you specify them at the class level, they become the default value for the class\.
 
 ```
 // Sign only
 @DoNotEncrypt
 
-// Do nothing; neither encrypted nor signed
+// Do nothing; not encrypted or signed
 @DoNotTouch
 ```
 
 For example, these annotations sign, but do not encrypt the `PublicationYear` attribute and do not encrypt or sign the `ISBN` attribute value\.
 
 ```
-// Sign only; override the default
+// Sign only (override the default)
 @DoNotEncrypt
 @DynamoDBAttribute(attributeName="PublicationYear")  
 
-// Do nothing; override the default
+// Do nothing (override the default)
 @DoNotTouch
 @DynamoDBAttribute(attributeName="ISBN")
 ```
@@ -69,10 +72,11 @@ SIGN
 ```
 
 **Warning**  
-Do not encrypt the value of your primary key attributes\. If you do, DynamoDB cannot find the item and you will not be able to recover the item unless you run a full table scan\.  
-\[BUGBUG: Is this only the AttributeEncryptor>\] If you specify a primary key in the encryption context and then specify ENCRYPT in the attribute action for either primary key attribute, the DynamoDB Encryption Client will throw an exception\.
+Do not encrypt the primary key attributes\. They must remain in plain text so DynamoDB can find the item without running a full table scan\.
 
-For example, the following Java code creates an `actions` HashMap that encrypts and signs all attributes in the `record` item, except for the partition key and sort key attributes, which are signed, but not encrypted, and the `test` attribute, which is neither signed nor encrypted\.
+If you specify a primary key in the encryption context and then specify ENCRYPT in the attribute action for either primary key attribute, the DynamoDB Encryption Client will throw an exception\.
+
+For example, the following Java code creates an `actions` HashMap that encrypts and signs all attributes in the `record` item, except for the partition key and sort key attributes, which are signed, but not encrypted, and the `test` attribute, which is not signed or encrypted\.
 
 ```
 final EnumSet<EncryptionFlags> signOnly = EnumSet.of(EncryptionFlags.SIGN);
@@ -87,7 +91,7 @@ for (final String attributeName : record.keySet()) {
       actions.put(attributeName, signOnly);
       break;
     case "test":
-      // Neither encrypt nor sign
+      // Don't encrypt or sign
       break;
     default:
       // Encrypt and sign everything else

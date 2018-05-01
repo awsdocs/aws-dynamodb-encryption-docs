@@ -29,7 +29,7 @@ To use the client helper classes, the caller must have permission to call the Dy
 
 The [TableInfo](https://github.com/awslabs/aws-dynamodb-encryption-python/blob/master/src/dynamodb_encryption_sdk/structures.py) class is a helper class that represents a DynamoDB table, complete with fields for its primary key and secondary indexes\. It helps you to get accurate, real\-time information about the table\.
 
-If you use a [client helper class](#python-helpers), it creates and uses a `TableInfo` object for you\. Otherwise, you can create one explicitly\. For an example, see [Use the Item Encryptor \(without client helper classes\)](python-examples.md#python-example-item-encryptor)\.
+If you use a [client helper class](#python-helpers), it creates and uses a `TableInfo` object for you\. Otherwise, you can create one explicitly\. For an example, see [Use the Item Encryptor](python-examples.md#python-example-item-encryptor)\.
 
 When you call the `refresh_indexed_attributes` method on a `TableInfo` object, it populates the property values of the object by calling the DynamoDB [DescribeTable](http://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_DescribeTable.html) operation\. Querying the table is much more reliable than hard\-coding index names\. The `TableInfo` class also includes an `encryption_context_values` property that includes the required values for the [DynamoDB encryption context](concepts.md#encryption-context)\. 
 
@@ -37,7 +37,7 @@ To use the `refresh_indexed_attributes` method, the caller must have permission 
 
 ## Attribute actions in Python<a name="python-attribute-actions"></a>
 
-[Attribute actions](concepts.md#attribute-actions) tell the item encryptor which actions to perform on each attribute of the item\. To specify attribute actions in Python, you create an `AttributeActions` object with a default action and any exceptions for particular attributes\. The valid values are defined in the `CryptoAction` enumerated type\.
+[Attribute actions](concepts.md#attribute-actions) tell the item encryptor which actions to perform on each attribute of the item\. To specify attribute actions in Python, create an `AttributeActions` object with a default action and any exceptions for particular attributes\. The valid values are defined in the `CryptoAction` enumerated type\.
 
 ```
 DO_NOTHING = 0
@@ -57,7 +57,7 @@ For example, this `AttributeActions` object establishes `ENCRYPT_AND_SIGN` as th
 )
 ```
 
-If you use a [client helper class](#python-helpers), you do not need to specify an attribute action for the primary key\. The client helper classes prevent you from encrypting your primary key\.
+If you use a [client helper class](#python-helpers), you don't need to specify an attribute action for the primary key\. The client helper classes prevent you from encrypting your primary key\.
 
 If you do not use a client helper class and the default action is `ENCRYPT_AND_SIGN`, you must specify an action for the primary key\. The recommended action for primary keys is `SIGN_ONLY`\. To make this easy, use the `set_index_keys` method, which uses SIGN\_ONLY for primary keys, or DO\_NOTHING, when that is the default action\.
 

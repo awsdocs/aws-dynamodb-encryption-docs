@@ -3,12 +3,12 @@
 The following examples show you how to use the DynamoDB Encryption Client for Python to protect DynamoDB data in your application\. You can find more examples \(and contribute your own\) in the [examples](https://github.com/awslabs/aws-dynamodb-encryption-python/tree/master/examples) directory of the `aws-dynamodb-encryption-python` repository in GitHub\.
 
 **Topics**
-+ [Use the Item Encryptor \(without client helper classes\)](#python-example-item-encryptor)
-+ [Use the Direct KMS Provider](#python-example-streams)
++ [Use the Item Encryptor](#python-example-item-encryptor)
++ [Use the EncryptedTable Client Helper Class](#python-example-table)
 + [Use the Wrapped Materials Provider](#python-example-multiple-providers)
 + [Use the Most Recent Provider](#python-example-mrp)
 
-## Use the Item Encryptor \(without client helper classes\)<a name="python-example-item-encryptor"></a>
+## Use the Item Encryptor<a name="python-example-item-encryptor"></a>
 
 This example shows you how to interact directly with the [item encryptor](concepts.md#item-encryptor) in the DynamoDB Encryption Client when encrypting table items, instead of using the [client helper classes](python-using.md#python-helpers) that interact with the item encryptor for you\. 
 
@@ -113,9 +113,74 @@ This step puts the encrypted and signed item in the DynamoDB table\.
 table.put_item(Item=encrypted_item)
 ```
 
-## Use the Direct KMS Provider<a name="python-example-streams"></a>
+## Use the EncryptedTable Client Helper Class<a name="python-example-table"></a>
 
-The following example shows you how to use the [Direct KMS Provider](direct-kms-provider.md) with the [EncryptedTable](https://github.com/awslabs/aws-dynamodb-encryption-python/blob/master/examples/src/aws_kms_encrypted_table.py) client helper class\. 
+The following example shows you how to use the [Direct KMS Provider](direct-kms-provider.md) with the [EncryptedTable](https://github.com/awslabs/aws-dynamodb-encryption-python/blob/master/examples/src/aws_kms_encrypted_table.py) client helper class\. This example uses the same [cryptographic materials provider](concepts.md#concept-material-provider) as the [Use the Item Encryptor](#python-example-item-encryptor) example, but it uses the `EncryptedTable` class instead of interacting directly with the lower\-level item encryptor\.
+
+By comparing these examples, you can see the work that the client helper class does for you, including creating the [DynamoDB encryption context](concepts.md#encryption-context) and making sure the primary key attributes are always signed, but never encrypted\. 
+
+To create the encryption context and discover the primary key, the client helper classes call the DynamoDB [DescribeTable](http://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_DescribeTable.html) operation\. To run this code, you must have permission to call this operation\.
+
+Step 1: Create the table  
+Start by creating an instance of a standard DynamoDB table with the table name\.  
+
+```
+table_name='test-table'
+table = boto3.resource('dynamodb').Table(table_name)
+```
+
+Step 2: Create a cryptographic materials provider  
+Create an instance of the [cryptographic materials provider](crypto-materials-providers.md) \(CMP\) that you selected\.  
+This example uses the [Direct KMS Provider](direct-kms-provider.md), but you can use any compatible cryptographic materials provider\. To create a Direct KMS Provider, specify a [customer master key](http://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#master_keys) \(CMK\)\. This example uses the Amazon Resource Name \(ARN\) of the CMK, but you can use any valid CMK identifier\.  
+
+```
+aws_cmk_id=arn:aws:kms:us-west-2:111122223333:key/1234abcd-12ab-34cd-56ef-1234567890ab
+aws_kms_cmp = AwsKmsCryptographicMaterialsProvider(key_id=aws_cmk_id)
+```
+
+Step 3: Create the attribute actions object  
+[Attribute actions](concepts.md#attribute-actions) tell the item encryptor which actions to perform on each attribute of the item\. The `AttributeActions` object in this example encrypts and signs all items except for the `test` attribute, which is ignored\.  
+Do not specify attribute actions for the primary key attributes when you use a client helper class\. The `EncryptedTable` class signs, but never encrypts, the primary key attributes\.  
+
+```
+actions = AttributeActions(
+    default_action=CryptoAction.ENCRYPT_AND_SIGN,
+    attribute_actions={'test': CryptoAction.DO_NOTHING}
+)
+```
+
+Step 4: Create the encrypted table  
+Create the encrypted table using the standard table, the Direct KMS Provider, and the attribute actions\. This step completes the configuration\.   
+
+```
+encrypted_table = EncryptedTable(
+        table=table,
+        materials_provider=aws_kms_cmp,
+        attribute_actions=actions
+)
+```
+
+Step 5: Put the plaintext item in the table  
+When you call the `put_item` method on the `encrypted_table`, your table items are transparently encrypted, signed, and added to your DynamoDB table\.  
+First, define the table item\.  
+
+```
+plaintext_item = {
+        'partition_attribute': 'key1',
+        'sort_attribute': 55
+        'example': 'data',
+        'some numbers': 99,
+        'some binary': Binary(b'\x00\x01\x02'),
+        'test': 'testvalue'
+}
+```
+Then, put it in the table\.  
+
+```
+encrypted_table.put_item(Item=plaintext_item)
+```
+
+To get the item from the DynamoDB table in its encrypted form, call the `get_item` method on the `table` object\. To get the decrypted item, call the get\_item method on the `encrypted_table` object\.
 
 ## Use the Wrapped Materials Provider<a name="python-example-multiple-providers"></a>
 

@@ -7,7 +7,7 @@ The following examples show you how to use the DynamoDB Encryption Client for Ja
 
 ## Using the DynamoDBEncryptor and Direct KMS Provider<a name="java-example-ddb-encryptor"></a>
 
-This example shows how to use the lower\-level [DynamoDB Encryptor](https://awslabs.github.io/aws-dynamodb-encryption-java/javadoc/) with the [Direct KMS Provider](direct-kms-provider.md)\. The Direct KMS Provider generates and protects its cryptographic material under an AWS Key Management Service \(AWS KMS\) [customer master key](http://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#master_keys) that you specify\.
+This example shows how to use the lower\-level [DynamoDB Encryptor](https://awslabs.github.io/aws-dynamodb-encryption-java/javadoc/) with the [Direct KMS Provider](direct-kms-provider.md)\. The Direct KMS Provider generates and protects its cryptographic materials under an AWS Key Management Service \(AWS KMS\) [customer master key](http://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#master_keys) that you specify\.
 
 You can use any compatible [cryptographic materials provider](concepts.md#concept-material-provider) with the DynamoDB Encryptor, and you can use the Direct KMS Provider with the DynamoDB Mapper and [AttributeEncryptor](java-using.md#attribute-encryptor)\.
 
@@ -23,20 +23,34 @@ final AWSKMS kms = AWSKMSClientBuilder.standard().withRegion(region).build();
 final DirectKmsMaterialProvider cmp = new DirectKmsMaterialProvider(kms, cmkArn);
 ```
 
-Step 2: Create a DynamoDBEncryptor  
+Step 2: Create an item  
+This example defines a `record` HashMap that represents a sample table item\.  
+
+```
+final String partitionKeyName = "partition_attribute";
+final String sortKeyName = "sort_attribute";
+
+final Map<String, AttributeValue> record = new HashMap<>();
+record.put(partitionKeyName, new AttributeValue().withS("key1"));
+record.put(sortKeyName, new AttributeValue().withN("55"));
+record.put("example", new AttributeValue().withS("data"));
+record.put("some numbers", new AttributeValue().withN("99"));
+record.put("some binary", new AttributeValue().withB(ByteBuffer.wrap(new byte[]{0x00, 0x01, 0x02})));
+record.put("test", new AttributeValue().withS("test-value"));
+```
+
+Step 3: Create a DynamoDBEncryptor  
 Create an instance of the DynamoDBEncryptor with the Direct KMS Provider\.  
 
 ```
 final DynamoDBEncryptor encryptor = DynamoDBEncryptor.getInstance(cmp);
 ```
 
-Step 3: Create a DynamoDB encryption context  
+Step 4: Create a DynamoDB encryption context  
 The [DynamoDB encryption context](concepts.md#encryption-context) contains information about the table structure and how it is encrypted and signed\. If you use the DynamoDB Mapper, the AttributeEncryptor creates the encryption context for you\.  
 
 ```
 final String tableName = "testTable";
-final String partitionKeyName = "partition_attribute";
-final String sortKeyName = "sort_attribute";
 
 final EncryptionContext encryptionContext = new EncryptionContext.Builder()
     .withTableName(tableName)
@@ -45,10 +59,10 @@ final EncryptionContext encryptionContext = new EncryptionContext.Builder()
     .build();
 ```
 
-Step 4: Create the attribute actions object  
-[Attribute actions](concepts.md#attribute-actions) determine which attributes of the item are encrypted and signed, which are only signed, and which are neither encrypted nor signed\.  
-In Java, to specify attribute actions, you create a HashMap of attribute name and EncryptionFlags value pairs\.   
-For example, the following Java code creates an `actions` HashMap that encrypts and signs all attributes in the `record` item, except for the partition key and sort key attributes, which are signed, but not encrypted, and the `test` attribute, which is neither signed nor encrypted\.  
+Step 5: Create the attribute actions object  
+[Attribute actions](concepts.md#attribute-actions) determine which attributes of the item are encrypted and signed, which are only signed, and which are not encrypted or signed\.  
+In Java, to specify attribute actions, you create a HashMap of attribute name and `EncryptionFlags` value pairs\.   
+For example, the following Java code creates an `actions` HashMap that encrypts and signs all attributes in the `record` item, except for the partition key and sort key attributes, which are signed, but not encrypted, and the `test` attribute, which is not signed or encrypted\.  
 
 ```
     final EnumSet<EncryptionFlags> signOnly = EnumSet.of(EncryptionFlags.SIGN);
@@ -73,30 +87,17 @@ For example, the following Java code creates an `actions` HashMap that encrypts 
 }
 ```
 
-Step 5: Encrypt and sign the item  
-To encrypt and sign the table item, call the `encryptRecord` method on the instance of the DynamoDB encryptor\. Specify the table item, the attribute actions, and the encryption context\.  
+Step 6: Encrypt and sign the item  
+To encrypt and sign the table item, call the `encryptRecord` method on the instance of the DynamoDB encryptor\. Specify the table item \(`record`\), the attribute actions \(`actions`\), and the encryption context \(`encryptionContext`\)\.  
 
 ```
-final String partitionKeyName = "partition_attribute";
-final String sortKeyName = "sort_attribute";
-final Map<String, AttributeValue> record = new HashMap<>();
-record.put(partitionKeyName, new AttributeValue().withS("key1"));
-record.put(sortKeyName, new AttributeValue().withN("55"));
-record.put("example", new AttributeValue().withS("data"));
-record.put("some numbers", new AttributeValue().withN("99"));
-record.put("some binary", new AttributeValue().withB(ByteBuffer.wrap(new byte[]{0x00, 0x01, 0x02})));
-record.put("test", new AttributeValue().withS("test-value"));
-
-
 final Map<String, AttributeValue> encrypted_record = encryptor.encryptRecord(record, actions, encryptionContext);
 ```
 
-Step 6: Put the item in the DynamoDB table  
+Step 7: Put the item in the DynamoDB table  
 Finally, put the encrypted and signed item in the DynamoDB table\.  
 
 ```
-final String tableName = "testTable";
-
 final AmazonDynamoDB ddb = AmazonDynamoDBClientBuilder.defaultClient();
-ddb.putItem(table_name, encrypted_record);
+ddb.putItem(tableName, encrypted_record);
 ```

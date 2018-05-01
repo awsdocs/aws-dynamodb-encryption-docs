@@ -31,4 +31,4 @@ Amazon's trademarks and trade dress may not be used in
    + [DynamoDB Encryption Client for Python](python.md)
       + [Using the DynamoDB Encryption Client for Python](python-using.md)
       + [DynamoDB Encryption Client for Python Example Code](python-examples.md)
-+ [Troubleshooting Issues in your DynamoDB Encryption Client Implementation](troubleshooting.md)
++ [Troubleshooting Issues in your DynamoDB Encryption Client Application](troubleshooting.md)

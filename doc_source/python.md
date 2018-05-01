@@ -1,6 +1,6 @@
 # DynamoDB Encryption Client for Python<a name="python"></a>
 
-This topic explains how to install and use the DynamoDB Encryption Client for Python\. You can find the code in the [aws\-dynamodb\-encryption\-python](https://github.com/awslabs/aws-dynamodb-encryption-python) repository in GitHub, including complete, test [sample code](https://github.com/awslabs/aws-dynamodb-encryption-python/tree/master/examples/src) to help you get started\.
+This topic explains how to install and use the DynamoDB Encryption Client for Python\. You can find the code in the [aws\-dynamodb\-encryption\-python](https://github.com/awslabs/aws-dynamodb-encryption-python/) repository in GitHub, including complete, test [sample code](https://github.com/awslabs/aws-dynamodb-encryption-python/tree/master/examples/src) to help you get started\.
 
 **Topics**
 + [Prerequisites](#python-prerequisites)

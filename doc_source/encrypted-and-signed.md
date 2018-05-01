@@ -23,14 +23,21 @@ If you encrypt the `example` attribute, but do nothing to the `test` attribute ,
 'test': 'test-value'
 ```
 
-Do not encrypt the values of the primary key \(partition key and sort key\) attributes\. They must remain in plain text so DynamoDB can access the item for you\. If you use a helper class, it will throw an exception if you try to encrypt the primary key\. If you need to encrypt it for a special use case, use the [item encryptor](concepts.md#item-encryptor) directly\.
+**Warning**  
+Do not encrypt the primary key attributes\. They must remain in plain text so DynamoDB can find the item without running a full table scan\.
 
-The DynamoDB Encryption Client does not encrypt the [Material Description](concepts.md#material-description) attribute, which stores the data that DynamoDB Encryption Client needs to verify and decrypt the item\. 
+By default, the primary key – partition key and sort key \-\- attributes are signed, but not encrypted\. If you identify your primary key, or use a helper class that identifies it for you, and then try to encrypt it, the client will throw an exception\. If you need to encrypt the primary key for a special use case, use the lowest level [item encryptor](concepts.md#item-encryptor) directly, but remember that DynamoDB will not be able to find your item\.
+
+The DynamoDB Encryption Client also does not encrypt the [Material Description](concepts.md#material-description) attribute, which stores the data that DynamoDB Encryption Client needs to verify and decrypt the item\. 
 
 **Signing the Item**
 
-After encrypting the specified attribute values, the DynamoDB Encryption Client calculates a digital signature over the names and values of attributes that you specify in the [attribute actions](concepts.md#attribute-actions) object\. The signature allows you to detect unauthorized changes to the item as a whole, including adding or deleting attributes, or substituting one encrypted value for another\. The signature is saved in an attribute that the client adds to the item\.
-
-You can \(and should\) include the primary key in the signature\. This is the default if you use a helper class, but you can override it by using the [item encryptor](concepts.md#item-encryptor) directly\. You can also include the table name in the signature\. The [Material Description](concepts.md#material-description) attribute is neither encrypted nor signed, as shown in the following image\.
+After encrypting the specified attribute values, the DynamoDB Encryption Client calculates a digital signature over the names and values of attributes that you specify in the [attribute actions](concepts.md#attribute-actions) object\. If you specify a table name, it is included in the signature, too\.
 
 ![\[An encrypted and signed table item\]](http://docs.aws.amazon.com/dynamodb-encryption-client/latest/devguide/images/encrypted-signed-item.png)
+
+The signature allows you to detect unauthorized changes to the item as a whole, including adding or deleting attributes, or substituting one encrypted value for another\. The signature is saved in an attribute that the client adds to the item\.
+
+Be sure to include the primary key in the signature\. It's the default behavior when you use a helper class\. The signature captures the relationship between the primary key and other attributes in the item, and the signature validation verifies that the relationship hasn't changed\. 
+
+The [Material Description](concepts.md#material-description) attribute is not encrypted or signed\.
