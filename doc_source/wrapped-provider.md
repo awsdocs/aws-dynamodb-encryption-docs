@@ -2,13 +2,13 @@
 
 The Wrapped Materials Provider \(Wrapped CMP\) lets you use wrapping and signing keys from any source with the DynamoDB Encryption Client\. The Wrapped CMP does not depend on any AWS service\. However, you must generate and manage your wrapping and signing keys outside of the client, including providing the correct keys to verify and decrypt the item\. 
 
-The Wrapped CMP generates a unique item encryption key for each item\. It wraps the item encryption key with the wrapping key that you provide and saves the wrapped item encryption key in the [Material Description attribute](concepts.md#material-description) of the item\. Because you supply the wrapping and signing keys, you determine how the wrapping and signing keys are generated and whether they are unique to each item or reused\. 
+The Wrapped CMP generates a unique item encryption key for each item\. It wraps the item encryption key with the wrapping key that you provide and saves the wrapped item encryption key in the [Material Description attribute](concepts.md#material-description) of the item\. Because you supply the wrapping and signing keys, you determine how the wrapping and signing keys are generated and whether they are unique to each item or are reused\. 
 
 The Wrapped CMP is a secure implementation and a good choice for applications that can manage cryptographic materials\.
 
 The Wrapped CMP is one of several [cryptographic materials provider](concepts.md#concept-material-provider) \(CMPs\) that the DynamoDB Encryption Client supports\. For information about the other CMPs, see [How to Choose a Cryptographic Materials Provider](crypto-materials-providers.md)\.
 
-**For example code:**
+**For example code, see:**
 + Java: [AssymetricEncryptedItem](https://github.com/awslabs/aws-dynamodb-encryption-java/blob/master/examples/com/amazonaws/examples/AsymmetricEncryptedItem.java)
 + Python: [wrapped\-rsa\-encrypted\-table](https://github.com/awslabs/aws-dynamodb-encryption-python/blob/master/examples/src/wrapped_rsa_encrypted_table.py), [wrapped\-symmetric\-encrypted\-table](https://github.com/awslabs/aws-dynamodb-encryption-python/blob/master/examples/src/wrapped_symmetric_encrypted_table.py)
 
@@ -55,9 +55,9 @@ wrapped_cmp = WrappedCryptographicMaterialsProvider(
 
 ## How It Works<a name="wrapped-cmp-how-it-works"></a>
 
-The Wrapped CMP generates a new item encryption key for every item\. It uses the wrapping, unwrapping, and signing keys that you provide, as shown in the following image\.
+The Wrapped CMP generates a new item encryption key for every item\. It uses the wrapping, unwrapping, and signing keys that you provide, as shown in the following diagram\.
 
-![\[The input, processing, and output of the Wrapped Materials Provider in the DynamoDB Encryption Client.\]](http://docs.aws.amazon.com/dynamodb-encryption-client/latest/devguide/images/wrappedCMP.png)
+![\[The input, processing, and output of the Wrapped Materials Provider in the DynamoDB Encryption Client\]](http://docs.aws.amazon.com/dynamodb-encryption-client/latest/devguide/images/wrappedCMP.png)
 
 **Topics**
 + [Get Encryption Materials](#wrapped-cmp-get-encryption-materials)
@@ -68,8 +68,8 @@ The Wrapped CMP generates a new item encryption key for every item\. It uses the
 This section describes in detail the inputs, outputs, and processing of the Wrapped Materials Provider \(Wrapped CMP\) when it receives a request for encryption materials\. 
 
 **Input** \(from application\)
-+ Wrapping key\. An [Advanced Encryption Standard](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard) \(AES\) symmetric key, or an [RSA](https://en.wikipedia.org/wiki/RSA_(cryptosystem)) public key\.
-+ Unwrapping key: Optional and ignored\.
++ Wrapping key: An [Advanced Encryption Standard](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard) \(AES\) symmetric key, or an [RSA](https://en.wikipedia.org/wiki/RSA_(cryptosystem)) public key\. Required if any attribute values are encrypted\. Otherwise, it is optional and ignored\.
++ Unwrapping key: Optional and ignored\. 
 + Signing key
 
 **Inputs** \(from the item encryptor\)
@@ -80,7 +80,7 @@ This section describes in detail the inputs, outputs, and processing of the Wrap
 + Signing key \(unchanged\)
 + [Actual material description](concepts.md#material-description): These values are saved in the [Material Description attribute](concepts.md#material-description) that the client adds to the item\. 
   + `amzn-ddb-env-key`: Base64\-encoded wrapped item encryption key
-  + `amzn-ddb-env-alg`: Encryption algorithm that should be used with the item encryption key\. \(BUGBUG: Default?\)
+  + `amzn-ddb-env-alg`: Encryption algorithm used to encrypt the item\. The default is AES\-256\-CBC\.
   + `amzn-ddb-wrap-alg`: The wrapping algorithm that the Wrapped CMP used to wrap the item encryption key\. If the wrapping key is an AES key, the key is wrapped using unpadded `AES-Keywrap` as defined in [RFC 3394](https://tools.ietf.org/html/rfc3394.html)\. If the wrapping key is an RSA key, the key is encrypted by using RSA OAEP with MGF1 padding\. 
 
 **Processing**
@@ -100,20 +100,20 @@ When you encrypt an item, you pass in a wrapping key and a signing key\. An unwr
 This section describes in detail the inputs, outputs, and processing of the Wrapped Materials Provider \(Wrapped CMP\) when it receives a request for decryption materials\. 
 
 **Input** \(from application\)
-+ Wrapping key\. Optional and ignored
-+ Unwrapping key: The same [Advanced Encryption Standard](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard) \(AES\) symmetric key or [RSA](https://en.wikipedia.org/wiki/RSA_(cryptosystem)) private key that corresponds to the RSA public key used to encrypt\.
++ Wrapping key: Optional and ignored\.
++ Unwrapping key: The same [Advanced Encryption Standard](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard) \(AES\) symmetric key or [RSA](https://en.wikipedia.org/wiki/RSA_(cryptosystem)) private key that corresponds to the RSA public key used to encrypt\. Required if any attribute values are encrypted\. Otherwise, it is optional and ignored\.
 + Signing key
 
 **Inputs** \(from the item encryptor\)
 + [DynamoDB encryption context](concepts.md#encryption-context)
 
-**Output** \(to the item encryptor\):
+**Output** \(to the item encryptor\)
 + Plaintext item encryption key
 + Signing key \(unchanged\)
 
 **Processing**
 
-When you decrypt an item, you pass in an unwrapping key and a signing key\. An wrapping key is optional and ignored\.
+When you decrypt an item, you pass in an unwrapping key and a signing key\. A wrapping key is optional and ignored\.
 
 1. The Wrapped CMP gets the wrapped item encryption key from the `Material Description` attribute of the item\.
 
@@ -121,4 +121,4 @@ When you decrypt an item, you pass in an unwrapping key and a signing key\. An w
 
 1. It returns the plaintext item encryption key, the signing key, and encryption and signing algorithms to the item encryptor\.
 
-1. The item encryptor uses the signing key to verify the item\. If it succeeds, it uses the item encryption key to decrypt the item\. Then it removes the plaintext keys from memory as soon as possible\.
+1. The item encryptor uses the signing key to verify the item\. If it succeeds, it uses the item encryption key to decrypt the item\. Then, it removes the plaintext keys from memory as soon as possible\.

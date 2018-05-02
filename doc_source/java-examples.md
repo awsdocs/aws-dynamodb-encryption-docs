@@ -1,18 +1,20 @@
-# DynamoDB Encryption Client for Java Example Code<a name="java-examples"></a>
+# Example Code for the DynamoDB Encryption Client for Java<a name="java-examples"></a>
 
-The following examples show you how to use the DynamoDB Encryption Client for Java to protect DynamoDB table items in your application\. You can find more examples \(and contribute your own\) in the [examples](https://github.com/awslabs/aws-dynamodb-encryption-java/tree/master/examples) directory of the `aws-dynamodb-encryption-java` repository in GitHub\.
+The following examples show you how to use the DynamoDB Encryption Client for Java to protect DynamoDB table items in your application\. You can find more examples \(and contribute your own\) in the [examples](https://github.com/awslabs/aws-dynamodb-encryption-java/tree/master/examples) directory of the [aws\-dynamodb\-encryption\-java](https://github.com/awslabs/aws-dynamodb-encryption-java/) repository on GitHub\.
 
 **Topics**
 + [Using the DynamoDBEncryptor and Direct KMS Provider](#java-example-ddb-encryptor)
 
 ## Using the DynamoDBEncryptor and Direct KMS Provider<a name="java-example-ddb-encryptor"></a>
 
-This example shows how to use the lower\-level [DynamoDB Encryptor](https://awslabs.github.io/aws-dynamodb-encryption-java/javadoc/) with the [Direct KMS Provider](direct-kms-provider.md)\. The Direct KMS Provider generates and protects its cryptographic materials under an AWS Key Management Service \(AWS KMS\) [customer master key](http://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#master_keys) that you specify\.
+This example shows how to use the lower\-level [DynamoDBEncryptor](https://awslabs.github.io/aws-dynamodb-encryption-java/javadoc/) with the [Direct KMS Provider](direct-kms-provider.md)\. The Direct KMS Provider generates and protects its cryptographic materials under an AWS Key Management Service \(AWS KMS\) [customer master key](http://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#master_keys) \(CMK\) that you specify\.
 
-You can use any compatible [cryptographic materials provider](concepts.md#concept-material-provider) with the DynamoDB Encryptor, and you can use the Direct KMS Provider with the DynamoDB Mapper and [AttributeEncryptor](java-using.md#attribute-encryptor)\.
+You can use any compatible [cryptographic materials provider](concepts.md#concept-material-provider) \(CMP\) with the `DynamoDBEncryptor`, and you can use the Direct KMS Provider with the `DynamoDBMapper` and [AttributeEncryptor](java-using.md#attribute-encryptor)\.
+
+**See the complete code sample**: [AwsKmsEncryptedItem\.java](https://github.com/awslabs/aws-dynamodb-encryption-java/blob/master/examples/com/amazonaws/examples/AwsKmsEncryptedItem.java)
 
 Step 1: Create the Direct KMS Provider  
-To start, create an instance of the AWS KMS client with the specified region\. Then, use the client instance to create an instance of the Direct KMS Provider with your preferred customer master key \(CMK\)\.   
+Create an instance of the AWS KMS client with the specified region\. Then, use the client instance to create an instance of the Direct KMS Provider with your preferred CMK\.   
 This example uses the Amazon Resource Name \(ARN\) to identify the CMK, but you can use [any valid CMK identifier](http://docs.aws.amazon.com/kms/latest/developerguide/viewing-keys.html#find-cmk-id-arn)\.   
 
 ```
@@ -40,14 +42,14 @@ record.put("test", new AttributeValue().withS("test-value"));
 ```
 
 Step 3: Create a DynamoDBEncryptor  
-Create an instance of the DynamoDBEncryptor with the Direct KMS Provider\.  
+Create an instance of the `DynamoDBEncryptor` with the Direct KMS Provider\.  
 
 ```
 final DynamoDBEncryptor encryptor = DynamoDBEncryptor.getInstance(cmp);
 ```
 
 Step 4: Create a DynamoDB encryption context  
-The [DynamoDB encryption context](concepts.md#encryption-context) contains information about the table structure and how it is encrypted and signed\. If you use the DynamoDB Mapper, the AttributeEncryptor creates the encryption context for you\.  
+The [DynamoDB encryption context](concepts.md#encryption-context) contains information about the table structure and how it is encrypted and signed\. If you use the `DynamoDBMapper`, the `AttributeEncryptor` creates the encryption context for you\.  
 
 ```
 final String tableName = "testTable";
@@ -65,30 +67,30 @@ In Java, to specify attribute actions, you create a HashMap of attribute name an
 For example, the following Java code creates an `actions` HashMap that encrypts and signs all attributes in the `record` item, except for the partition key and sort key attributes, which are signed, but not encrypted, and the `test` attribute, which is not signed or encrypted\.  
 
 ```
-    final EnumSet<EncryptionFlags> signOnly = EnumSet.of(EncryptionFlags.SIGN);
-    final EnumSet<EncryptionFlags> encryptAndSign = EnumSet.of(EncryptionFlags.ENCRYPT, EncryptionFlags.SIGN);
-    final Map<String, Set<EncryptionFlags>> actions = new HashMap<>();
+final EnumSet<EncryptionFlags> signOnly = EnumSet.of(EncryptionFlags.SIGN);
+final EnumSet<EncryptionFlags> encryptAndSign = EnumSet.of(EncryptionFlags.ENCRYPT, EncryptionFlags.SIGN);
+final Map<String, Set<EncryptionFlags>> actions = new HashMap<>();
 
-    for (final String attributeName : record.keySet()) {
-      switch (attributeName) {
-        case partitionKeyName: // fall through to the next case
-        case sortKeyName:
-          // Partition and sort keys must not be encrypted, but should be signed
-          actions.put(attributeName, signOnly);
-          break;
-        case "test":
-          // Neither encrypted nor signed
-          break;
-        default:
-          // Encrypt and sign all other attributes
-          actions.put(attributeName, encryptAndSign);
-          break;
-      }
+for (final String attributeName : record.keySet()) {
+  switch (attributeName) {
+    case partitionKeyName: // fall through to the next case
+    case sortKeyName:
+      // Partition and sort keys must not be encrypted, but should be signed
+      actions.put(attributeName, signOnly);
+      break;
+    case "test":
+      // Neither encrypted nor signed
+      break;
+    default:
+      // Encrypt and sign all other attributes
+      actions.put(attributeName, encryptAndSign);
+      break;
+  }
 }
 ```
 
 Step 6: Encrypt and sign the item  
-To encrypt and sign the table item, call the `encryptRecord` method on the instance of the DynamoDB encryptor\. Specify the table item \(`record`\), the attribute actions \(`actions`\), and the encryption context \(`encryptionContext`\)\.  
+To encrypt and sign the table item, call the `encryptRecord` method on the instance of the `DynamoDBEncryptor`\. Specify the table item \(`record`\), the attribute actions \(`actions`\), and the encryption context \(`encryptionContext`\)\.  
 
 ```
 final Map<String, AttributeValue> encrypted_record = encryptor.encryptRecord(record, actions, encryptionContext);

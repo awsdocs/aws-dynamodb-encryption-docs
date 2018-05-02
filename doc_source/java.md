@@ -1,6 +1,6 @@
 # Amazon DynamoDB Encryption Client for Java<a name="java"></a>
 
-This topic explains how to install and use the Amazon DynamoDB Encryption Client for Java\. For details about programming with the DynamoDB Encryption Client, see the [Java examples](java-examples.md), the [examples](https://github.com/awslabs/aws-dynamodb-encryption-java/tree/master/examples) in the aws\-dynamodb\-encryption\-java repository on GitHub and the [Javadoc](https://awslabs.github.io/aws-dynamodb-encryption-java/javadoc/) for the DynamoDB Encryption Client\.
+This topic explains how to install and use the Amazon DynamoDB Encryption Client for Java\. For details about programming with the DynamoDB Encryption Client, see the [Java examples](java-examples.md), the [examples](https://github.com/awslabs/aws-dynamodb-encryption-java/tree/master/examples) in the aws\-dynamodb\-encryption\-java repository on GitHub, and the [Javadoc](https://awslabs.github.io/aws-dynamodb-encryption-java/javadoc/) for the DynamoDB Encryption Client\.
 
 **Topics**
 + [Prerequisites](#java-prerequisites)
@@ -17,7 +17,7 @@ You will need Java 8 or later\. On the Oracle website, go to [Java SE Downloads]
 If you use the Oracle JDK, you must also download and install the [Java Cryptography Extension \(JCE\) Unlimited Strength Jurisdiction Policy Files](http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html)\.
 
 **AWS SDK for Java**  
-The DynamoDB Encryption Client requires the DynamoDB module of the AWS SDK for Java even if your application does not interact with DynamoDB\. You can install the entire SDK or just this module\. If you are using Maven, add `aws-java-sdk-dynamodb` to your `pom.xml` file\.   
+The DynamoDB Encryption Client requires the DynamoDB module of the AWS SDK for Java even if your application doesn't interact with DynamoDB\. You can install the entire SDK or just this module\. If you are using Maven, add `aws-java-sdk-dynamodb` to your `pom.xml` file\.   
 For more information about installing and configuring the AWS SDK for Java, see [AWS SDK for Java](http://docs.aws.amazon.com/sdk-for-java/v2/developer-guide/getting-started.html)\.
 
 ## Installation<a name="java-installation"></a>

@@ -14,8 +14,8 @@ Amazon's trademarks and trade dress may not be used in
 
 -----
 ## Contents
-+ [What is the Amazon DynamoDB Encryption Client?](what-is-ddb-encrypt.md)
-   + [Which Fields are Encrypted and Signed?](encrypted-and-signed.md)
++ [What Is the Amazon DynamoDB Encryption Client?](what-is-ddb-encrypt.md)
+   + [Which Fields Are Encrypted and Signed?](encrypted-and-signed.md)
    + [How the DynamoDB Encryption Client Works](how-it-works.md)
    + [Client-Side or Server-Side Encryption?](client-server-side.md)
    + [Amazon DynamoDB Encryption Client Concepts](concepts.md)
@@ -24,11 +24,11 @@ Amazon's trademarks and trade dress may not be used in
    + [Wrapped Materials Provider](wrapped-provider.md)
    + [Most Recent Provider](most-recent-provider.md)
    + [Static Materials Provider](static-provider.md)
-+ [Amazon DynamoDB Encryption Client Programming Languages](programming-languages.md)
++ [Amazon DynamoDB Encryption Client Available Programming Languages](programming-languages.md)
    + [Amazon DynamoDB Encryption Client for Java](java.md)
       + [Using the DynamoDB Encryption Client for Java](java-using.md)
-      + [DynamoDB Encryption Client for Java Example Code](java-examples.md)
+      + [Example Code for the DynamoDB Encryption Client for Java](java-examples.md)
    + [DynamoDB Encryption Client for Python](python.md)
       + [Using the DynamoDB Encryption Client for Python](python-using.md)
-      + [DynamoDB Encryption Client for Python Example Code](python-examples.md)
-+ [Troubleshooting Issues in your DynamoDB Encryption Client Application](troubleshooting.md)
+      + [Example Code for the DynamoDB Encryption Client for Python](python-examples.md)
++ [Troubleshooting Issues in Your DynamoDB Encryption Client Application](troubleshooting.md)
