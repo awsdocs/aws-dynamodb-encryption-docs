@@ -53,7 +53,7 @@ For example, these annotations sign but do not encrypt the `PublicationYear` att
 ```
 // Sign only (override the default)
 @DoNotEncrypt
-@DynamoDBAttribute(attributeName="PublicationYear")  
+@DynamoDBAttribute(attributeName="PublicationYear")
 
 // Do nothing (override the default)
 @DoNotTouch

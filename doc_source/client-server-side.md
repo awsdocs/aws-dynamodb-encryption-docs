@@ -9,9 +9,9 @@ You can also use the DynamoDB Encryption Client and encryption at rest together\
 **Encryption at Rest**
 
 DynamoDB offers [encryption at rest](http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/EncryptionAtRest.html), a *server\-side encryption* option in which DynamoDB transparently encrypts your tables for you when the table is persisted to disk, and decrypts them when you access the table data\. 
-+ **It's easy to use\.** Just select the encryption option when you create a table\. \(You cannot change the option on an existing table\.\) DynamoDB transparently encrypts and decrypts the table for you\.
++ **It's easy to use\.** Just select the encryption option when you create a table\. DynamoDB transparently encrypts and decrypts the table for you\.
 + **DynamoDB creates and manages the cryptographic keys\. **The unique key for each table is protected by an [AWS Key Management Service](http://docs.aws.amazon.com/kms/latest/developerguide/) \(AWS KMS\) customer master key that never leaves AWS KMS unencrypted\.
-+ **All table data is encrypted on disk\. **When an encrypted table is saved to disk, DynamoDB encrypts all table data, including the primary key and local and global secondary indexes\. \(If a table partition is split, the sort key is stored in plaintext in the table metadata\.\)
++ **All table data is encrypted on disk\. **When an encrypted table is saved to disk, DynamoDB encrypts all table data, including the [primary key](http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.CoreComponents.html#HowItWorks.CoreComponents.PrimaryKey) and local and global [secondary indexes](http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.CoreComponents.html#HowItWorks.CoreComponents.SecondaryIndexes)\. If your table has a sort key, some of the sort keys that mark range boundaries are stored in plaintext in the table metadata\.
 + **Your items are decrypted when you access them\. **When you access the table, DynamoDB decrypts the part of the table that includes your target item, and returns the plaintext item to you\.
 
  

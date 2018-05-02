@@ -1,6 +1,6 @@
 # Example Code for the DynamoDB Encryption Client for Java<a name="java-examples"></a>
 
-The following examples show you how to use the DynamoDB Encryption Client for Java to protect DynamoDB table items in your application\. You can find more examples \(and contribute your own\) in the [examples](https://github.com/awslabs/aws-dynamodb-encryption-java/tree/master/examples) directory of the [aws\-dynamodb\-encryption\-java](https://github.com/awslabs/aws-dynamodb-encryption-java/) repository on GitHub\.
+The following examples show you how to use the DynamoDB Encryption Client for Java to protect DynamoDB table items in your application\. You can find more examples \(and contribute your own\) in the [examples](https://github.com/awslabs/aws-dynamodb-encryption-python/tree/master/examples) directory of the [aws\-dynamodb\-encryption\-java](https://github.com/awslabs/aws-dynamodb-encryption-java/) repository on GitHub\.
 
 **Topics**
 + [Using the DynamoDBEncryptor and Direct KMS Provider](#java-example-ddb-encryptor)

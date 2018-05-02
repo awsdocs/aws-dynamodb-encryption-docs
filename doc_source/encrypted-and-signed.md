@@ -27,7 +27,7 @@ If you encrypt the `example` attribute, but do nothing to the `test` attribute, 
 **Warning**  
 Do not encrypt the primary key attributes\. They must remain in plaintext so DynamoDB can find the item without running a full table scan\.
 
-By default, the primary key—partition key and sort key—attributes are signed, but not encrypted\. If you identify your primary key, or use a helper class that identifies it for you, and then try to encrypt it, the client will throw an exception\. If you need to encrypt the primary key for a special use case, use the lowest level [item encryptor](concepts.md#item-encryptor) directly, but remember that DynamoDB will not be able to find your item\.
+By default, the primary key—partition key and sort key—attributes are signed, but not encrypted\. If you identify your primary key, or use a helper class that identifies it for you, and then try to encrypt it, the client will throw an exception\. If you need to encrypt the primary key for a special use case, use the lower\-level [item encryptor](concepts.md#item-encryptor) directly, but remember that DynamoDB will not be able to find your item\.
 
 The DynamoDB Encryption Client also does not encrypt the [Material Description](concepts.md#material-description) attribute, which stores the data that the DynamoDB Encryption Client needs to verify and decrypt the item\. 
 
