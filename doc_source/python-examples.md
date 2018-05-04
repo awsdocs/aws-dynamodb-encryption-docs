@@ -167,7 +167,7 @@ plaintext_item = {
     'example': 'data',
     'some numbers': 99,
     'some binary': Binary(b'\x00\x01\x02'),
-    'test': 'testdata'
+    'test': 'test-value'
 }
 ```
 Then, encrypt and sign it\. The encrypt\_python\_item method requires the `CryptoConfig` configuration object\.  
