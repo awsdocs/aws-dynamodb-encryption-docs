@@ -165,9 +165,9 @@ plaintext_item = {
     'partition_key': 'key1',
     'sort_key': 55,
     'example': 'data',
-    'some numbers': 99,
-    'some binary': Binary(b'\x00\x01\x02'),
-    'test': 'testdata'
+    'numbers': 99,
+    'binary': Binary(b'\x00\x01\x02'),
+    'test': 'test-value'
 }
 ```
 Then, encrypt and sign it\. The encrypt\_python\_item method requires the `CryptoConfig` configuration object\.  
