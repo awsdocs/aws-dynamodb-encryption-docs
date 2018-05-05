@@ -71,7 +71,7 @@ This section describes in detail the inputs, outputs, and processing of the Dire
 **Input ** \(from the application\)
 + The key ID of an AWS KMS CMK\. 
 
-**Inputs** \(from the item encryptor\)
+**Input** \(from the item encryptor\)
 + [DynamoDB encryption context](concepts.md#encryption-context)
 
 **Output** \(to the item encryptor\)
@@ -111,7 +111,7 @@ This section describes in detail the inputs, outputs, and processing of the Dire
 
   The value of the key ID can be the ID or Amazon Resource Name \(ARN\) of the CMK, or an alias or alias ARN, provided that any values that are omitted, such as the region, are available in the [AWS named profile](http://docs.aws.amazon.com/cli/latest/userguide/cli-multiple-profiles.html)\. The CMK ARN provides all of the values that AWS KMS needs\.
 
-**Inputs** \(from the item encryptor\)
+**Input** \(from the item encryptor\)
 + [DynamoDB encryption context](concepts.md#encryption-context)
 
 **Output** \(to the item encryptor\)

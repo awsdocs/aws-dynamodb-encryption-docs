@@ -33,11 +33,11 @@ final String partitionKeyName = "partition_attribute";
 final String sortKeyName = "sort_attribute";
 
 final Map<String, AttributeValue> record = new HashMap<>();
-record.put(partitionKeyName, new AttributeValue().withS("key1"));
+record.put(partitionKeyName, new AttributeValue().withS("value1"));
 record.put(sortKeyName, new AttributeValue().withN("55"));
 record.put("example", new AttributeValue().withS("data"));
-record.put("some numbers", new AttributeValue().withN("99"));
-record.put("some binary", new AttributeValue().withB(ByteBuffer.wrap(new byte[]{0x00, 0x01, 0x02})));
+record.put("numbers", new AttributeValue().withN("99"));
+record.put("binary", new AttributeValue().withB(ByteBuffer.wrap(new byte[]{0x00, 0x01, 0x02})));
 record.put("test", new AttributeValue().withS("test-value"));
 ```
 

@@ -28,7 +28,7 @@ Client\-side encryption is designed to protect your data at its source\. Your pl
 
 **AWS Encryption SDK**
 
-If you are encrypting data that you store DynamoDB, we recommend the DynamoDB Encryption Client\. 
+If you are encrypting data that you store in DynamoDB, we recommend the DynamoDB Encryption Client\. 
 
 The [AWS Encryption SDK](http://docs.aws.amazon.com/encryption-sdk/latest/developer-guide/) is a client\-side encryption library that helps you to encrypt and decrypt generic data\. Although it can protect any type of data, it isn't designed to work with structured data, like database records\. Unlike the DynamoDB Encryption Client, the AWS Encryption SDK cannot provide item\-level integrity checking and it has no logic to recognize attributes or prevent encryption of primary keys\.
 

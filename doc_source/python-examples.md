@@ -59,12 +59,12 @@ First, define the table item\.
 
 ```
 plaintext_item = {
-    'partition_attribute': 'key1',
+    'partition_attribute': 'value1',
     'sort_attribute': 55
     'example': 'data',
-    'some numbers': 99,
-    'some binary': Binary(b'\x00\x01\x02'),
-    'test': 'testvalue'
+    'numbers': 99,
+    'binary': Binary(b'\x00\x01\x02'),
+    'test': 'test-value'
 }
 ```
 Then, put it in the table\.  
@@ -117,16 +117,14 @@ To get the partition key and sort key, you can use the properties of the [TableI
 
 ```
 index_key = {
-    'partition_key': 'key1',
-    'sort_key': 55
+    'partition_attribute': 'value1',
+    'sort_attribute': 55
 }
 
 encryption_context = EncryptionContext(
     table_name=table_name,
     partition_key_name=table_info.primary_index.partition,
     sort_key_name=table_info.primary_index.sort,
-    # The Direct KMS Provider uses only the primary index attributes.
-    # These attributes need to be formatted as a DynamoDB JSON structure.
     attributes=dict_to_ddb(index_key)
 )
 ```
@@ -162,15 +160,15 @@ First, create a plaintext item\.
 
 ```
 plaintext_item = {
-    'partition_key': 'key1',
+    'partition_attribute': 'value1',
     'sort_key': 55,
     'example': 'data',
-    'some numbers': 99,
-    'some binary': Binary(b'\x00\x01\x02'),
-    'test': 'testdata'
+    'numbers': 99,
+    'binary': Binary(b'\x00\x01\x02'),
+    'test': 'test-value'
 }
 ```
-Then, encrypt and sign it\. The encrypt\_python\_item method requires the `CryptoConfig` configuration object\.  
+Then, encrypt and sign it\. The `encrypt_python_item` method requires the `CryptoConfig` configuration object\.  
 
 ```
 encrypted_item = encrypt_python_item(plaintext_item, crypto_config)
@@ -183,12 +181,14 @@ This step puts the encrypted and signed item in the DynamoDB table\.
 table.put_item(Item=encrypted_item)
 ```
 
-To view the encrypted item, call the `get_item` operation on the original `table` object, instead of the `encrypted_table` object\. It gets the item from the DynamoDB table without verifying and decrypting it\.
+To view the encrypted item, call the `get_item` method on the original `table` object, instead of the `encrypted_table` object\. It gets the item from the DynamoDB table without verifying and decrypting it\.
 
 ```
 encrypted_item = table.get_item(Key=partition_key)['Item']
 ```
 
-This excerpt from the output shows a DynamoDB item with encrypted attribute values\.
+The following image shows part of an example encrypted and signed table item\.
 
-![\[An excerpt of an encrypted item\]](http://docs.aws.amazon.com/dynamodb-encryption-client/latest/devguide/images/encrypted-item-closeup.png)
+The encrypted attribute values are binary data\. The names and values of the primary key attributes \(`partition_attribute` and `sort_attribute`\) and the `test` attribute remain in plaintext\. The output also shows the attribute that contains the signature \(`*amzn-ddb-map-sig*`\) and the [materials description attribute](concepts.md#material-description) \(`*amzn-ddb-map-desc*`\)\.
+
+![\[An excerpt of an encrypted and signed item\]](http://docs.aws.amazon.com/dynamodb-encryption-client/latest/devguide/images/encrypted-item-closeup.png)
