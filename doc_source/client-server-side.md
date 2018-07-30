@@ -9,6 +9,8 @@ You can also use the DynamoDB Encryption Client and encryption at rest together\
 **Encryption at Rest**
 
 DynamoDB offers [encryption at rest](http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/EncryptionAtRest.html), a *server\-side encryption* option in which DynamoDB transparently encrypts your tables for you when the table is persisted to disk, and decrypts them when you access the table data\. 
+
+With server\-side encryption, your data is encrypted in transit over an HTTPS connection, decrypted at the DynamoDB endpoint, and then re\-encrypted before being stored in DynamoDB\.
 + **It's easy to use\.** Just select the encryption option when you create a table\. DynamoDB transparently encrypts and decrypts the table for you\.
 + **DynamoDB creates and manages the cryptographic keys\. **The unique key for each table is protected by an [AWS Key Management Service](http://docs.aws.amazon.com/kms/latest/developerguide/) \(AWS KMS\) customer master key that never leaves AWS KMS unencrypted\.
 + **All table data is encrypted on disk\. **When an encrypted table is saved to disk, DynamoDB encrypts all table data, including the [primary key](http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.CoreComponents.html#HowItWorks.CoreComponents.PrimaryKey) and local and global [secondary indexes](http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.CoreComponents.html#HowItWorks.CoreComponents.SecondaryIndexes)\. If your table has a sort key, some of the sort keys that mark range boundaries are stored in plaintext in the table metadata\.
@@ -18,11 +20,12 @@ DynamoDB offers [encryption at rest](http://docs.aws.amazon.com/amazondynamodb/l
 
 **DynamoDB Encryption Client**
 
-Client\-side encryption is designed to protect your data at its source\. Your plaintext data is never exposed to any third party, including AWS\. However, you need to add the encryption features to your DynamoDB applications\. 
+Client\-side encryption provides end\-to\-end protection for your data, in transit and at rest, from its source to storage in DynamoDB\. Your plaintext data is never exposed to any third party, including AWS\. However, you need to add the encryption features to your DynamoDB applications\. 
 + **Your data is protected in transit and at rest\.** It is never exposed to any third party, including AWS\.
++ **You can sign your table Items\.** You can direct the DynamoDB Encryption Client to calculate a signature over all or part of a table item, including the primary key attributes and the table name\. This signatures allows you to detect unauthorized changes to the item as a whole, including adding or deleting attributes, or swapping attribute values\.
 + **You choose how your cryptographic keys are generated and protected\.** You can create and manage them yourself, or use a cryptographic service such as AWS Key Management Service or [AWS CloudHSM](http://docs.aws.amazon.com/cloudhsm/latest/userguide/) to generate and protect your keys\.
-+ **You determine how your data is protected by [selecting a cryptographic materials provider](crypto-materials-providers.md) \(CMP\), or writing one of your own\. **The CMP determines the encryption strategy used, including when unique keys are generated, and the encryption and signing algorithms that are used\.
-+ **The DynamoDB Encryption Client doesn't encrypt the entire table\.** It encrypts the values of [specified attributes](concepts.md#attribute-actions) in a table item, but not the attribute names\. By default, it doesn't encrypt the names or values of the primary key \(partition key and sort key\)\. It also signs the item so you can detect unauthorized changes to the item as whole\.
++ **You determine how your data is protected **by [selecting a cryptographic materials provider](crypto-materials-providers.md) \(CMP\), or writing one of your own\. The CMP determines the encryption strategy used, including when unique keys are generated, and the encryption and signing algorithms that are used\.
++ **The DynamoDB Encryption Client doesn't encrypt the entire table\.** You can encrypt selected items in a table, or selected attribute values in some or all items\. However, the DynamoDB Encryption Client does not encrypt an entire item\. It does not encrypt attribute names, or the names or values of the primary key \(partition key and sort key\) attributes\. For details about what is encrypted \(and what is not\), see [Which Fields Are Encrypted and Signed?](encrypted-and-signed.md)\.
 
  
 

@@ -37,7 +37,7 @@ The attribute action values can be one of the following:
 + **Sign only** – Include the attribute in the item signature\.
 + **Do nothing** – Do not encrypt or sign the attribute\.
 
-Use **Encrypt and sign** for all attributes that can store sensitive data\. For primary key attributes \(partition key and sort key\), use **Sign only**\. The [Material Description](#material-description) and signature attributes are not signed or encrypted\. You don't need to specify attribute actions for these attributes\.
+Use **Encrypt and sign** for all attributes that can store sensitive data\. For primary key attributes \(partition key and sort key\), use **Sign only**\. The [material description attribute](#material-description) and the signature attribute are not signed or encrypted\. You don't need to specify attribute actions for these attributes\.
 
 **Warning**  
 Do not encrypt the primary key attributes\. They must remain in plaintext so DynamoDB can find the item without running a full table scan\.
@@ -64,7 +64,7 @@ Because the material description can override secure default values, we recommen
 The material description that the [cryptographic materials providers](#concept-material-provider) \(CMPs\) return is known as the *actual material description*\. It describes the actual values that the CMP used when it assembled the cryptographic materials\. It usually consists of the requested material description, if any, with additions and changes\.
 
 **Material Description Attribute**  
-The *actual material description* is stored in a `Material Description` attribute in the encrypted item\. The CMP uses the values in the attribute to generate the cryptographic materials required to verify and decrypt the item\.
+The client saves the actual material description in the *material description attribute* of the encrypted item\. The material description attribute name is `amzn-ddb-map-desc` and its value is the actual material description\. The client uses the values in the material description attribute to verify and decrypt the item\.
 
 ## DynamoDB Encryption Context<a name="encryption-context"></a>
 
@@ -73,14 +73,14 @@ The *DynamoDB encryption context* supplies information about the table and item 
 **Note**  
 The *DynamoDB encryption context* in the DynamoDB Encryption Client is not related to the *encryption context* in AWS Key Management Service \(AWS KMS\) and the AWS Encryption SDK\.
 
-If you interact with the [item encryptor](#item-encryptor) directly, you need to provide a DynamoDB encryption context when you configure your client\. Most helpers create the DynamoDB encryption context for you\.
-
-The DynamoDB encryption context can include some or all of the following fields\.
+The DynamoDB encryption context can include the following fields\. All fields and values are optional\.
 + Table name
 + Partition key name
 + Sort key name
 + Attribute name\-value pairs
 + [Requested material description](#material-description)
+
+If you interact with the [item encryptor](#item-encryptor) directly, you need to provide a DynamoDB encryption context when you configure your client\. Most helpers create the DynamoDB encryption context for you\.
 
 ## Provider Store<a name="provider-store"></a>
 

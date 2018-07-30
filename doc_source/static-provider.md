@@ -74,14 +74,14 @@ The Static Provider passes the encryption and signing keys that you supply to th
 
 This section describes in detail the inputs, outputs, and processing of the Static Materials Provider \(Static CMP\) when it receives a request for encryption materials\.
 
-**Inputs** \(from the application\)
+**Input** \(from the application\)
 + An encryption key – This must be a symmetric key, such as an [Advanced Encryption Standard](https://tools.ietf.org/html/rfc3394.html) \(AES\) key\. 
 + A signing key – This can be a symmetric key or an asymmetric key pair\. 
 
-**Inputs** \(from the item encryptor\)
+**Input** \(from the item encryptor\)
 + [DynamoDB encryption context](concepts.md#encryption-context)
 
-**Outputs** \(to the item encryptor\)
+**Output** \(to the item encryptor\)
 + The encryption key passed as input\.
 + The signing key passed as input\.
 + Actual material description: The [requested material description](concepts.md#material-description), if any, unchanged\.
@@ -92,13 +92,13 @@ This section describes in detail the inputs, outputs, and processing of the Stat
 
 Although it includes separate methods for getting encryption materials and getting decryption materials, the behavior is the same\. 
 
-**Inputs** \(from the application\)
+**Input** \(from the application\)
 + An encryption key – This must be a symmetric key, such as an [Advanced Encryption Standard](https://tools.ietf.org/html/rfc3394.html) \(AES\) key\. 
 + A signing key – This can be a symmetric key or an asymmetric key pair\. 
 
-**Inputs** \(from the item encryptor\)
-+ [DynamoDB encryption context](concepts.md#encryption-context)
+**Input** \(from the item encryptor\)
++ [DynamoDB encryption context](concepts.md#encryption-context) \(not used\)
 
-**Outputs** \(to the item encryptor\)
+**Output** \(to the item encryptor\)
 + The encryption key passed as input\.
 + The signing key passed as input\.

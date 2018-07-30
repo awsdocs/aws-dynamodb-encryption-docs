@@ -25,7 +25,7 @@ Use **pip** to install the Amazon DynamoDB Encryption Client for Python, as show
 **To install the latest version**  
 
 ```
-pip install aws-dynamodb-encryption-python
+pip install dynamodb-encryption-sdk
 ```
 
 For more details about using **pip** to install and upgrade packages, see [Installing Packages](https://packaging.python.org/tutorials/installing-packages/)\.

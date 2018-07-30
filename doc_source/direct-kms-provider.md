@@ -53,7 +53,7 @@ aws_kms_cmp = AwsKmsCryptographicMaterialsProvider(key_id=aws_cmk_id)
 The Direct KMS Provider returns encryption and signing keys that are protected by an AWS KMS CMK that you specify, as shown in the following diagram\.
 
 ![\[The input, processing, and output of the Direct KMS Provider in the DynamoDB Encryption Client\]](http://docs.aws.amazon.com/dynamodb-encryption-client/latest/devguide/images/directKMS.png)
-+ To generate encryption materials, the Direct KMS Provider asks AWS KMS to [generate a unique data key](http://docs.aws.amazon.com/kms/latest/APIReference/API_GenerateDataKey.html) for each item using a [customer master key](http://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#master_keys) \(CMK\) that you specify\. It derives encryption and signing keys for the item from the plaintext copy of the [data key](http://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#data-keys), and then returns the encryption and signing keys, along with the encrypted data key, which is stored in the [Material Description attribute](concepts.md#material-description) of the item\. 
++ To generate encryption materials, the Direct KMS Provider asks AWS KMS to [generate a unique data key](http://docs.aws.amazon.com/kms/latest/APIReference/API_GenerateDataKey.html) for each item using a [customer master key](http://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#master_keys) \(CMK\) that you specify\. It derives encryption and signing keys for the item from the plaintext copy of the [data key](http://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#data-keys), and then returns the encryption and signing keys, along with the encrypted data key, which is stored in the [material description attribute](concepts.md#material-description) of the item\. 
 
   The item encryptor uses the encryption and signing keys and removes them from memory as soon as possible\. Only the encrypted copy of the data key from which they were derived is saved in the encrypted item\.
 + To generate decryption materials, the Direct KMS Provider asks AWS KMS to decrypt the encrypted data key\. Then, it derives verification and signing keys from the plaintext data key, and returns them to the item encryptor\.
@@ -77,7 +77,7 @@ This section describes in detail the inputs, outputs, and processing of the Dire
 **Output** \(to the item encryptor\)
 + Encryption key \(plaintext\)
 + Signing key
-+ In [actual material description](concepts.md#material-description): These values are saved in the `Material Description` attribute that the client adds to the item\.
++ In [actual material description](concepts.md#material-description): These values are saved in the material description attribute that the client adds to the item\.
   + amzn\-ddb\-env\-key: Base64\-encoded data key encrypted by the AWS KMS CMK
   + amzn\-ddb\-env\-alg: Encryption algorithm, by default [AES/256](https://csrc.nist.gov/projects/cryptographic-standards-and-guidelines/archived-crypto-projects/aes-development)
   + amzn\-ddb\-sig\-alg: Signing algorithm, by default, [HmacSHA256/256](https://en.wikipedia.org/wiki/HMAC)
@@ -112,7 +112,7 @@ This section describes in detail the inputs, outputs, and processing of the Dire
   The value of the key ID can be the ID or Amazon Resource Name \(ARN\) of the CMK, or an alias or alias ARN, provided that any values that are omitted, such as the region, are available in the [AWS named profile](http://docs.aws.amazon.com/cli/latest/userguide/cli-multiple-profiles.html)\. The CMK ARN provides all of the values that AWS KMS needs\.
 
 **Input** \(from the item encryptor\)
-+ [DynamoDB encryption context](concepts.md#encryption-context)
++ A copy of the [DynamoDB encryption context](concepts.md#encryption-context) that contains the contents of the material description attribute\.
 
 **Output** \(to the item encryptor\)
 + Encryption key \(plaintext\)
@@ -120,7 +120,7 @@ This section describes in detail the inputs, outputs, and processing of the Dire
 
 **Processing**
 
-1. The Direct KMS provider gets the encrypted data key from the `Material Description` attribute in the encrypted item\. 
+1. The Direct KMS provider gets the encrypted data key from the material description attribute in the encrypted item\. 
 
 1. It asks AWS KMS to use the specified CMK to [decrypt](http://docs.aws.amazon.com/kms/latest/APIReference/APIReference/API_GenerateDataKey.html) the encrypted data key\. The operation returns a plaintext key\.
 

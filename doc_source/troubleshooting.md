@@ -2,7 +2,7 @@
 
 This section describes problems that you might encounter when using the DynamoDB Encryption Client and offers suggestions for resolving them\.
 
-If you have questions about using the DynamoDB Encryption Client, start a new thread on the [AWS Key Management Service forum](https://forums.aws.amazon.com/forum.jspa?forumID=182), file an issue in the GitHub repository for the [Java](https://github.com/awslabs/aws-dynamodb-encryption-java/) or [Python](https://github.com/awslabs/aws-dynamodb-encryption-python/) library, or contact [AWS Support](https://console.aws.amazon.com/support/home)\.
+If you have questions about using the DynamoDB Encryption Client, read and post on the [AWS Crypto Tools Discussion Forum](https://forums.aws.amazon.com/forum.jspa?forumID=302), file an issue in the GitHub repository for the [Java](https://github.com/awslabs/aws-dynamodb-encryption-java/) or [Python](https://github.com/awslabs/aws-dynamodb-encryption-python/) library, or contact [AWS Support](https://console.aws.amazon.com/support/home)\.
 
 To suggest changes to any page in this guide, choose the feedback link in the lower\-right corner of the page, or the GitHub link in the upper\-right corner of the page\. You can also file an issue in the [aws\-dynamodb\-encryption\-docs](https://github.com/awsdocs/aws-dynamodb-encryption-docs) GitHub repository for this guide\.
 

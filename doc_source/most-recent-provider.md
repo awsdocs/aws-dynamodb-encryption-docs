@@ -151,7 +151,7 @@ When the item encryptor asks the Most Recent Provider for encryption materials, 
 
   1. The provider store returns a CMP from its persistent storage\. If the provider store is a MetaStore, it gets an encrypted Wrapped CMP from its internal DynamoDB table by using the Most Recent Provider material name as the partition key and the version number as the sort key\. The MetaStore uses its internal item encryptor and internal CMP to decrypt the Wrapped CMP\. Then, it returns the plaintext CMP to the Most Recent Provider \. If the internal CMP is a [Direct KMS Provider](direct-kms-provider.md), this step includes a call to the [AWS Key Management Service](http://docs.aws.amazon.com/kms/latest/developerguide/) \(AWS KMS\)\.
 
-  1. The CMP adds the `amzn-ddb-meta-id` field to the [actual material description](concepts.md#material-description)\. Its value is the material name and version of the CMP in its internal table\. This information is used to find the CMP when the item is decrypted\. The provider store returns the CMP to the Most Recent Provider\.
+  1. The CMP adds the `amzn-ddb-meta-id` field to the [actual material description](concepts.md#material-description)\. Its value is the material name and version of the CMP in its internal table\. The provider store returns the CMP to the Most Recent Provider\.
 
   1. The Most Recent Provider caches the CMP in memory\.
 
@@ -161,7 +161,7 @@ When the item encryptor asks the Most Recent Provider for encryption materials, 
 
 When the item encryptor asks the Most Recent Provider for decryption materials, the Most Recent Provider uses the following process to get and return them\.
 
-1. The Most Recent Provider asks the provider store for the version number of the cryptographic materials that were used to encrypt the item\. It passes in the actual material description from the Material Description attribute of the item\.
+1. The Most Recent Provider asks the provider store for the version number of the cryptographic materials that were used to encrypt the item\. It passes in the actual material description from the [material description attribute](concepts.md#material-description) of the item\.
 
 1. The provider store gets the encrypting CMP version number from the `amzn-ddb-meta-id` field in the actual material description and returns it to the Most Recent Provider\.
 

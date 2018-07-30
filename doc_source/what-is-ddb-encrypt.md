@@ -20,9 +20,11 @@ You can use the DynamoDB Encryption Client with encryption keys from any source,
 The DynamoDB Encryption Client libraries are developed in open source projects on GitHub\. They are currently available in [Java](https://github.com/awslabs/aws-dynamodb-encryption-java/) and [Python](https://github.com/awslabs/aws-dynamodb-encryption-python/)\.  All supported programming language implementations of the DynamoDB Encryption Client are interoperable\. For example, you can encrypt data with the Java client and decrypt it with the Python client\.   
 However, the DynamoDB Encryption Client is not compatible with the [AWS Encryption SDK](http://docs.aws.amazon.com/encryption-sdk/latest/developer-guide/) or the [Amazon S3 Encryption Client](http://docs.aws.amazon.com/AmazonS3/latest/dev/UsingClientSideEncryption.html)\. You cannot encrypt with one client\-side library and decrypt with another\.
 
-If you have questions about using the DynamoDB Encryption Client, start a new thread on the [AWS Key Management Service forum](https://forums.aws.amazon.com/forum.jspa?forumID=182), file an issue in the GitHub repository for the [Java](https://github.com/awslabs/aws-dynamodb-encryption-java/) or [Python](https://github.com/awslabs/aws-dynamodb-encryption-python/) library, or contact [AWS Support](https://console.aws.amazon.com/support/home)\.
+If you have questions about using the DynamoDB Encryption Client, read and post on the [AWS Crypto Tools Discussion Forum](https://forums.aws.amazon.com/forum.jspa?forumID=302), file an issue in the GitHub repository for the [Java](https://github.com/awslabs/aws-dynamodb-encryption-java/) or [Python](https://github.com/awslabs/aws-dynamodb-encryption-python/) library, or contact [AWS Support](https://console.aws.amazon.com/support/home)\.
 
 To suggest changes to any page in this guide, choose the feedback link in the lower\-right corner of the page, or the GitHub link in the upper\-right corner of the page\. You can also file an issue in the [aws\-dynamodb\-encryption\-docs](https://github.com/awsdocs/aws-dynamodb-encryption-docs) GitHub repository for this guide\.
+
+The Amazon DynamoDB Encryption Client is provided free of charge under the Apache license\.
 
 **Topics**
 + [Which Fields Are Encrypted and Signed?](encrypted-and-signed.md)
