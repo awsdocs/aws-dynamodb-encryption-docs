@@ -1,6 +1,6 @@
 # Example Code for the DynamoDB Encryption Client for Python<a name="python-examples"></a>
 
-The following examples show you how to use the DynamoDB Encryption Client for Python to protect DynamoDB data in your application\. You can find more examples \(and contribute your own\) in the [examples](https://github.com/awslabs/aws-dynamodb-encryption-python/tree/master/examples) directory of the [aws\-dynamodb\-encryption\-python](https://github.com/awslabs/aws-dynamodb-encryption-python/) repository on GitHub\.
+The following examples show you how to use the DynamoDB Encryption Client for Python to protect DynamoDB data in your application\. You can find more examples \(and contribute your own\) in the [examples](https://github.com/aws/aws-dynamodb-encryption-python/tree/master/examples) directory of the [aws\-dynamodb\-encryption\-python](https://github.com/aws/aws-dynamodb-encryption-python/) repository on GitHub\.
 
 **Topics**
 + [Use the EncryptedTable Client Helper Class](#python-example-table)
@@ -12,7 +12,7 @@ The following example shows you how to use the [Direct KMS Provider](direct-kms-
 
 By comparing these examples, you can see the work that the client helper class does for you\. This includes creating the [DynamoDB encryption context](concepts.md#encryption-context) and making sure the primary key attributes are always signed, but never encrypted\. To create the encryption context and discover the primary key, the client helper classes call the DynamoDB [DescribeTable](http://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_DescribeTable.html) operation\. To run this code, you must have permission to call this operation\.
 
-**See the complete code sample**: [aws\_kms\_encrypted\_table\.py](https://github.com/awslabs/aws-dynamodb-encryption-python/blob/master/examples/src/aws_kms_encrypted_table.py)
+**See the complete code sample**: [aws\_kms\_encrypted\_table\.py](https://github.com/aws/aws-dynamodb-encryption-python/blob/master/examples/src/aws_kms_encrypted_table.py)
 
 Step 1: Create the table  
 Start by creating an instance of a standard DynamoDB table with the table name\.  
@@ -83,7 +83,7 @@ When you use this technique, you create the DynamoDB encryption context and conf
 
 This example uses the [Direct KMS Provider](direct-kms-provider.md), but you can use any compatible CMP\.
 
-**See the complete code sample**: [aws\_kms\_encrypted\_item\.py](https://github.com/awslabs/aws-dynamodb-encryption-python/blob/master/examples/src/aws_kms_encrypted_item.py)
+**See the complete code sample**: [aws\_kms\_encrypted\_item\.py](https://github.com/aws/aws-dynamodb-encryption-python/blob/master/examples/src/aws_kms_encrypted_item.py)
 
 Step 1: Create the table  
 Start by creating an instance of a standard DynamoDB table resource with the table name\.  
@@ -143,7 +143,7 @@ actions.set_index_keys(*table_info.protected_index_keys())
 ```
 
 Step 6: Create the configuration for the item  
-To configure the DynamoDB Encryption Client, use the objects that you just created in a [CryptoConfig](https://github.com/awslabs/aws-dynamodb-encryption-python/blob/master/src/dynamodb_encryption_sdk/encrypted/__init__.py) configuration for the table item\. The client helper classes create the CryptoConfig for you\.   
+To configure the DynamoDB Encryption Client, use the objects that you just created in a [CryptoConfig](https://aws-dynamodb-encryption-python.readthedocs.io/en/latest/lib/encrypted/config.html) configuration for the table item\. The client helper classes create the CryptoConfig for you\.   
 
 ```
 crypto_config = CryptoConfig(

@@ -7,12 +7,12 @@ To use the Static CMP to encrypt a table item, you supply an [Advanced Encryptio
 Because the Static CMP does not generate any unique cryptographic materials, all table items that you process are encrypted with the same encryption key and signed by the same signing key\. When you use the same key to encrypt the attributes values in numerous items or use the same key or key pair to sign all items, you risk exceeding the cryptographic limits of the keys\. 
 
 **Note**  
-The [Asymmetric Static Provider](https://github.com/awslabs/aws-dynamodb-encryption-java/blob/master/src/main/java/com/amazonaws/services/dynamodbv2/datamodeling/encryption/providers/AsymmetricStaticProvider.java) in the Java library is not a static provider\. It just supplies alternate constructors for the [Wrapped CMP](wrapped-provider.md)\. It's safe for production use, but you should use the Wrapped CMP directly whenever possible\.
+The [Asymmetric Static Provider](https://github.com/aws/aws-dynamodb-encryption-java/blob/master/src/main/java/com/amazonaws/services/dynamodbv2/datamodeling/encryption/providers/AsymmetricStaticProvider.java) in the Java library is not a static provider\. It just supplies alternate constructors for the [Wrapped CMP](wrapped-provider.md)\. It's safe for production use, but you should use the Wrapped CMP directly whenever possible\.
 
 The Static CMP is one of several [cryptographic materials provider](concepts.md#concept-material-provider) \(CMPs\) that the DynamoDB Encryption Client supports\. For information about the other CMPs, see [How to Choose a Cryptographic Materials Provider](crypto-materials-providers.md)\.
 
 **For example code, see:**
-+ Java: [SymmetricEncryptedItem](https://github.com/awslabs/aws-dynamodb-encryption-java/blob/master/examples/com/amazonaws/examples/SymmetricEncryptedItem.java)
++ Java: [SymmetricEncryptedItem](https://github.com/aws/aws-dynamodb-encryption-java/blob/master/examples/com/amazonaws/examples/SymmetricEncryptedItem.java)
 
 **Topics**
 + [How to Use It](#static-cmp-how-to-use)

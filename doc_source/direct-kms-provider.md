@@ -12,8 +12,8 @@ When you use the Direct KMS Provider, the names and values of your primary key a
 The Direct KMS Provider is one of several [cryptographic materials provider](concepts.md#concept-material-provider) \(CMPs\) that the DynamoDB Encryption Client supports\. For information about the other CMPs, see [How to Choose a Cryptographic Materials Provider](crypto-materials-providers.md)\.
 
 **For example code, see:**
-+ Java: [AwsKmsEncryptedItem](https://github.com/awslabs/aws-dynamodb-encryption-java/blob/master/examples/com/amazonaws/examples/AwsKmsEncryptedItem.java)
-+ Python: [aws\-kms\-encrypted\-table](https://github.com/awslabs/aws-dynamodb-encryption-python/blob/master/examples/src/aws_kms_encrypted_table.py), [aws\-kms\-encrypted\-item](https://github.com/awslabs/aws-dynamodb-encryption-python/blob/master/examples/src/aws_kms_encrypted_item.py)
++ Java: [AwsKmsEncryptedItem](https://github.com/aws/aws-dynamodb-encryption-java/blob/master/examples/com/amazonaws/examples/AwsKmsEncryptedItem.java)
++ Python: [aws\-kms\-encrypted\-table](https://github.com/aws/aws-dynamodb-encryption-python/blob/master/examples/src/aws_kms_encrypted_table.py), [aws\-kms\-encrypted\-item](https://github.com/aws/aws-dynamodb-encryption-python/blob/master/examples/src/aws_kms_encrypted_item.py)
 
 **Topics**
 + [How to Use It](#provider-kms-how-to-use)

@@ -11,8 +11,8 @@ The DynamoDB Encryption Client includes a *MetaStore* that creates and returns [
 You can configure the MetaStore to use any type of internal CMP to protect the materials in the table, including a [Direct KMS Provider](direct-kms-provider.md) that generates cryptographic materials protected by your AWS KMS customer master key, a Wrapped CMP that uses wrapping and signing keys that you supply, or a compatible custom CMP that you design\.
 
 **For example code, see:**
-+ Java: [MostRecentEncryptedItem](https://github.com/awslabs/aws-dynamodb-encryption-java/blob/master/examples/com/amazonaws/examples/MostRecentEncryptedItem.java)
-+ Python: [most\_recent\_provider\_encrypted\_table](https://github.com/awslabs/aws-dynamodb-encryption-python/blob/master/examples/src/most_recent_provider_encrypted_table.py)
++ Java: [MostRecentEncryptedItem](https://github.com/aws/aws-dynamodb-encryption-java/blob/master/examples/com/amazonaws/examples/MostRecentEncryptedItem.java)
++ Python: [most\_recent\_provider\_encrypted\_table](https://github.com/aws/aws-dynamodb-encryption-python/blob/master/examples/src/most_recent_provider_encrypted_table.py)
 
 **Topics**
 + [How to Use It](#mrp-how-to-use-it)

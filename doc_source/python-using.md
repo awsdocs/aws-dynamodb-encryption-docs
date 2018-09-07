@@ -2,7 +2,7 @@
 
 This topic explains some of the features of the DynamoDB Encryption Client for Python that might not be found in other programming language implementations\. These features are designed to make it easier to use the DynamoDB Encryption Client in the most secure way\. Unless you have an unusual use case, we recommend that you use them\.
 
-For details about programming with the DynamoDB Encryption Client, see the [Python examples](python-examples.md) in this guide, the [examples](https://github.com/awslabs/aws-dynamodb-encryption-python/tree/master/examples) in the aws\-dynamodb\-encryption\-python repository on GitHub, and the [Python documentation](http://aws-dynamodb-encryption-python.readthedocs.io/en/latest/) for the DynamoDB Encryption Client\.
+For details about programming with the DynamoDB Encryption Client, see the [Python examples](python-examples.md) in this guide, the [examples](https://github.com/aws/aws-dynamodb-encryption-python/tree/master/examples) in the aws\-dynamodb\-encryption\-python repository on GitHub, and the [Python documentation](https://aws-dynamodb-encryption-python.readthedocs.io/en/latest/) for the DynamoDB Encryption Client\.
 
 **Topics**
 + [Client Helper Classes](#python-helpers)
@@ -19,15 +19,15 @@ The DynamoDB Encryption Client for Python includes several client helper classes
 You can use the client helper classes instead of interacting directly with the lower\-level [item encryptor](concepts.md#item-encryptor)\. Use these classes unless you need to set advanced options in the item encryptor\.
 
 The client helper classes include:
-+ [EncryptedTable](https://github.com/awslabs/aws-dynamodb-encryption-python/blob/master/src/dynamodb_encryption_sdk/encrypted/table.py) for applications that use the [Table](http://boto3.readthedocs.io/en/latest/reference/services/dynamodb.html#table) resource in DynamoDB to process one table at a time\.
-+ [EncryptedResource](https://github.com/awslabs/aws-dynamodb-encryption-python/blob/master/src/dynamodb_encryption_sdk/encrypted/resource.py) for applications that use the [Service Resource](http://boto3.readthedocs.io/en/latest/reference/services/dynamodb.html#service-resource) class in DynamoDB for batch processing\.
-+ [EncryptedClient](https://github.com/awslabs/aws-dynamodb-encryption-python/blob/master/src/dynamodb_encryption_sdk/encrypted/client.py) for applications that use the [lower\-level client](http://boto3.readthedocs.io/en/latest/reference/services/dynamodb.html#client) in DynamoDB\.
++ [EncryptedTable](https://aws-dynamodb-encryption-python.readthedocs.io/en/latest/lib/encrypted/table.html#module-dynamodb_encryption_sdk.encrypted.table) for applications that use the [Table](http://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/dynamodb.html#table) resource in DynamoDB to process one table at a time\.
++ [EncryptedResource](https://aws-dynamodb-encryption-python.readthedocs.io/en/latest/lib/encrypted/resource.html) for applications that use the [Service Resource](http://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/dynamodb.html#service-resource) class in DynamoDB for batch processing\.
++ [EncryptedClient](https://aws-dynamodb-encryption-python.readthedocs.io/en/latest/lib/encrypted/client.html) for applications that use the [lower\-level client](http://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/dynamodb.html#client) in DynamoDB\.
 
 To use the client helper classes, the caller must have permission to call the DynamoDB [DescribeTable](http://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_DescribeTable.html) operation on the target table\.
 
 ## TableInfo Class<a name="table-info"></a>
 
-The [TableInfo](https://github.com/awslabs/aws-dynamodb-encryption-python/blob/master/src/dynamodb_encryption_sdk/structures.py) class is a helper class that represents a DynamoDB table, complete with fields for its primary key and secondary indexes\. It helps you to get accurate, real\-time information about the table\.
+The [TableInfo](https://aws-dynamodb-encryption-python.readthedocs.io/en/latest/lib/tools/structures.html#dynamodb_encryption_sdk.structures.TableInfo) class is a helper class that represents a DynamoDB table, complete with fields for its primary key and secondary indexes\. It helps you to get accurate, real\-time information about the table\.
 
 If you use a [client helper class](#python-helpers), it creates and uses a `TableInfo` object for you\. Otherwise, you can create one explicitly\. For an example, see [Use the Item Encryptor](python-examples.md#python-example-item-encryptor)\.
 

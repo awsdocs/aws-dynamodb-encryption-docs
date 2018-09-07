@@ -2,23 +2,37 @@
 
 This topic explains some of the features of the DynamoDB Encryption Client in Java that might not be found in other programming language implementations\. 
 
-For details about programming with the DynamoDB Encryption Client, see the [Java examples](java-examples.md), the [examples](https://github.com/awslabs/aws-dynamodb-encryption-java/tree/master/examples) in the aws\-dynamodb\-encryption\-java repository on GitHub, and the [Javadoc](https://awslabs.github.io/aws-dynamodb-encryption-java/javadoc/) for the DynamoDB Encryption Client\.
+For details about programming with the DynamoDB Encryption Client, see the [Java examples](java-examples.md), the [examples](https://github.com/aws/aws-dynamodb-encryption-java/tree/master/examples) in the aws\-dynamodb\-encryption\-java repository on GitHub, and the [Javadoc](https://aws.github.io/aws-dynamodb-encryption-java/javadoc/) for the DynamoDB Encryption Client\.
 
 **Topics**
-+ [AttributeEncryptor](#attribute-encryptor)
++ [Item Encryptors](#attribute-encryptor)
++ [Configuring Save Behavior](#save-behavior)
 + [Attribute Actions in Java](#attribute-actions-java)
 
-## AttributeEncryptor<a name="attribute-encryptor"></a>
+## Item Encryptors: AttributeEncryptor and DynamoDBEncryptor<a name="attribute-encryptor"></a>
 
-The DynamoDB Encryption Client in Java has two [item encryptors](concepts.md#item-encryptor): the lower\-level [DynamoDBEncryptor](https://awslabs.github.io/aws-dynamodb-encryption-java/javadoc/com/amazonaws/services/dynamodbv2/datamodeling/encryption/DynamoDBEncryptor.html) and the [AttributeEncryptor](#attribute-encryptor)\. The `AttributeEncryptor` is a helper class that is designed to work with the [DynamoDBMapper](http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBMapper.Methods.html) in the AWS SDK for Java\.
+The DynamoDB Encryption Client in Java has two [item encryptors](concepts.md#item-encryptor): the lower\-level [DynamoDBEncryptor](https://aws.github.io/aws-dynamodb-encryption-java/javadoc/com/amazonaws/services/dynamodbv2/datamodeling/encryption/DynamoDBEncryptor.html) and the [AttributeEncryptor](#attribute-encryptor)\. 
 
-The `AttributeEncryptor` prevents you from encrypting the value of the primary key in your item\. It encrypts and signs all attributes except for the primary key attributes, which are signed but not encrypted\. If you explicitly tell the client to encrypt the primary key, it throws an exception\.
+The `AttributeEncryptor` is a helper class that enables you to use the [DynamoDBMapper](http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBMapper.Methods.html) in the AWS SDK for Java with the `DynamoDB Encryptor` in the DynamoDB Encryption Client\. When you use the `AttributeEncryptor` with the `DynamoDBMapper`, it transparently encrypts and signs your items when you save them, and transparently verifies and decrypts your items when you load them\.
 
-When you use the `AttributeEncryptor` with the `DynamoDBMapper`, it transparently encrypts and signs the item when you save it, and transparently verifies and decrypts the item when you load it\.
+## Configuring Save Behavior<a name="save-behavior"></a>
+
+When you use the `AttributeEncryptor` and `DynamoDBMapper` to add or edit table items with attributes that are signed only or encrypted and signed, configure it to use the `PUT` save behavior, as shown in the following example\. Otherwise, you might not be able to decrypt your data\. 
+
+```
+DynamoDBMapperConfig mapperConfig = DynamoDBMapperConfig.builder().withSaveBehavior(SaveBehavior.PUT).build();
+DynamoDBMapper mapper = new DynamoDBMapper(ddb, mapperConfig, new AttributeEncryptor(encryptor));
+```
+
+If you use the default save behavior, which updates the attributes in the table item, only attributes that have changed are included in the signature\. That signature might not match the signature of the entire item that is calculated on decrypt\.
+
+You can also use the `CLOBBER` save behavior, which is identical to the `PUT` save behavior, except that it disables optimistic locking and overwrites the item in the table\.
+
+To see this code used in an example, see [Using the DynamoDB Mapper](java-examples.md#java-example-dynamodb-mapper) and the [AwsKmsEncryptedObject\.java](https://github.com/aws/aws-dynamodb-encryption-java/blob/master/examples/com/amazonaws/examples/AwsKmsEncryptedObject.java) example in the *aws\-dynamodb\-encryption\-java* repository in GitHub\.
 
 ## Attribute Actions in Java<a name="attribute-actions-java"></a>
 
-[Attribute actions](concepts.md#attribute-actions) determine which attribute values are encrypted and signed, which are only signed, and which are ignored\. The method you use to specify attribute actions depends on whether you use the `DynamoDBMapper` and `AttributeEncryptor`, or the lower\-level [DynamoDBEncryptor](https://awslabs.github.io/aws-dynamodb-encryption-java/javadoc/com/amazonaws/services/dynamodbv2/datamodeling/encryption/DynamoDBEncryptor.html)\.
+[Attribute actions](concepts.md#attribute-actions) determine which attribute values are encrypted and signed, which are only signed, and which are ignored\. The method you use to specify attribute actions depends on whether you use the `DynamoDBMapper` and `AttributeEncryptor`, or the lower\-level [DynamoDBEncryptor](https://aws.github.io/aws-dynamodb-encryption-java/javadoc/com/amazonaws/services/dynamodbv2/datamodeling/encryption/DynamoDBEncryptor.html)\.
 
 ### Attribute Actions for the DynamoDB Mapper<a name="attribute-action-java-mapper"></a>
 
@@ -38,7 +52,7 @@ Do not encrypt the value of attributes with the [@DynamoDBVersionAttribute annot
 @DynamoDBRangeKey(attributeName="Author")
 ```
 
-To specify exceptions, you use special encryption annotations that are defined in the DynamoDB Encryption Client for Java\. If you specify them at the class level, they become the default value for the class\.
+To specify exceptions, use the encryption annotations defined in the DynamoDB Encryption Client for Java\. If you specify them at the class level, they become the default value for the class\.
 
 ```
 // Sign only
@@ -62,7 +76,7 @@ For example, these annotations sign but do not encrypt the `PublicationYear` att
 
 ### Attribute Actions for the DynamoDBEncryptor<a name="attribute-action-default"></a>
 
-To specify attribute actions when you use the [DynamoDBEncryptor](https://awslabs.github.io/aws-dynamodb-encryption-java/javadoc/com/amazonaws/services/dynamodbv2/datamodeling/encryption/DynamoDBEncryptor.html) directly, create a `HashMap` object in which the name\-value pairs represent attribute names and the specified actions\. 
+To specify attribute actions when you use the [DynamoDBEncryptor](https://aws.github.io/aws-dynamodb-encryption-java/javadoc/com/amazonaws/services/dynamodbv2/datamodeling/encryption/DynamoDBEncryptor.html) directly, create a `HashMap` object in which the name\-value pairs represent attribute names and the specified actions\. 
 
 The valid values are for the attribute actions are defined in the `EncryptionFlags` enumerated type\. You can use `ENCRYPT` and `SIGN` together, use `SIGN` alone, or omit both\. However, if you use `ENCRYPT` alone, the DynamoDB Encryption Client throws an error\. You cannot encrypt an attribute that you don't sign\.
 
@@ -101,7 +115,7 @@ for (final String attributeName : record.keySet()) {
 }
 ```
 
-Then, when you call the [encryptRecord](https://awslabs.github.io/aws-dynamodb-encryption-java/javadoc/com/amazonaws/services/dynamodbv2/datamodeling/encryption/DynamoDBEncryptor.html#encryptRecord-java.util.Map-java.util.Map-com.amazonaws.services.dynamodbv2.datamodeling.encryption.EncryptionContext-) method of the `DynamoDBEncryptor`, specify the map as the value of the `attributeFlags` parameter\. For example, this call to `encryptRecord` uses the `actions` map\.
+Then, when you call the [encryptRecord](https://aws.github.io/aws-dynamodb-encryption-java/javadoc/com/amazonaws/services/dynamodbv2/datamodeling/encryption/DynamoDBEncryptor.html#encryptRecord-java.util.Map-java.util.Map-com.amazonaws.services.dynamodbv2.datamodeling.encryption.EncryptionContext-) method of the `DynamoDBEncryptor`, specify the map as the value of the `attributeFlags` parameter\. For example, this call to `encryptRecord` uses the `actions` map\.
 
 ```
 // Encrypt the plaintext record

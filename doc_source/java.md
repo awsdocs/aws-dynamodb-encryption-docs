@@ -1,6 +1,6 @@
 # Amazon DynamoDB Encryption Client for Java<a name="java"></a>
 
-This topic explains how to install and use the Amazon DynamoDB Encryption Client for Java\. For details about programming with the DynamoDB Encryption Client, see the [Java examples](java-examples.md), the [examples](https://github.com/awslabs/aws-dynamodb-encryption-java/tree/master/examples) in the aws\-dynamodb\-encryption\-java repository on GitHub, and the [Javadoc](https://awslabs.github.io/aws-dynamodb-encryption-java/javadoc/) for the DynamoDB Encryption Client\.
+This topic explains how to install and use the Amazon DynamoDB Encryption Client for Java\. For details about programming with the DynamoDB Encryption Client, see the [Java examples](java-examples.md), the [examples](https://github.com/aws/aws-dynamodb-encryption-java/tree/master/examples) in the aws\-dynamodb\-encryption\-java repository on GitHub, and the [Javadoc](https://aws.github.io/aws-dynamodb-encryption-java/javadoc/) for the DynamoDB Encryption Client\.
 
 **Topics**
 + [Prerequisites](#java-prerequisites)
@@ -25,7 +25,7 @@ For more information about installing and configuring the AWS SDK for Java, see 
 You can install the Amazon DynamoDB Encryption Client for Java in the following ways\.
 
 **Manually**  
-To install the Amazon DynamoDB Encryption Client for Java, clone or download the [aws\-dynamodb\-encryption\-java](https://github.com/awslabs/aws-dynamodb-encryption-java/) GitHub repository\.
+To install the Amazon DynamoDB Encryption Client for Java, clone or download the [aws\-dynamodb\-encryption\-java](https://github.com/aws/aws-dynamodb-encryption-java/) GitHub repository\.
 
 **Using Apache Maven**  
 The Amazon DynamoDB Encryption Client for Java is available through [Apache Maven](https://maven.apache.org/) with the following dependency definition\.  
@@ -38,4 +38,4 @@ The Amazon DynamoDB Encryption Client for Java is available through [Apache Mave
 </dependency>
 ```
 
-After you install the SDK, get started by looking at the example code in this guide and the [DynamoDB Encryption Client Javadoc](https://awslabs.github.io/aws-dynamodb-encryption-java/javadoc/) on GitHub\.
+After you install the SDK, get started by looking at the example code in this guide and the [DynamoDB Encryption Client Javadoc](https://aws.github.io/aws-dynamodb-encryption-java/javadoc/) on GitHub\.
