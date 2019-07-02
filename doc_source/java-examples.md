@@ -1,6 +1,6 @@
 # Example Code for the DynamoDB Encryption Client for Java<a name="java-examples"></a>
 
-The following examples show you how to use the DynamoDB Encryption Client for Java to protect DynamoDB table items in your application\. You can find more examples \(and contribute your own\) in the [examples](https://github.com/aws/aws-dynamodb-encryption-python/tree/master/examples) directory of the [aws\-dynamodb\-encryption\-java](https://github.com/aws/aws-dynamodb-encryption-java/) repository on GitHub\.
+The following examples show you how to use the DynamoDB Encryption Client for Java to protect DynamoDB table items in your application\. You can find more examples \(and contribute your own\) in the [examples](https://github.com/aws/aws-dynamodb-encryption-java/tree/master/examples) directory of the [aws\-dynamodb\-encryption\-java](https://github.com/aws/aws-dynamodb-encryption-java/) repository on GitHub\.
 
 **Topics**
 + [Using the DynamoDBEncryptor](#java-example-ddb-encryptor)
@@ -8,7 +8,7 @@ The following examples show you how to use the DynamoDB Encryption Client for Ja
 
 ## Using the DynamoDBEncryptor<a name="java-example-ddb-encryptor"></a>
 
-This example shows how to use the lower\-level [DynamoDBEncryptor](https://aws.github.io/aws-dynamodb-encryption-java/javadoc/com/amazonaws/services/dynamodbv2/datamodeling/encryption/DynamoDBEncryptor.html) with the [Direct KMS Provider](direct-kms-provider.md)\. The Direct KMS Provider generates and protects its cryptographic materials under an AWS Key Management Service \(AWS KMS\) [customer master key](http://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#master_keys) \(CMK\) that you specify\.
+This example shows how to use the lower\-level [DynamoDBEncryptor](https://aws.github.io/aws-dynamodb-encryption-java/javadoc/com/amazonaws/services/dynamodbv2/datamodeling/encryption/DynamoDBEncryptor.html) with the [Direct KMS Provider](direct-kms-provider.md)\. The Direct KMS Provider generates and protects its cryptographic materials under an AWS Key Management Service \(AWS KMS\) [customer master key](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#master_keys) \(CMK\) that you specify\.
 
 You can use any compatible [cryptographic materials provider](concepts.md#concept-material-provider) \(CMP\) with the `DynamoDBEncryptor`, and you can use the Direct KMS Provider with the `DynamoDBMapper` and [AttributeEncryptor](java-using.md#attribute-encryptor)\.
 
@@ -16,7 +16,7 @@ You can use any compatible [cryptographic materials provider](concepts.md#concep
 
 Step 1: Create the Direct KMS Provider  
 Create an instance of the AWS KMS client with the specified region\. Then, use the client instance to create an instance of the Direct KMS Provider with your preferred CMK\.   
-This example uses the Amazon Resource Name \(ARN\) to identify the CMK, but you can use [any valid CMK identifier](http://docs.aws.amazon.com/kms/latest/developerguide/viewing-keys.html#find-cmk-id-arn)\.   
+This example uses the Amazon Resource Name \(ARN\) to identify the CMK, but you can use [any valid CMK identifier](https://docs.aws.amazon.com/kms/latest/developerguide/viewing-keys.html#find-cmk-id-arn)\.   
 
 ```
 final String cmkArn = 'arn:aws:kms:us-west-2:111122223333:key/1234abcd-12ab-34cd-56ef-1234567890ab'
@@ -107,7 +107,7 @@ ddb.putItem(tableName, encrypted_record);
 
 ## Using the DynamoDB Mapper<a name="java-example-dynamodb-mapper"></a>
 
-The following example shows you how to use the DynamoDB mapper helper class with the [Direct KMS Provider](direct-kms-provider.md)\. The Direct KMS Provider generates and protects its cryptographic materials under an AWS Key Management Service \(AWS KMS\) [customer master key](http://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#master_keys) \(CMK\) that you specify\.
+The following example shows you how to use the DynamoDB mapper helper class with the [Direct KMS Provider](direct-kms-provider.md)\. The Direct KMS Provider generates and protects its cryptographic materials under an AWS Key Management Service \(AWS KMS\) [customer master key](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#master_keys) \(CMK\) that you specify\.
 
 You can use any compatible [cryptographic materials provider](concepts.md#concept-material-provider) \(CMP\) with the `DynamoDBMapper`, and you can use the Direct KMS Provider with the lower\-level `DynamoDBEncryptor`\.
 
@@ -115,7 +115,7 @@ You can use any compatible [cryptographic materials provider](concepts.md#concep
 
 Step 1: Create the Direct KMS Provider  
 Create an instance of the AWS KMS client with the specified region\. Then, use the client instance to create an instance of the Direct KMS Provider with your preferred CMK\.   
-This example uses the Amazon Resource Name \(ARN\) to identify the CMK, but you can use [any valid CMK identifier](http://docs.aws.amazon.com/kms/latest/developerguide/viewing-keys.html#find-cmk-id-arn)\.   
+This example uses the Amazon Resource Name \(ARN\) to identify the CMK, but you can use [any valid CMK identifier](https://docs.aws.amazon.com/kms/latest/developerguide/viewing-keys.html#find-cmk-id-arn)\.   
 
 ```
 final String cmkArn = 'arn:aws:kms:us-west-2:111122223333:key/1234abcd-12ab-34cd-56ef-1234567890ab'

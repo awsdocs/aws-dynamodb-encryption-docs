@@ -10,7 +10,7 @@ The following examples show you how to use the DynamoDB Encryption Client for Py
 
 The following example shows you how to use the [Direct KMS Provider](direct-kms-provider.md) with the `EncryptedTable` [client helper class](python-using.md#python-helpers)\. This example uses the same [cryptographic materials provider](concepts.md#concept-material-provider) as the [Use the Item Encryptor](#python-example-item-encryptor) example that follows\. However, it uses the `EncryptedTable` class instead of interacting directly with the lower\-level [item encryptor](concepts.md#item-encryptor)\.
 
-By comparing these examples, you can see the work that the client helper class does for you\. This includes creating the [DynamoDB encryption context](concepts.md#encryption-context) and making sure the primary key attributes are always signed, but never encrypted\. To create the encryption context and discover the primary key, the client helper classes call the DynamoDB [DescribeTable](http://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_DescribeTable.html) operation\. To run this code, you must have permission to call this operation\.
+By comparing these examples, you can see the work that the client helper class does for you\. This includes creating the [DynamoDB encryption context](concepts.md#encryption-context) and making sure the primary key attributes are always signed, but never encrypted\. To create the encryption context and discover the primary key, the client helper classes call the DynamoDB [DescribeTable](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_DescribeTable.html) operation\. To run this code, you must have permission to call this operation\.
 
 **See the complete code sample**: [aws\_kms\_encrypted\_table\.py](https://github.com/aws/aws-dynamodb-encryption-python/blob/master/examples/src/aws_kms_encrypted_table.py)
 
@@ -24,7 +24,7 @@ table = boto3.resource('dynamodb').Table(table_name)
 
 Step 2: Create a cryptographic materials provider  
 Create an instance of the [cryptographic materials provider](crypto-materials-providers.md) \(CMP\) that you selected\.  
-This example uses the [Direct KMS Provider](direct-kms-provider.md), but you can use any compatible CMP\. To create a Direct KMS Provider, specify a [customer master key](http://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#master_keys) \(CMK\)\. This example uses the Amazon Resource Name \(ARN\) of the CMK, but you can use any valid CMK identifier\.  
+This example uses the [Direct KMS Provider](direct-kms-provider.md), but you can use any compatible CMP\. To create a Direct KMS Provider, specify a [customer master key](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#master_keys) \(CMK\)\. This example uses the Amazon Resource Name \(ARN\) of the CMK, but you can use any valid CMK identifier\.  
 
 ```
 aws_cmk_id='arn:aws:kms:us-west-2:111122223333:key/1234abcd-12ab-34cd-56ef-1234567890ab'
@@ -95,7 +95,7 @@ table = boto3.resource('dynamodb').Table(table_name)
 
 Step 2: Create a cryptographic materials provider  
 Create an instance of the [cryptographic materials provider](crypto-materials-providers.md) \(CMP\) that you selected\.  
-This example uses the [Direct KMS Provider](direct-kms-provider.md), but you can use any compatible CMP\. To create a Direct KMS Provider, specify a [customer master key](http://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#master_keys) \(CMK\)\. This example uses the Amazon Resource Name \(ARN\) of the CMK, but you can use any valid CMK identifier\.  
+This example uses the [Direct KMS Provider](direct-kms-provider.md), but you can use any compatible CMP\. To create a Direct KMS Provider, specify a [customer master key](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#master_keys) \(CMK\)\. This example uses the Amazon Resource Name \(ARN\) of the CMK, but you can use any valid CMK identifier\.  
 
 ```
 aws_cmk_id='arn:aws:kms:us-west-2:111122223333:key/1234abcd-12ab-34cd-56ef-1234567890ab'
@@ -104,7 +104,7 @@ aws_kms_cmp = AwsKmsCryptographicMaterialsProvider(key_id=aws_cmk_id)
 
 Step 3: Use the TableInfo helper class  
 To get information about the table from DynamoDB, create an instance of the [TableInfo](python-using.md#python-helpers) helper class\. When you work directly with the item encryptor, you need to create a `TableInfo` instance and call its methods\. The [client helper classes](python-using.md#python-helpers) do this for you\.  
-The `refresh_indexed_attributes` method of `TableInfo` uses the [DescribeTable](http://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_DescribeTable.html) DynamoDB operation to get real\-time, accurate information about the table\. This includes its primary key and its local and global secondary indexes\. The caller needs to have permission to call `DescribeTable`\.  
+The `refresh_indexed_attributes` method of `TableInfo` uses the [DescribeTable](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_DescribeTable.html) DynamoDB operation to get real\-time, accurate information about the table\. This includes its primary key and its local and global secondary indexes\. The caller needs to have permission to call `DescribeTable`\.  
 
 ```
 table_info = TableInfo(name=table_name)

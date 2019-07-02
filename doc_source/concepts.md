@@ -6,7 +6,7 @@ To learn how the components of the DynamoDB Encryption Client interact, see [How
 
 **Topics**
 + [Cryptographic Materials Provider \(CMP\)](#concept-material-provider)
-+ [Item Encryptor](#item-encryptor)
++ [Item Encryptors](#item-encryptor)
 + [Attribute Actions](#attribute-actions)
 + [Material Description](#material-description)
 + [DynamoDB Encryption Context](#encryption-context)
@@ -22,7 +22,7 @@ The CMP interacts with the item encryptor\. The item encryptor requests encrypti
 
 You specify the CMP when you configure the client\. You can create a compatible custom CMP, or use one of the many CMPs in the library\. Most CMPs are available for multiple programming languages\. 
 
-## Item Encryptor<a name="item-encryptor"></a>
+## Item Encryptors<a name="item-encryptor"></a>
 
 The *item encryptor* is a lower\-level component that performs cryptographic operations for the DynamoDB Encryption Client\. It requests cryptographic materials from a [cryptographic materials provider](#concept-material-provider) \(CMP\), then uses the materials that the CMP returns to encrypt and sign, or verify and decrypt, your table item\.
 
@@ -42,7 +42,7 @@ Use **Encrypt and sign** for all attributes that can store sensitive data\. For 
 **Warning**  
 Do not encrypt the primary key attributes\. They must remain in plaintext so DynamoDB can find the item without running a full table scan\.
 
-If the [DynamoDB encryption context](#encryption-context) identifies your primary key attributes, the client will throw an error if you try to encrypt them
+If the [DynamoDB encryption context](#encryption-context) identifies your primary key attributes, the client will throw an error if you try to encrypt them\.
 
 The technique that you use to specify the attribute actions is different for each programming language\. It might also be specific to helper classes that you use\.
 
@@ -70,6 +70,8 @@ The client saves the actual material description in the *material description at
 
 The *DynamoDB encryption context* supplies information about the table and item to the [cryptographic materials provider](#concept-material-provider) \(CMP\)\. In advanced implementations, the DynamoDB encryption context can include a [requested material description](#material-description)\.
 
+When you encrypt table items, the DynamoDB encryption context is cryptographically bound to the encrypted attribute values\. When you decrypt, if the DynamoDB encryption context is not an exact, case\-sensitive match for the DynamoDB encryption context that was used to encrypt, the decrypt operation fails\. If you interact with the [item encryptor](#item-encryptor) directly, you must provide a DynamoDB encryption context when you call an encrypt or decrypt method\. Most helpers create the DynamoDB encryption context for you\.
+
 **Note**  
 The *DynamoDB encryption context* in the DynamoDB Encryption Client is not related to the *encryption context* in AWS Key Management Service \(AWS KMS\) and the AWS Encryption SDK\.
 
@@ -79,8 +81,6 @@ The DynamoDB encryption context can include the following fields\. All fields an
 + Sort key name
 + Attribute name\-value pairs
 + [Requested material description](#material-description)
-
-If you interact with the [item encryptor](#item-encryptor) directly, you need to provide a DynamoDB encryption context when you configure your client\. Most helpers create the DynamoDB encryption context for you\.
 
 ## Provider Store<a name="provider-store"></a>
 
