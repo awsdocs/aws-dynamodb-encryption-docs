@@ -33,9 +33,9 @@ Encryption Client or implement it in another language.
 ## Where is the code?
 We are developing the DynamoDB Encryption Client libraries in the following open source projects on GitHub. 
 
-* Java - [aws-dynamodb-encryption-java](https://github.com/awslabs/aws-dynamodb-encryption-java)
+* Java - [aws-dynamodb-encryption-java](https://github.com/aws/aws-dynamodb-encryption-java)
 * Python -
-[aws-dynamodb-encryption-python](https://github.com/awslabs/aws-dynamodb-encryption-python)
+[aws-dynamodb-encryption-python](https://github.com/aws/aws-dynamodb-encryption-python)
 
 ## Who is the audience?
 Any developer who needs to protect sensitive DynamoDB data at its source. The developers who use this library
