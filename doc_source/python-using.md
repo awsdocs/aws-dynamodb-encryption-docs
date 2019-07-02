@@ -23,7 +23,7 @@ The client helper classes include:
 + [EncryptedResource](https://aws-dynamodb-encryption-python.readthedocs.io/en/latest/lib/encrypted/resource.html) for applications that use the [Service Resource](http://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/dynamodb.html#service-resource) class in DynamoDB for batch processing\.
 + [EncryptedClient](https://aws-dynamodb-encryption-python.readthedocs.io/en/latest/lib/encrypted/client.html) for applications that use the [lower\-level client](http://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/dynamodb.html#client) in DynamoDB\.
 
-To use the client helper classes, the caller must have permission to call the DynamoDB [DescribeTable](http://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_DescribeTable.html) operation on the target table\.
+To use the client helper classes, the caller must have permission to call the DynamoDB [DescribeTable](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_DescribeTable.html) operation on the target table\.
 
 ## TableInfo Class<a name="table-info"></a>
 
@@ -31,9 +31,9 @@ The [TableInfo](https://aws-dynamodb-encryption-python.readthedocs.io/en/latest/
 
 If you use a [client helper class](#python-helpers), it creates and uses a `TableInfo` object for you\. Otherwise, you can create one explicitly\. For an example, see [Use the Item Encryptor](python-examples.md#python-example-item-encryptor)\.
 
-When you call the `refresh_indexed_attributes` method on a `TableInfo` object, it populates the property values of the object by calling the DynamoDB [DescribeTable](http://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_DescribeTable.html) operation\. Querying the table is much more reliable than hard\-coding index names\. The `TableInfo` class also includes an `encryption_context_values` property that provides the required values for the [DynamoDB encryption context](concepts.md#encryption-context)\. 
+When you call the `refresh_indexed_attributes` method on a `TableInfo` object, it populates the property values of the object by calling the DynamoDB [DescribeTable](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_DescribeTable.html) operation\. Querying the table is much more reliable than hard\-coding index names\. The `TableInfo` class also includes an `encryption_context_values` property that provides the required values for the [DynamoDB encryption context](concepts.md#encryption-context)\. 
 
-To use the `refresh_indexed_attributes` method, the caller must have permission to call the DynamoDB [DescribeTable](http://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_DescribeTable.html) operation on the target table\.
+To use the `refresh_indexed_attributes` method, the caller must have permission to call the DynamoDB [DescribeTable](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_DescribeTable.html) operation on the target table\.
 
 ## Attribute Actions in Python<a name="python-attribute-actions"></a>
 

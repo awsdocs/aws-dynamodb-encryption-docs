@@ -6,6 +6,6 @@ The following table describes significant changes to this documentation\. In add
 
 | Change | Description | Date | 
 | --- |--- |--- |
-| [New example](http://docs.aws.amazon.com/dynamodb-encryption-client/latest/devguide/java-examples.html#java-example-dynamodb-mapper) | Added example of using the DynamoDBMapper in Java\. | September 6, 2018 | 
-| [Python support](http://docs.aws.amazon.com/dynamodb-encryption-client/latest/devguide/python.html) | Added support for Python, in addition to Java\. | May 2, 2018 | 
-| [Initial release](http://docs.aws.amazon.com/dynamodb-encryption-client/latest/devguide/) | Initial release of this documentation\. | May 2, 2018 | 
+| [New example](https://docs.aws.amazon.com/dynamodb-encryption-client/latest/devguide/java-examples.html#java-example-dynamodb-mapper) | Added example of using the DynamoDBMapper in Java\. | September 6, 2018 | 
+| [Python support](https://docs.aws.amazon.com/dynamodb-encryption-client/latest/devguide/python.html) | Added support for Python, in addition to Java\. | May 2, 2018 | 
+| [Initial release](https://docs.aws.amazon.com/dynamodb-encryption-client/latest/devguide/) | Initial release of this documentation\. | May 2, 2018 | 

@@ -1,13 +1,13 @@
 # Direct KMS Materials Provider<a name="direct-kms-provider"></a>
 
-The Direct KMS Materials Provider \(Direct KMS Provider\) protects your table items under an [AWS Key Management Service](http://docs.aws.amazon.com/kms/latest/developerguide/) \(AWS KMS\) [customer master key](http://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#master_keys) \(CMK\) that never leaves AWS KMS unencrypted\. This [cryptographic materials provider](concepts.md#concept-material-provider) returns a unique encryption key and signing key for every table item\. To do so, it calls AWS KMS every time you encrypt or decrypt an item\.
+The Direct KMS Materials Provider \(Direct KMS Provider\) protects your table items under an [AWS Key Management Service](https://docs.aws.amazon.com/kms/latest/developerguide/) \(AWS KMS\) [customer master key](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#master_keys) \(CMK\) that never leaves AWS KMS unencrypted\. This [cryptographic materials provider](concepts.md#concept-material-provider) returns a unique encryption key and signing key for every table item\. To do so, it calls AWS KMS every time you encrypt or decrypt an item\.
 
-If you're processing DynamoDB items at a high frequency and large scale, you might exceed the AWS KMS [requests\-per\-second limit](http://docs.aws.amazon.com/kms/latest/developerguide/limits.html#requests-per-second), causing processing delays\. If you need to exceed the request\-per\-second limit and avoid delays, create a case in the [AWS Support Center](https://console.aws.amazon.com/support/home)\. 
+If you're processing DynamoDB items at a high frequency and large scale, you might exceed the AWS KMS [requests\-per\-second limit](https://docs.aws.amazon.com/kms/latest/developerguide/limits.html#requests-per-second), causing processing delays\. If you need to exceed the request\-per\-second limit and avoid delays, create a case in the [AWS Support Center](https://console.aws.amazon.com/support/home)\. 
 
-To use the Direct KMS Provider, the caller must have [an AWS account](https://aws.amazon.com/premiumsupport/knowledge-center/create-and-activate-aws-account/), at least one AWS KMS CMK, and permission to call the [GenerateDataKey](http://docs.aws.amazon.com/kms/latest/APIReference/API_GenerateDataKey.html) and [Decrypt](http://docs.aws.amazon.com/kms/latest/APIReference/API_Decrypt.html) operations on the CMK\.
+To use the Direct KMS Provider, the caller must have [an AWS account](https://aws.amazon.com/premiumsupport/knowledge-center/create-and-activate-aws-account/), at least one AWS KMS CMK, and permission to call the [GenerateDataKey](https://docs.aws.amazon.com/kms/latest/APIReference/API_GenerateDataKey.html) and [Decrypt](https://docs.aws.amazon.com/kms/latest/APIReference/API_Decrypt.html) operations on the CMK\.
 
 **Note**  
-When you use the Direct KMS Provider, the names and values of your primary key attributes appear in plaintext in the [AWS KMS encryption context](http://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#encrypt_context) and AWS CloudTrail logs of related AWS KMS operations\. However, the DynamoDB Encryption Client never exposes the plaintext of any encrypted attribute values\.
+When you use the Direct KMS Provider, the names and values of your primary key attributes appear in plaintext in the [AWS KMS encryption context](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#encrypt_context) and AWS CloudTrail logs of related AWS KMS operations\. However, the DynamoDB Encryption Client never exposes the plaintext of any encrypted attribute values\.
 
 The Direct KMS Provider is one of several [cryptographic materials provider](concepts.md#concept-material-provider) \(CMPs\) that the DynamoDB Encryption Client supports\. For information about the other CMPs, see [How to Choose a Cryptographic Materials Provider](crypto-materials-providers.md)\.
 
@@ -21,9 +21,9 @@ The Direct KMS Provider is one of several [cryptographic materials provider](con
 
 ## How to Use It<a name="provider-kms-how-to-use"></a>
 
-To create a Direct KMS Provider, specify an AWS KMS [customer master key](http://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#master_keys) \(CMK\) in your account\.
+To create a Direct KMS Provider, specify an AWS KMS [customer master key](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#master_keys) \(CMK\) in your account\.
 
-The value of the key ID parameter can be the [ID or Amazon Resource Name \(ARN\)](http://docs.aws.amazon.com/kms/latest/developerguide/viewing-keys.html#find-cmk-id-arn) of the CMK, or an alias or alias ARN\. Any values that are not specified in the ID, such as the region, must be available in the [AWS named profile](http://docs.aws.amazon.com/cli/latest/userguide/cli-multiple-profiles.html)\. The CMK ARN provides all of the values that AWS KMS needs\.
+The value of the key ID parameter can be the [ID or Amazon Resource Name \(ARN\)](https://docs.aws.amazon.com/kms/latest/developerguide/viewing-keys.html#find-cmk-id-arn) of the CMK, or an alias or alias ARN\. Any values that are not specified in the ID, such as the region, must be available in the [AWS named profile](https://docs.aws.amazon.com/cli/latest/userguide/cli-multiple-profiles.html)\. The CMK ARN provides all of the values that AWS KMS needs\.
 
 ------
 #### [ Java ]
@@ -53,7 +53,7 @@ aws_kms_cmp = AwsKmsCryptographicMaterialsProvider(key_id=aws_cmk_id)
 The Direct KMS Provider returns encryption and signing keys that are protected by an AWS KMS CMK that you specify, as shown in the following diagram\.
 
 ![\[The input, processing, and output of the Direct KMS Provider in the DynamoDB Encryption Client\]](http://docs.aws.amazon.com/dynamodb-encryption-client/latest/devguide/images/directKMS.png)
-+ To generate encryption materials, the Direct KMS Provider asks AWS KMS to [generate a unique data key](http://docs.aws.amazon.com/kms/latest/APIReference/API_GenerateDataKey.html) for each item using a [customer master key](http://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#master_keys) \(CMK\) that you specify\. It derives encryption and signing keys for the item from the plaintext copy of the [data key](http://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#data-keys), and then returns the encryption and signing keys, along with the encrypted data key, which is stored in the [material description attribute](concepts.md#material-description) of the item\. 
++ To generate encryption materials, the Direct KMS Provider asks AWS KMS to [generate a unique data key](https://docs.aws.amazon.com/kms/latest/APIReference/API_GenerateDataKey.html) for each item using a [customer master key](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#master_keys) \(CMK\) that you specify\. It derives encryption and signing keys for the item from the plaintext copy of the [data key](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#data-keys), and then returns the encryption and signing keys, along with the encrypted data key, which is stored in the [material description attribute](concepts.md#material-description) of the item\. 
 
   The item encryptor uses the encryption and signing keys and removes them from memory as soon as possible\. Only the encrypted copy of the data key from which they were derived is saved in the encrypted item\.
 + To generate decryption materials, the Direct KMS Provider asks AWS KMS to decrypt the encrypted data key\. Then, it derives verification and signing keys from the plaintext data key, and returns them to the item encryptor\.
@@ -85,9 +85,9 @@ This section describes in detail the inputs, outputs, and processing of the Dire
 
 **Processing**
 
-1. The Direct KMS provider sends AWS KMS a request to use the specified CMK to [generate a unique data key](http://docs.aws.amazon.com/kms/latest/APIReference/APIReference/API_GenerateDataKey.html) for the item\. The operation returns a plaintext key and a copy that is encrypted under the CMK\. This is known as the *initial key material*\.
+1. The Direct KMS provider sends AWS KMS a request to use the specified CMK to [generate a unique data key](https://docs.aws.amazon.com/kms/latest/APIReference/API_GenerateDataKey.html) for the item\. The operation returns a plaintext key and a copy that is encrypted under the CMK\. This is known as the *initial key material*\.
 
-   The request includes the following values in plaintext in [AWS KMS encryption context](http://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#encrypt_context)\. These non\-secret values are cryptographically bound to the encrypted object, so the same encryption context is required on decrypt\. You can use these values to identify the call to AWS KMS in [AWS CloudTrail logs](http://docs.aws.amazon.com/kms/latest/developerguide/monitoring-overview.html)\.
+   The request includes the following values in plaintext in [AWS KMS encryption context](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#encrypt_context)\. These non\-secret values are cryptographically bound to the encrypted object, so the same encryption context is required on decrypt\. You can use these values to identify the call to AWS KMS in [AWS CloudTrail logs](https://docs.aws.amazon.com/kms/latest/developerguide/monitoring-overview.html)\.
    + amzn\-ddb\-env\-alg – Encryption algorithm, by default AES/256
    + amzn\-ddb\-sig\-alg – Signing algorithm, by default HmacSHA256/256
    + \(Optional\) aws\-kms\-table – *table name*
@@ -109,7 +109,7 @@ This section describes in detail the inputs, outputs, and processing of the Dire
 **Input ** \(from the application\)
 + The key ID of an AWS KMS CMK\. 
 
-  The value of the key ID can be the ID or Amazon Resource Name \(ARN\) of the CMK, or an alias or alias ARN, provided that any values that are omitted, such as the region, are available in the [AWS named profile](http://docs.aws.amazon.com/cli/latest/userguide/cli-multiple-profiles.html)\. The CMK ARN provides all of the values that AWS KMS needs\.
+  The value of the key ID can be the ID or Amazon Resource Name \(ARN\) of the CMK, or an alias or alias ARN, provided that any values that are omitted, such as the region, are available in the [AWS named profile](https://docs.aws.amazon.com/cli/latest/userguide/cli-multiple-profiles.html)\. The CMK ARN provides all of the values that AWS KMS needs\.
 
 **Input** \(from the item encryptor\)
 + A copy of the [DynamoDB encryption context](concepts.md#encryption-context) that contains the contents of the material description attribute\.
@@ -122,9 +122,9 @@ This section describes in detail the inputs, outputs, and processing of the Dire
 
 1. The Direct KMS provider gets the encrypted data key from the material description attribute in the encrypted item\. 
 
-1. It asks AWS KMS to use the specified CMK to [decrypt](http://docs.aws.amazon.com/kms/latest/APIReference/APIReference/API_GenerateDataKey.html) the encrypted data key\. The operation returns a plaintext key\.
+1. It asks AWS KMS to use the specified CMK to [decrypt](https://docs.aws.amazon.com/kms/latest/APIReference/API_GenerateDataKey.html) the encrypted data key\. The operation returns a plaintext key\.
 
-   This request must use the same [AWS KMS encryption context](http://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#encrypt_context) that was used to generate and encrypt the data key\.
+   This request must use the same [AWS KMS encryption context](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#encrypt_context) that was used to generate and encrypt the data key\.
    + aws\-kms\-table – *table name*
    + *partition key name* – *partition key value* \(binary values are Base64\-encoded\)
    + \(Optional\) *sort key name* – *sort key value* \(binary values are Base64\-encoded\)

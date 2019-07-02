@@ -1,6 +1,6 @@
 # Which Fields Are Encrypted and Signed?<a name="encrypted-and-signed"></a>
 
-In DynamoDB, a [table](https://%26url-ddb-dev;HowItWorks.CoreComponents.html#HowItWorks.CoreComponents.TablesItemsAttributes) is a collection of items\. Each *item* is a collection of *attributes*\. Each attribute has a name and a value\.
+In DynamoDB, a [table](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.CoreComponents.html#HowItWorks.CoreComponents.TablesItemsAttributes) is a collection of items\. Each *item* is a collection of *attributes*\. Each attribute has a name and a value\.
 
 The DynamoDB Encryption Client encrypts the values of attributes\. Then, it calculates a signature over the attributes\. You can specify which attribute values to encrypt and which to include in the signature\. 
 

@@ -1,7 +1,7 @@
 # Amazon DynamoDB Encryption Client Developer Guide
 
 -----
-*****Copyright &copy; 2018 Amazon Web Services, Inc. and/or its affiliates. All rights reserved.*****
+*****Copyright &copy; 2019 Amazon Web Services, Inc. and/or its affiliates. All rights reserved.*****
 
 -----
 Amazon's trademarks and trade dress may not be used in 
@@ -17,7 +17,7 @@ Amazon's trademarks and trade dress may not be used in
 + [What Is the Amazon DynamoDB Encryption Client?](what-is-ddb-encrypt.md)
    + [Which Fields Are Encrypted and Signed?](encrypted-and-signed.md)
    + [How the DynamoDB Encryption Client Works](how-it-works.md)
-   + [Client-Side or Server-Side Encryption?](client-server-side.md)
+   + [Client-Side and Server-Side Encryption](client-server-side.md)
    + [Amazon DynamoDB Encryption Client Concepts](concepts.md)
 + [How to Choose a Cryptographic Materials Provider](crypto-materials-providers.md)
    + [Direct KMS Materials Provider](direct-kms-provider.md)
