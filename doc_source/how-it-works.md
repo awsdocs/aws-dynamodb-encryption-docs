@@ -34,6 +34,6 @@ To verify and decrypt an item, the DynamoDB Encryption Client needs the same com
 + **Decryption materials, including verification and decryption keys**, from the [cryptographic materials provider](concepts.md#concept-material-provider) \(CMP\) that you select and configure\.
 
   The encrypted item doesn't include any record of the CMP that was used to encrypt it\. You must supply the same CMP, a CMP with the same configuration, or a CMP that is designed to decrypt items\.
-+ **Information about how the item was encrypted and signed the item**, including the encryption and signing algorithms\. The client gets these from the [material description attribute](concepts.md#material-description) in the item\.
++ **Information about how the item was encrypted and signed**, including the encryption and signing algorithms\. The client gets these from the [material description attribute](concepts.md#material-description) in the item\.
 
 The [item encryptor](concepts.md#item-encryptor) uses all of these elements to verify and decrypt the item\. It also removes the material description and signature attributes\. The result is a plaintext DynamoDB item\.
