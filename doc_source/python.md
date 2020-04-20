@@ -6,7 +6,7 @@ This topic explains how to install and use the DynamoDB Encryption Client for Py
 + [Prerequisites](#python-prerequisites)
 + [Installation](#python-installation)
 + [Using the DynamoDB Encryption Client for Python](python-using.md)
-+ [Python Examples](python-examples.md)
++ [Python examples](python-examples.md)
 
 ## Prerequisites<a name="python-prerequisites"></a>
 

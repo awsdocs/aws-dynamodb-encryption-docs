@@ -1,4 +1,4 @@
-# How to Choose a Cryptographic Materials Provider<a name="crypto-materials-providers"></a>
+# How to choose a cryptographic materials provider<a name="crypto-materials-providers"></a>
 
 One of the most important decisions you make when using the DynamoDB Encryption Client is selecting a [cryptographic materials provider](concepts.md#concept-material-provider) \(CMP\)\. The CMP assembles and returns cryptographic materials to the item encryptor\. It also determines how encryption and signing keys are generated, whether new key materials are generated for each item or are reused, and the encryption and signing algorithms that are used\. 
 

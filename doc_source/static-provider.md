@@ -1,6 +1,6 @@
 # Static Materials Provider<a name="static-provider"></a>
 
-The Static Materials Provider \(Static CMP\) is a very simple [cryptographic materials provider](concepts.md#concept-material-provider) \(CMP\) that is intended for testing, proof\-of\-concept demonstrations, and legacy compatibility\.
+The *Static Materials Provider* \(Static CMP\) is a very simple [cryptographic materials provider](concepts.md#concept-material-provider) \(CMP\) that is intended for testing, proof\-of\-concept demonstrations, and legacy compatibility\.
 
 To use the Static CMP to encrypt a table item, you supply an [Advanced Encryption Standard](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard) \(AES\) symmetric encryption key and a signing key or key pair\. You must supply the same keys to decrypt the encrypted item\. The Static CMP does not perform any cryptographic operations\. Instead, it passes the encryption keys that you supply to the item encryptor unchanged\. The item encryptor encrypts the items directly under the encryption key\. Then, it uses the signing key directly to sign them\. 
 
@@ -9,16 +9,16 @@ Because the Static CMP does not generate any unique cryptographic materials, all
 **Note**  
 The [Asymmetric Static Provider](https://aws.github.io/aws-dynamodb-encryption-java/javadoc/com/amazonaws/services/dynamodbv2/datamodeling/encryption/providers/AsymmetricStaticProvider.html) in the Java library is not a static provider\. It just supplies alternate constructors for the [Wrapped CMP](wrapped-provider.md)\. It's safe for production use, but you should use the Wrapped CMP directly whenever possible\.
 
-The Static CMP is one of several [cryptographic materials provider](concepts.md#concept-material-provider) \(CMPs\) that the DynamoDB Encryption Client supports\. For information about the other CMPs, see [How to Choose a Cryptographic Materials Provider](crypto-materials-providers.md)\.
+The Static CMP is one of several [cryptographic materials provider](concepts.md#concept-material-provider) \(CMPs\) that the DynamoDB Encryption Client supports\. For information about the other CMPs, see [How to choose a cryptographic materials provider](crypto-materials-providers.md)\.
 
 **For example code, see:**
 + Java: [SymmetricEncryptedItem](https://github.com/aws/aws-dynamodb-encryption-java/blob/master/examples/com/amazonaws/examples/SymmetricEncryptedItem.java)
 
 **Topics**
-+ [How to Use It](#static-cmp-how-to-use)
-+ [How It Works](#static-cmp-how-it-works)
++ [How to use it](#static-cmp-how-to-use)
++ [How it works](#static-cmp-how-it-works)
 
-## How to Use It<a name="static-cmp-how-to-use"></a>
+## How to use it<a name="static-cmp-how-to-use"></a>
 
 To create a static provider, supply an encryption key or key pair and a signing key or key pair\. You need to provide key material to encrypt and decrypt table items\.
 
@@ -60,17 +60,17 @@ static_cmp = StaticCryptographicMaterialsProvider(
 
 ------
 
-## How It Works<a name="static-cmp-how-it-works"></a>
+## How it works<a name="static-cmp-how-it-works"></a>
 
 The Static Provider passes the encryption and signing keys that you supply to the item encryptor, where they are used directly to encrypt and sign your table items\. Unless you supply different keys for each item, the same keys are used for every item\.
 
 ![\[The input, processing, and output of the Static Materials Provider in the DynamoDB Encryption Client\]](http://docs.aws.amazon.com/dynamodb-encryption-client/latest/devguide/images/staticCMP.png)
 
 **Topics**
-+ [Get Encryption Materials](#static-cmp-get-encryption-materials)
-+ [Get Decryption Materials](#static-cmp-get-decryption-materials)
++ [Get encryption materials](#static-cmp-get-encryption-materials)
++ [Get decryption materials](#static-cmp-get-decryption-materials)
 
-### Get Encryption Materials<a name="static-cmp-get-encryption-materials"></a>
+### Get encryption materials<a name="static-cmp-get-encryption-materials"></a>
 
 This section describes in detail the inputs, outputs, and processing of the Static Materials Provider \(Static CMP\) when it receives a request for encryption materials\.
 
@@ -86,7 +86,7 @@ This section describes in detail the inputs, outputs, and processing of the Stat
 + The signing key passed as input\.
 + Actual material description: The [requested material description](concepts.md#material-description), if any, unchanged\.
 
-### Get Decryption Materials<a name="static-cmp-get-decryption-materials"></a>
+### Get decryption materials<a name="static-cmp-get-decryption-materials"></a>
 
 This section describes in detail the inputs, outputs, and processing of the Static Materials Provider \(Static CMP\) when it receives a request for decryption materials\.
 

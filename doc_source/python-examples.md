@@ -1,14 +1,14 @@
-# Example Code for the DynamoDB Encryption Client for Python<a name="python-examples"></a>
+# Example code for the DynamoDB Encryption Client for Python<a name="python-examples"></a>
 
 The following examples show you how to use the DynamoDB Encryption Client for Python to protect DynamoDB data in your application\. You can find more examples \(and contribute your own\) in the [examples](https://github.com/aws/aws-dynamodb-encryption-python/tree/master/examples) directory of the [aws\-dynamodb\-encryption\-python](https://github.com/aws/aws-dynamodb-encryption-python/) repository on GitHub\.
 
 **Topics**
-+ [Use the EncryptedTable Client Helper Class](#python-example-table)
-+ [Use the Item Encryptor](#python-example-item-encryptor)
++ [Use the EncryptedTable client helper class](#python-example-table)
++ [Use the item encryptor](#python-example-item-encryptor)
 
-## Use the EncryptedTable Client Helper Class<a name="python-example-table"></a>
+## Use the EncryptedTable client helper class<a name="python-example-table"></a>
 
-The following example shows you how to use the [Direct KMS Provider](direct-kms-provider.md) with the `EncryptedTable` [client helper class](python-using.md#python-helpers)\. This example uses the same [cryptographic materials provider](concepts.md#concept-material-provider) as the [Use the Item Encryptor](#python-example-item-encryptor) example that follows\. However, it uses the `EncryptedTable` class instead of interacting directly with the lower\-level [item encryptor](concepts.md#item-encryptor)\.
+The following example shows you how to use the [Direct KMS Provider](direct-kms-provider.md) with the `EncryptedTable` [client helper class](python-using.md#python-helpers)\. This example uses the same [cryptographic materials provider](concepts.md#concept-material-provider) as the [Use the item encryptor](#python-example-item-encryptor) example that follows\. However, it uses the `EncryptedTable` class instead of interacting directly with the lower\-level [item encryptor](concepts.md#item-encryptor)\.
 
 By comparing these examples, you can see the work that the client helper class does for you\. This includes creating the [DynamoDB encryption context](concepts.md#encryption-context) and making sure the primary key attributes are always signed, but never encrypted\. To create the encryption context and discover the primary key, the client helper classes call the DynamoDB [DescribeTable](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_DescribeTable.html) operation\. To run this code, you must have permission to call this operation\.
 
@@ -75,7 +75,7 @@ encrypted_table.put_item(Item=plaintext_item)
 
 To get the item from the DynamoDB table in its encrypted form, call the `get_item` method on the `table` object\. To get the decrypted item, call the `get_item` method on the `encrypted_table` object\.
 
-## Use the Item Encryptor<a name="python-example-item-encryptor"></a>
+## Use the item encryptor<a name="python-example-item-encryptor"></a>
 
 This example shows you how to interact directly with the [item encryptor](concepts.md#item-encryptor) in the DynamoDB Encryption Client when encrypting table items, instead of using the [client helper classes](python-using.md#python-helpers) that interact with the item encryptor for you\. 
 

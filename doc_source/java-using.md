@@ -5,18 +5,18 @@ This topic explains some of the features of the DynamoDB Encryption Client in Ja
 For details about programming with the DynamoDB Encryption Client, see the [Java examples](java-examples.md), the [examples](https://github.com/aws/aws-dynamodb-encryption-java/tree/master/examples) in the `aws-dynamodb-encryption-java repository` on GitHub, and the [Javadoc](https://aws.github.io/aws-dynamodb-encryption-java/javadoc/) for the DynamoDB Encryption Client\.
 
 **Topics**
-+ [Item Encryptors](#attribute-encryptor)
-+ [Configuring Save Behavior](#save-behavior)
-+ [Attribute Actions in Java](#attribute-actions-java)
-+ [Overriding Table Names](#override-table-name)
++ [Item encryptors](#attribute-encryptor)
++ [Configuring save behavior](#save-behavior)
++ [Attribute actions in Java](#attribute-actions-java)
++ [Overriding table names](#override-table-name)
 
-## Item Encryptors: AttributeEncryptor and DynamoDBEncryptor<a name="attribute-encryptor"></a>
+## Item encryptors: AttributeEncryptor and DynamoDBEncryptor<a name="attribute-encryptor"></a>
 
 The DynamoDB Encryption Client in Java has two [item encryptors](concepts.md#item-encryptor): the lower\-level [DynamoDBEncryptor](https://aws.github.io/aws-dynamodb-encryption-java/javadoc/com/amazonaws/services/dynamodbv2/datamodeling/encryption/DynamoDBEncryptor.html) and the [AttributeEncryptor](#attribute-encryptor)\. 
 
 The `AttributeEncryptor` is a helper class that helps you use the [DynamoDBMapper](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBMapper.Methods.html) in the AWS SDK for Java with the `DynamoDB Encryptor` in the DynamoDB Encryption Client\. When you use the `AttributeEncryptor` with the `DynamoDBMapper`, it transparently encrypts and signs your items when you save them\. It also transparently verifies and decrypts your items when you load them\.
 
-## Configuring Save Behavior<a name="save-behavior"></a>
+## Configuring save behavior<a name="save-behavior"></a>
 
 You can use the `AttributeEncryptor` and `DynamoDBMapper` to add or edit table items with attributes that are signed only or encrypted and signed\. For these tasks, we recommend that you configure it to use the `PUT` save behavior, as shown in the following example\. Otherwise, you might not be able to decrypt your data\. 
 
@@ -29,13 +29,13 @@ If you use the default save behavior, which updates the attributes in the table 
 
 You can also use the `CLOBBER` save behavior\. This behavior is identical to the `PUT` save behavior except that it disables optimistic locking and overwrites the item in the table\.
 
-To see this code used in an example, see [Using the DynamoDB Mapper](java-examples.md#java-example-dynamodb-mapper) and the [AwsKmsEncryptedObject\.java](https://github.com/aws/aws-dynamodb-encryption-java/blob/master/examples/com/amazonaws/examples/AwsKmsEncryptedObject.java) example in the `aws-dynamodb-encryption-java` repository in GitHub\.
+To see this code used in an example, see [Using the DynamoDBMapper](java-examples.md#java-example-dynamodb-mapper) and the [AwsKmsEncryptedObject\.java](https://github.com/aws/aws-dynamodb-encryption-java/blob/master/examples/com/amazonaws/examples/AwsKmsEncryptedObject.java) example in the `aws-dynamodb-encryption-java` repository in GitHub\.
 
-## Attribute Actions in Java<a name="attribute-actions-java"></a>
+## Attribute actions in Java<a name="attribute-actions-java"></a>
 
 [Attribute actions](concepts.md#attribute-actions) determine which attribute values are encrypted and signed, which are only signed, and which are ignored\. The method you use to specify attribute actions depends on whether you use the `DynamoDBMapper` and `AttributeEncryptor`, or the lower\-level [DynamoDBEncryptor](https://aws.github.io/aws-dynamodb-encryption-java/javadoc/com/amazonaws/services/dynamodbv2/datamodeling/encryption/DynamoDBEncryptor.html)\.
 
-### Attribute Actions for the DynamoDB Mapper<a name="attribute-action-java-mapper"></a>
+### Attribute actions for the DynamoDBMapper<a name="attribute-action-java-mapper"></a>
 
 When you use the `DynamoDBMapper` and `AttributeEncryptor` helper classes, you use annotations to specify the attribute actions\. The DynamoDB Encryption Client uses the [standard DynamoDB attribute annotations](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBMapper.Annotations.html) that define the attribute type to determine how to protect an attribute\. By default, all attributes are encrypted and signed except for primary keys, which are signed but not encrypted\.
 
@@ -75,7 +75,7 @@ For example, these annotations sign but do not encrypt the `PublicationYear` att
 @DynamoDBAttribute(attributeName="ISBN")
 ```
 
-### Attribute Actions for the DynamoDBEncryptor<a name="attribute-action-default"></a>
+### Attribute actions for the DynamoDBEncryptor<a name="attribute-action-default"></a>
 
 To specify attribute actions when you use the [DynamoDBEncryptor](https://aws.github.io/aws-dynamodb-encryption-java/javadoc/com/amazonaws/services/dynamodbv2/datamodeling/encryption/DynamoDBEncryptor.html) directly, create a `HashMap` object in which the name\-value pairs represent attribute names and the specified actions\. 
 
@@ -123,7 +123,7 @@ Then, when you call the [encryptRecord](https://aws.github.io/aws-dynamodb-encry
 final Map<String, AttributeValue> encrypted_record = encryptor.encryptRecord(record, actions, encryptionContext);
 ```
 
-## Overriding Table Names<a name="override-table-name"></a>
+## Overriding table names<a name="override-table-name"></a>
 
 In the DynamoDB Encryption Client, the name of the DynamoDB table is an element of the [DynamoDB encryption context](concepts.md#encryption-context) that is passed to the encryption and decryption methods\. When you encrypt or sign table items, the DynamoDB encryption context, including the table name, is cryptographically bound to the ciphertext\. If the DynamoDB encryption context that is passed to the decrypt method doesn't match the DynamoDB encryption context that was passed to the encrypt method, the decrypt operation fails\.
 

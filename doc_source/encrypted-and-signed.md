@@ -1,4 +1,4 @@
-# Which Fields Are Encrypted and Signed?<a name="encrypted-and-signed"></a>
+# Which fields are encrypted and signed?<a name="encrypted-and-signed"></a>
 
 In DynamoDB, a [table](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.CoreComponents.html#HowItWorks.CoreComponents.TablesItemsAttributes) is a collection of items\. Each *item* is a collection of *attributes*\. Each attribute has a name and a value\.
 
@@ -9,11 +9,11 @@ Encryption protects the confidentiality of the attribute value\. Signing provide
 In an encrypted item, some data remains in plaintext, including the table name, all attribute names, the attribute values that you don't encrypt, and the names and values of the primary key \(partition key and sort key\) attributes\. Do not store sensitive data in these fields\.
 
 **Topics**
-+ [Encrypting Attribute Values](#encrypt-attribute-values)
-+ [Signing the Item](#sign-the-item)
-+ [An Encrypted and Signed Item](#encrypted-signed-example)
++ [Encrypting attribute values](#encrypt-attribute-values)
++ [Signing the item](#sign-the-item)
++ [An encrypted and signed item](#encrypted-signed-example)
 
-## Encrypting Attribute Values<a name="encrypt-attribute-values"></a>
+## Encrypting attribute values<a name="encrypt-attribute-values"></a>
 
 The DynamoDB Encryption Client encrypts the values \(but not the names\) of the attributes that you specify\. To determine which attribute values are encrypted, use [attribute actions](concepts.md#attribute-actions)\. 
 
@@ -42,7 +42,7 @@ The helpers in each programming language identify the primary key attributes for
 
 The DynamoDB Encryption Client also does not encrypt or sign the [material description attribute](concepts.md#material-description), which stores information that the DynamoDB Encryption Client needs to verify and decrypt the item\. 
 
-## Signing the Item<a name="sign-the-item"></a>
+## Signing the item<a name="sign-the-item"></a>
 
 After encrypting the specified attribute values, the DynamoDB Encryption Client calculates a digital signature over the names and values of attributes that you specify in the [attribute actions](concepts.md#attribute-actions) object\. The client saves the signature in an attribute that it adds to the item\.
 
@@ -54,7 +54,7 @@ Be sure to include the primary key in the signature\. It's the default behavior 
 
 The [material description attribute](concepts.md#material-description) is not encrypted or signed\.
 
-## An Encrypted and Signed Item<a name="encrypted-signed-example"></a>
+## An encrypted and signed item<a name="encrypted-signed-example"></a>
 
 When the DynamoDB Encryption Client encrypts and signs a table item, the result is a standard DynamoDB table item with encrypted attribute values\. 
 

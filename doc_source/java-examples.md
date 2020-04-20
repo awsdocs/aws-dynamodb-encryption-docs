@@ -1,10 +1,10 @@
-# Example Code for the DynamoDB Encryption Client for Java<a name="java-examples"></a>
+# Example code for the DynamoDB Encryption Client for Java<a name="java-examples"></a>
 
 The following examples show you how to use the DynamoDB Encryption Client for Java to protect DynamoDB table items in your application\. You can find more examples \(and contribute your own\) in the [examples](https://github.com/aws/aws-dynamodb-encryption-java/tree/master/examples) directory of the [aws\-dynamodb\-encryption\-java](https://github.com/aws/aws-dynamodb-encryption-java/) repository on GitHub\.
 
 **Topics**
 + [Using the DynamoDBEncryptor](#java-example-ddb-encryptor)
-+ [Using the DynamoDB Mapper](#java-example-dynamodb-mapper)
++ [Using the DynamoDBMapper](#java-example-dynamodb-mapper)
 
 ## Using the DynamoDBEncryptor<a name="java-example-ddb-encryptor"></a>
 
@@ -105,7 +105,7 @@ final AmazonDynamoDB ddb = AmazonDynamoDBClientBuilder.defaultClient();
 ddb.putItem(tableName, encrypted_record);
 ```
 
-## Using the DynamoDB Mapper<a name="java-example-dynamodb-mapper"></a>
+## Using the DynamoDBMapper<a name="java-example-dynamodb-mapper"></a>
 
 The following example shows you how to use the DynamoDB mapper helper class with the [Direct KMS Provider](direct-kms-provider.md)\. The Direct KMS Provider generates and protects its cryptographic materials under an AWS Key Management Service \(AWS KMS\) [customer master key](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#master_keys) \(CMK\) that you specify\.
 
@@ -125,7 +125,7 @@ final AWSKMS kms = AWSKMSClientBuilder.standard().withRegion(region).build();
 final DirectKmsMaterialProvider cmp = new DirectKmsMaterialProvider(kms, cmkArn);
 ```
 
-Step 2: Create the DynamoDB Encryptor and DynamoDB Mapper  
+Step 2: Create the DynamoDB Encryptor and DynamoDBMapper  
 Use the Direct KMS Provider that you created in the previous step to create an instance of the [DynamoDB Encryptor](java-using.md#attribute-encryptor)\. You need to instantiate the lower\-level DynamoDB Encryptor to use the DynamoDB Mapper\.  
 Next, create an instance of your DynamoDB database and a mapper configuration, and use them to create an instance of the DynamoDB Mapper\.   
 When using the `DynamoDBMapper` to add or edit signed \(or encrypted and signed\) items, configure it to [use a save behavior](java-using.md#save-behavior), such as `PUT`, that includes all attributes, as shown in the following example\. Otherwise, you might not be able to decrypt your data\. 

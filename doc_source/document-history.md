@@ -1,4 +1,4 @@
-# Document History for the Amazon DynamoDB Encryption Client Developer Guide<a name="document-history"></a>
+# Document history for the Amazon DynamoDB Encryption Client Developer Guide<a name="document-history"></a>
 
 The following table describes significant changes to this documentation\. In addition to these major changes, we also update the documentation frequently to improve the descriptions and examples, and to address the feedback that you send to us\. To be notified about significant changes, use the link in the upper right corner to subscribe to the RSS feed\.
 

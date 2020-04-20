@@ -1,4 +1,4 @@
-# Troubleshooting Issues in Your DynamoDB Encryption Client Application<a name="troubleshooting"></a>
+# Troubleshooting issues in your DynamoDB Encryption Client application<a name="troubleshooting"></a>
 
 This section describes problems that you might encounter when using the DynamoDB Encryption Client and offers suggestions for resolving them\.
 
@@ -7,10 +7,10 @@ If you have questions about using the DynamoDB Encryption Client, read and post 
 To suggest changes to any page in this guide, choose the feedback link in the lower\-right corner of the page, or the GitHub link in the upper\-right corner of the page\. You can also file an issue in the [aws\-dynamodb\-encryption\-docs](https://github.com/awsdocs/aws-dynamodb-encryption-docs) GitHub repository for this guide\.
 
 **Topics**
-+ [Access Denied](#kms-permissions)
-+ [Signature Verification Fails](#change-data-model)
++ [Access denied](#kms-permissions)
++ [Signature verification fails](#change-data-model)
 
-## Access Denied<a name="kms-permissions"></a>
+## Access denied<a name="kms-permissions"></a>
 
 **Problem**: Your application is denied access to a resource that it needs\.
 
@@ -24,7 +24,7 @@ To run an application that uses the a DynamoDB Encryption Client library, the ca
 + If your application uses a [client helper class](python-using.md#python-helpers) in the DynamoDB Encryption Client for Python, the caller must have permission to call the DynamoDB [DescribeTable](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_DescribeTable.html) operation\.
 + The DynamoDB Encryption Client does not require AWS Key Management Service\(AWS KMS\)\. However, if your application uses a [Direct KMS Materials Provider](direct-kms-provider.md), or it uses a [Most Recent Provider](most-recent-provider.md) with a provider store that uses AWS KMS, the caller must have permission to use the AWS KMS [GenerateDataKey](https://docs.aws.amazon.com/kms/latest/APIReference/API_GenerateDataKey.html) and [Decrypt](https://docs.aws.amazon.com/kms/latest/APIReference/API_Decrypt.html) operations\.
 
-## Signature Verification Fails<a name="change-data-model"></a>
+## Signature verification fails<a name="change-data-model"></a>
 
 **Problem**: An item cannot be decrypted because signature verification fails\. The item also might not be encrypted and signed as you intend\.
 

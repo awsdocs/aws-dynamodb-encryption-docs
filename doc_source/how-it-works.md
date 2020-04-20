@@ -1,8 +1,8 @@
-# How the DynamoDB Encryption Client Works<a name="how-it-works"></a>
+# How the DynamoDB Encryption Client works<a name="how-it-works"></a>
 
 The DynamoDB Encryption Client is designed specifically to protect the data that you store in DynamoDB\. The libraries include secure implementations that you can extend or use unchanged\. And, most elements are represented by abstract elements so you can create and use compatible custom components\.
 
-**Encrypting and Signing Table Items**
+**Encrypting and signing table items**
 
 At the core of the DynamoDB Encryption Client is an *item encryptor* that encrypts, signs, verifies, and decrypts table items\. It takes in information about your table items and instructions about which items to encrypt and sign\. It gets the encryption materials, and instructions on how to use them, from a [cryptographic material provider](concepts.md#concept-material-provider) that you select and configure\. 
 
@@ -22,7 +22,7 @@ The [item encryptor](concepts.md#item-encryptor) uses all of these elements to e
 
 The result is a DynamoDB item containing encrypted and signed data\.
 
-**Verifying and Decrypting Table Items**
+**Verifying and decrypting table items**
 
 These components also work together to verify and decrypt your item, as shown in the following diagram\.
 

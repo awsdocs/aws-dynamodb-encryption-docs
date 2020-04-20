@@ -15,10 +15,10 @@ You can configure the MetaStore to use any type of internal CMP to protect the m
 + Python: [most\_recent\_provider\_encrypted\_table](https://github.com/aws/aws-dynamodb-encryption-python/blob/master/examples/src/most_recent_provider_encrypted_table.py)
 
 **Topics**
-+ [How to Use It](#mrp-how-to-use-it)
-+ [How It Works](#mrp-how-it-works)
++ [How to use it](#mrp-how-to-use-it)
++ [How it works](#mrp-how-it-works)
 
-## How to Use It<a name="mrp-how-to-use-it"></a>
+## How to use it<a name="mrp-how-to-use-it"></a>
 
 To create a Most Recent Provider, you need to create and configure a provider store, and then create a Most Recent Provider that uses the provider store\. 
 
@@ -90,7 +90,7 @@ most_recent_cmp = MostRecentProvider(
 
 ------
 
-## How It Works<a name="mrp-how-it-works"></a>
+## How it works<a name="mrp-how-it-works"></a>
 
 The Most Recent Provider gets CMPs from a provider store\. Then, it uses the CMP to generate the cryptographic materials that it returns to the item encryptor\.
 
@@ -124,7 +124,7 @@ The MetaStore generates the Wrapped CMPs, and then stores them \(in encrypted fo
 
 You can use any type of internal CMP in your MetaStore, including the a [Direct KMS Provider](wrapped-provider.md), a Wrapped CMP with cryptographic materials that you provide, or a compatible custom CMP\. If the internal CMP in your MetaStore is a Direct KMS Provider, your reusable wrapping and signing keys are protected under your [AWS Key Management Service](https://docs.aws.amazon.com/kms/latest/developerguide/) \(AWS KMS\) [customer master key](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#master_keys)\. The MetaStore calls AWS KMS every time it adds a new CMP version to its internal table or gets a CMP version from its internal table\.
 
-### Rotating Cryptographic Materials<a name="most-recent-provider-rotate"></a>
+### Rotating cryptographic materials<a name="most-recent-provider-rotate"></a>
 
 When a Most Recent Provider requests a CMP from a provider store, it always asks the provider store for an existing version of its CMPs by using its material name and the maximum version number that it knows\. To discover the maximum version number, it queries the provider store on a schedule determined by a time\-to\-live value that you configure when you create a Most Recent Provider\. When the time\-to\-live value elapses, the Most Recent Provider asks the provider store for the maximum version of its existing CMPs\.
 
@@ -134,7 +134,7 @@ To tell the provider store to create a new version of a CMP for a Most Recent Pr
 
 You can schedule your Create New Provider calls based on time, the number of items or attributes processed, or any other metric that makes sense for your application\.
 
-### Get Encryption Materials<a name="most-recent-provider-encrypt"></a>
+### Get encryption materials<a name="most-recent-provider-encrypt"></a>
 
 The Most Recent Provider uses the following process, shown in this diagram, to get the encryption materials that it returns to the item encryptor\. The output depends on the type of CMP that the provider store returns\. The Most Recent Provider can use any compatible provider store, including the MetaStore that is included in the DynamoDB Encryption Client\.
 
@@ -143,7 +143,7 @@ The Most Recent Provider uses the following process, shown in this diagram, to g
 When you create a Most Recent Provider, you specify a provider store, a name for the Most Recent Provider, and a time\-to\-live value that determines how often the Most Recent Provider asks its provider store for the version number of its most recent version of cryptographic materials\. 
 
 **Note**  
-When the time\-to\-live value expires, the Most Recent Provider asks the provider store for the maximum version number of its existing CMPs\. This action does not increment the version or cause the provider store to create new encryption materials\. For more information, see [Rotating Cryptographic Materials](#most-recent-provider-rotate)\.
+When the time\-to\-live value expires, the Most Recent Provider asks the provider store for the maximum version number of its existing CMPs\. This action does not increment the version or cause the provider store to create new encryption materials\. For more information, see [Rotating cryptographic materials](#most-recent-provider-rotate)\.
 
 When the item encryptor asks the Most Recent Provider for encryption materials, the Most Recent Provider begins by searching its cache for the latest version of its CMP\.
 + If it finds the latest version CMP in its cache, the Most Recent Provider uses the CMP to generate encryption materials\. Then, it returns the encryption materials to the item encryptor\. This operation does not require a call to the provider store\.
@@ -157,7 +157,7 @@ When the item encryptor asks the Most Recent Provider for encryption materials, 
 
   1. The Most Recent Provider uses the CMP to generate encryption materials\. Then, it returns the encryption materials to the item encryptor\.
 
-### Get Decryption Materials<a name="most-recent-provider-decrypt"></a>
+### Get decryption materials<a name="most-recent-provider-decrypt"></a>
 
 When the item encryptor asks the Most Recent Provider for decryption materials, the Most Recent Provider uses the following process to get and return them\.
 

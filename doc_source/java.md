@@ -6,7 +6,7 @@ This topic explains how to install and use the Amazon DynamoDB Encryption Client
 + [Prerequisites](#java-prerequisites)
 + [Installation](#java-installation)
 + [Using the DynamoDB Encryption Client for Java](java-using.md)
-+ [Java Examples](java-examples.md)
++ [Java examples](java-examples.md)
 
 ## Prerequisites<a name="java-prerequisites"></a>
 

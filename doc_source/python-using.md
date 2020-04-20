@@ -5,11 +5,11 @@ This topic explains some of the features of the DynamoDB Encryption Client for P
 For details about programming with the DynamoDB Encryption Client, see the [Python examples](python-examples.md) in this guide, the [examples](https://github.com/aws/aws-dynamodb-encryption-python/tree/master/examples) in the aws\-dynamodb\-encryption\-python repository on GitHub, and the [Python documentation](https://aws-dynamodb-encryption-python.readthedocs.io/en/latest/) for the DynamoDB Encryption Client\.
 
 **Topics**
-+ [Client Helper Classes](#python-helpers)
-+ [TableInfo Class](#table-info)
-+ [Attribute Actions in Python](#python-attribute-actions)
++ [Client helper classes](#python-helpers)
++ [TableInfo class](#table-info)
++ [Attribute actions in Python](#python-attribute-actions)
 
-## Client Helper Classes<a name="python-helpers"></a>
+## Client helper classes<a name="python-helpers"></a>
 
 The DynamoDB Encryption Client for Python includes several client helper classes that mirror the Boto 3 classes for DynamoDB\. These helper classes are designed to make it easier to add encryption and signing to your existing DynamoDB application and avoid the most common problems, as follows:
 + Prevent you from encrypting the primary key in your item, either by adding an override action for the primary key to the [AttributeActions](#python-attribute-actions) object, or by throwing an exception if your `AttributeActions` object explicitly tells the client to encrypt the primary key\. If the default action in your `AttributeActions` object is `DO_NOTHING`, the client helper classes use that action for the primary key\. Otherwise, they use `SIGN_ONLY`\.
@@ -25,17 +25,17 @@ The client helper classes include:
 
 To use the client helper classes, the caller must have permission to call the DynamoDB [DescribeTable](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_DescribeTable.html) operation on the target table\.
 
-## TableInfo Class<a name="table-info"></a>
+## TableInfo class<a name="table-info"></a>
 
 The [TableInfo](https://aws-dynamodb-encryption-python.readthedocs.io/en/latest/lib/tools/structures.html#dynamodb_encryption_sdk.structures.TableInfo) class is a helper class that represents a DynamoDB table, complete with fields for its primary key and secondary indexes\. It helps you to get accurate, real\-time information about the table\.
 
-If you use a [client helper class](#python-helpers), it creates and uses a `TableInfo` object for you\. Otherwise, you can create one explicitly\. For an example, see [Use the Item Encryptor](python-examples.md#python-example-item-encryptor)\.
+If you use a [client helper class](#python-helpers), it creates and uses a `TableInfo` object for you\. Otherwise, you can create one explicitly\. For an example, see [Use the item encryptor](python-examples.md#python-example-item-encryptor)\.
 
 When you call the `refresh_indexed_attributes` method on a `TableInfo` object, it populates the property values of the object by calling the DynamoDB [DescribeTable](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_DescribeTable.html) operation\. Querying the table is much more reliable than hard\-coding index names\. The `TableInfo` class also includes an `encryption_context_values` property that provides the required values for the [DynamoDB encryption context](concepts.md#encryption-context)\. 
 
 To use the `refresh_indexed_attributes` method, the caller must have permission to call the DynamoDB [DescribeTable](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_DescribeTable.html) operation on the target table\.
 
-## Attribute Actions in Python<a name="python-attribute-actions"></a>
+## Attribute actions in Python<a name="python-attribute-actions"></a>
 
 [Attribute actions](concepts.md#attribute-actions) tell the item encryptor which actions to perform on each attribute of the item\. To specify attribute actions in Python, create an `AttributeActions` object with a default action and any exceptions for particular attributes\. The valid values are defined in the `CryptoAction` enumerated type\.
 

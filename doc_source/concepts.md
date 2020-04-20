@@ -1,18 +1,18 @@
-# Amazon DynamoDB Encryption Client Concepts<a name="concepts"></a>
+# Amazon DynamoDB Encryption Client concepts<a name="concepts"></a>
 
 This topic explains the concepts and terminology used in the Amazon DynamoDB Encryption Client\. 
 
-To learn how the components of the DynamoDB Encryption Client interact, see [How the DynamoDB Encryption Client Works](how-it-works.md)\.
+To learn how the components of the DynamoDB Encryption Client interact, see [How the DynamoDB Encryption Client works](how-it-works.md)\.
 
 **Topics**
-+ [Cryptographic Materials Provider \(CMP\)](#concept-material-provider)
-+ [Item Encryptors](#item-encryptor)
-+ [Attribute Actions](#attribute-actions)
-+ [Material Description](#material-description)
-+ [DynamoDB Encryption Context](#encryption-context)
-+ [Provider Store](#provider-store)
++ [Cryptographic materials provider \(CMP\)](#concept-material-provider)
++ [Item encryptors](#item-encryptor)
++ [Attribute actions](#attribute-actions)
++ [Material description](#material-description)
++ [DynamoDB encryption context](#encryption-context)
++ [Provider store](#provider-store)
 
-## Cryptographic Materials Provider \(CMP\)<a name="concept-material-provider"></a>
+## Cryptographic materials provider \(CMP\)<a name="concept-material-provider"></a>
 
 When implementing the DynamoDB Encryption Client, one of your first tasks is to [select a cryptographic materials provider](crypto-materials-providers.md) \(CMP\) \(also known as an *encryption materials provider*\)\. Your choice determines much of the rest of the implementation\. 
 
@@ -22,13 +22,13 @@ The CMP interacts with the item encryptor\. The item encryptor requests encrypti
 
 You specify the CMP when you configure the client\. You can create a compatible custom CMP, or use one of the many CMPs in the library\. Most CMPs are available for multiple programming languages\. 
 
-## Item Encryptors<a name="item-encryptor"></a>
+## Item encryptors<a name="item-encryptor"></a>
 
 The *item encryptor* is a lower\-level component that performs cryptographic operations for the DynamoDB Encryption Client\. It requests cryptographic materials from a [cryptographic materials provider](#concept-material-provider) \(CMP\), then uses the materials that the CMP returns to encrypt and sign, or verify and decrypt, your table item\.
 
 You can interact with the item encryptor directly or use the helpers that your library provides\. For example, the DynamoDB Encryption Client for Java includes an `AttributeEncryptor` helper class that you can use with the `DynamoDBMapper`, instead of interacting directly with the `DynamoDBEncryptor` item encryptor\. The Python library includes `EncryptedTable`, `EncryptedClient`, and `EncryptedResource` helper classes that interact with the item encryptor for you\.
 
-## Attribute Actions<a name="attribute-actions"></a>
+## Attribute actions<a name="attribute-actions"></a>
 
 *Attribute actions* tell the item encryptor which actions to perform on each attribute of the item\. 
 
@@ -50,23 +50,23 @@ For details, see the documentation for your programming language\.
 + [Python](python-using.md#python-attribute-actions)
 + [Java](java-using.md#attribute-actions-java)
 
-## Material Description<a name="material-description"></a>
+## Material description<a name="material-description"></a>
 
 The *material description* for an encrypted table item consists of information, such as encryption algorithms, about how the table item is encrypted and signed\. The [cryptographic materials provider](#concept-material-provider) \(CMP\) records the material description as it assembles the cryptographic materials for encryption and signing\. Later, when it needs to assemble cryptographic materials to verify and decrypt the item, it uses the material description as its guide\. 
 
 In the DynamoDB Encryption Client, the material description refers to three related elements:
 
-**Requested Material Description**  
+**Requested material description**  
 Some [cryptographic materials providers](#concept-material-provider) \(CMPs\) let you specify advanced options, such as an encryption algorithm\. To indicate your choices, you add name\-value pairs to the material description property of the [DynamoDB encryption context](#encryption-context) in your request to encrypt a table item\. This element is known as the *requested material description*\. The valid values in the requested material description are defined by the CMP that you choose\.   
 Because the material description can override secure default values, we recommend that you omit the requested material description unless you have a compelling reason to use it\.
 
-**Actual Material Description**  
+**Actual material description**  
 The material description that the [cryptographic materials providers](#concept-material-provider) \(CMPs\) return is known as the *actual material description*\. It describes the actual values that the CMP used when it assembled the cryptographic materials\. It usually consists of the requested material description, if any, with additions and changes\.
 
-**Material Description Attribute**  
+**Material description attribute**  
 The client saves the actual material description in the *material description attribute* of the encrypted item\. The material description attribute name is `amzn-ddb-map-desc` and its value is the actual material description\. The client uses the values in the material description attribute to verify and decrypt the item\.
 
-## DynamoDB Encryption Context<a name="encryption-context"></a>
+## DynamoDB encryption context<a name="encryption-context"></a>
 
 The *DynamoDB encryption context* supplies information about the table and item to the [cryptographic materials provider](#concept-material-provider) \(CMP\)\. In advanced implementations, the DynamoDB encryption context can include a [requested material description](#material-description)\.
 
@@ -82,7 +82,7 @@ The DynamoDB encryption context can include the following fields\. All fields an
 + Attribute name\-value pairs
 + [Requested material description](#material-description)
 
-## Provider Store<a name="provider-store"></a>
+## Provider store<a name="provider-store"></a>
 
 A *provider store* is a component that returns [cryptographic materials providers](#concept-material-provider) \(CMPs\)\. The provider store can create the CMPs or get them from another source, such as another provider store\. The provider store saves versions of the CMPs that it creates in persistent storage in which each stored CMP is identified by the material name of the requester and version number\. 
 

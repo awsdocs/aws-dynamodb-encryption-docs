@@ -1,6 +1,6 @@
 # Direct KMS Materials Provider<a name="direct-kms-provider"></a>
 
-The Direct KMS Materials Provider \(Direct KMS Provider\) protects your table items under an [AWS Key Management Service](https://docs.aws.amazon.com/kms/latest/developerguide/) \(AWS KMS\) [customer master key](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#master_keys) \(CMK\) that never leaves AWS KMS unencrypted\. This [cryptographic materials provider](concepts.md#concept-material-provider) returns a unique encryption key and signing key for every table item\. To do so, it calls AWS KMS every time you encrypt or decrypt an item\.
+The *Direct KMS Materials Provider* \(Direct KMS Provider\) protects your table items under an [AWS Key Management Service](https://docs.aws.amazon.com/kms/latest/developerguide/) \(AWS KMS\) [customer master key](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#master_keys) \(CMK\) that never leaves AWS KMS unencrypted\. This [cryptographic materials provider](concepts.md#concept-material-provider) returns a unique encryption key and signing key for every table item\. To do so, it calls AWS KMS every time you encrypt or decrypt an item\.
 
 If you're processing DynamoDB items at a high frequency and large scale, you might exceed the AWS KMS [requests\-per\-second limit](https://docs.aws.amazon.com/kms/latest/developerguide/limits.html#requests-per-second), causing processing delays\. If you need to exceed the request\-per\-second limit and avoid delays, create a case in the [AWS Support Center](https://console.aws.amazon.com/support/home)\. 
 
@@ -9,17 +9,17 @@ To use the Direct KMS Provider, the caller must have [an AWS account](https://aw
 **Note**  
 When you use the Direct KMS Provider, the names and values of your primary key attributes appear in plaintext in the [AWS KMS encryption context](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#encrypt_context) and AWS CloudTrail logs of related AWS KMS operations\. However, the DynamoDB Encryption Client never exposes the plaintext of any encrypted attribute values\.
 
-The Direct KMS Provider is one of several [cryptographic materials provider](concepts.md#concept-material-provider) \(CMPs\) that the DynamoDB Encryption Client supports\. For information about the other CMPs, see [How to Choose a Cryptographic Materials Provider](crypto-materials-providers.md)\.
+The Direct KMS Provider is one of several [cryptographic materials provider](concepts.md#concept-material-provider) \(CMPs\) that the DynamoDB Encryption Client supports\. For information about the other CMPs, see [How to choose a cryptographic materials provider](crypto-materials-providers.md)\.
 
 **For example code, see:**
 + Java: [AwsKmsEncryptedItem](https://github.com/aws/aws-dynamodb-encryption-java/blob/master/examples/com/amazonaws/examples/AwsKmsEncryptedItem.java)
 + Python: [aws\-kms\-encrypted\-table](https://github.com/aws/aws-dynamodb-encryption-python/blob/master/examples/src/aws_kms_encrypted_table.py), [aws\-kms\-encrypted\-item](https://github.com/aws/aws-dynamodb-encryption-python/blob/master/examples/src/aws_kms_encrypted_item.py)
 
 **Topics**
-+ [How to Use It](#provider-kms-how-to-use)
-+ [How It Works](#provider-kms-how-it-works)
++ [How to use it](#provider-kms-how-to-use)
++ [How it works](#provider-kms-how-it-works)
 
-## How to Use It<a name="provider-kms-how-to-use"></a>
+## How to use it<a name="provider-kms-how-to-use"></a>
 
 To create a Direct KMS Provider, specify an AWS KMS [customer master key](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#master_keys) \(CMK\) in your account\.
 
@@ -48,7 +48,7 @@ aws_kms_cmp = AwsKmsCryptographicMaterialsProvider(key_id=aws_cmk_id)
 
 ------
 
-## How It Works<a name="provider-kms-how-it-works"></a>
+## How it works<a name="provider-kms-how-it-works"></a>
 
 The Direct KMS Provider returns encryption and signing keys that are protected by an AWS KMS CMK that you specify, as shown in the following diagram\.
 
@@ -61,10 +61,10 @@ The Direct KMS Provider returns encryption and signing keys that are protected b
   The item encryptor verifies the item and, if verification succeeds, decrypts the encrypted values\. Then, it removes the keys from memory as soon as possible\.
 
 **Topics**
-+ [Get Encryption Materials](#direct-kms-get-encryption-materials)
-+ [Get Decryption Materials](#direct-kms-get-decryption-materials)
++ [Get encryption materials](#direct-kms-get-encryption-materials)
++ [Get decryption materials](#direct-kms-get-decryption-materials)
 
-### Get Encryption Materials<a name="direct-kms-get-encryption-materials"></a>
+### Get encryption materials<a name="direct-kms-get-encryption-materials"></a>
 
 This section describes in detail the inputs, outputs, and processing of the Direct KMS Provider when it receives a request for encryption materials from the [item encryptor](concepts.md#item-encryptor)\.
 
@@ -102,7 +102,7 @@ This section describes in detail the inputs, outputs, and processing of the Dire
 
 1. The item encryptor uses the encryption key to encrypt the specified attributes and the signing key to sign them, using the algorithms specified in the actual material description\. It removes the plaintext keys from memory as soon as possible\.
 
-### Get Decryption Materials<a name="direct-kms-get-decryption-materials"></a>
+### Get decryption materials<a name="direct-kms-get-decryption-materials"></a>
 
 This section describes in detail the inputs, outputs, and processing of the Direct KMS Provider when it receives a request for decryption materials from the [item encryptor](concepts.md#item-encryptor)\.
 
