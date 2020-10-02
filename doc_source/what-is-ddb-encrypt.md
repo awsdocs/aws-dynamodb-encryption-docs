@@ -14,7 +14,7 @@ After you create and configure the required components, the DynamoDB Encryption 
 The DynamoDB Encryption Client includes secure implementations that encrypt the attribute values in each table item using a unique encryption key, and then sign the item to protect it against unauthorized changes, such as adding or deleting attributes, or swapping encrypted values\.
 
 **Uses cryptographic materials from any source**  
-You can use the DynamoDB Encryption Client with encryption keys from any source, including your custom implementation or a cryptography service, such as [AWS Key Management Service](https://docs.aws.amazon.com/kms/latest/developerguide/) \(AWS KMS\) or [AWS CloudHSM](https://docs.aws.amazon.com/cloudhsm/latest/userguide/)\. The DynamoDB Encryption Client doesn't require an AWS account or any AWS service\.
+You can use the DynamoDB Encryption Client with encryption keys from any source, including your custom implementation or a cryptography service, such as [AWS Key Management Service](https://docs.aws.amazon.com/kms/latest/developerguide/) \(AWS KMS\) or [AWS CloudHSM](https://docs.aws.amazon.com/cloudhsm/latest/userguide/)\.
 
 **Programming language implementations are interoperable**  
 The DynamoDB Encryption Client libraries are developed in open source projects on GitHub\. They are currently available in [Java](https://github.com/aws/aws-dynamodb-encryption-java/) and [Python](https://github.com/aws/aws-dynamodb-encryption-python/)\.  All supported programming language implementations of the DynamoDB Encryption Client are interoperable\. For example, you can encrypt data with the Java client and decrypt it with the Python client\.   
