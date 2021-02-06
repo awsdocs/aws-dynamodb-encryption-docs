@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "file://zonbook/docbookx.dtd"
+[
+  <!ENTITY % phrases-ddb-encrypt SYSTEM "shared/phrases-ddb-encrypt.ent">
+  %phrases-ddb-encrypt;
+   <!ENTITY % phrases-kms SYSTEM "shared/phrases-kms.ent">
+    %phrases-kms;  
+  <!ENTITY % xinclude SYSTEM "file://AWSShared/common/xinclude.mod">
+  %xinclude;
+  <!ENTITY % phrases-shared SYSTEM "file://AWSShared/common/phrases-shared.ent">
+  %phrases-shared;
+ ]>
+<chapter id="troubleshooting">
+  <info>
+    <title id="troubleshooting.title">Troubleshooting issues in your &DDBEC; application</title>
+    <titleabbrev>Troubleshooting</titleabbrev>
+    <abstract>
+      <para>Learn how to fix common problems in a &DDBEClong; implementation.</para>
+    </abstract>
+  </info>
+  <para>This section describes problems that you might encounter when using the &DDBEC; and offers
+    suggestions for resolving them.</para>
+  &get-help-code;
+  &help-with-docs;
+  <para role="topiclist"><!-- TOPICLIST --></para>
+  <section id="kms-permissions">
+    <info>
+      <title id="kms-permissions.title">Access denied</title>
+    </info>
+    <para><emphasis role="bold">Problem</emphasis>: Your application is denied access to a resource
+      that it needs.</para>
+    <para><emphasis role="bold">Suggestion</emphasis>: Learn about the required permissions and add
+      them to the security context in which your application runs.</para>
+    <para><emphasis role="bold">Details</emphasis></para>
+    <para>To run an application that uses the a &DDBEC; library, the caller must have permission to
+      use its components. Otherwise, they will be denied access to the required elements. </para>
+    <itemizedlist>
+      <listitem>
+        <para>The &DDBEC; does not require an &AWSlong; (&AWS;) account or depend on any &AWS;
+          service. However, if your application uses &AWS;, you need <ulink
+            url="&url-support;knowledge-center/create-and-activate-aws-account/">an &AWS;
+            account</ulink> and <ulink url="&url-iam-user;getting-started_create-admin-group.html"
+            >users who have permission</ulink> to use the account.</para>
+      </listitem>
+      <listitem>
+        <para>The &DDBEC; does not require &DDBlong;. However, If the application that uses the
+          client creates &DDB; tables, puts items into a table, or gets items from a table, the
+          caller must have permission to use the required &DDB; operations in your &AWS; account.
+          For details, see the <ulink url="&url-ddb-dev;access-control-overview.html">access control
+            topics</ulink> in the <emphasis>&guide-ddb-dev;</emphasis>.</para>
+      </listitem>
+      <listitem>
+        <para>If your application uses a <link linkend="python-helpers">client helper class</link>
+          in the &DDBEC; for Python, the caller must have permission to call the &DDB; <ulink
+            url="&url-ddb-api;API_DescribeTable.html">DescribeTable</ulink> operation.</para>
+      </listitem>
+      <listitem>
+        <para>The &DDBEC; does not require &KMSlong;(&KMS;). However, if your application uses a
+            <link linkend="direct-kms-provider">&direct-kms-long;</link>, or it uses a <link
+            linkend="most-recent-provider">&MRP;</link> with a provider store that uses &KMS;, the
+          caller must have permission to use the &KMS; <ulink
+            url="&url-kms-api;API_GenerateDataKey.html">GenerateDataKey</ulink> and <ulink
+            url="&url-kms-api;API_Decrypt.html">Decrypt</ulink> operations.</para>
+      </listitem>
+    </itemizedlist>
+  </section>
+  <section id="change-data-model">
+    <info>
+      <title id="change-data-model.title">Signature verification fails</title>
+    </info>
+    <para><emphasis role="bold">Problem</emphasis>: An item cannot be decrypted because signature
+      verification fails. The item also might not be encrypted and signed as you intend.</para>
+    <para><emphasis role="bold">Suggestion</emphasis>: Be sure that the attribute actions that you
+      provide account for all attributes in the item. When decrypting an item, be sure to provide
+      attribute actions that match the actions used to encrypt the item.</para>
+    <para><emphasis role="bold">Details</emphasis></para>
+    <para>The <link linkend="attribute-actions">attribute actions</link> that you provide tell the
+      &DDBEC; which attributes to encrypt and sign, which attributes to sign (but not encrypt), and
+      which to ignore. </para>
+    <para>If the attribute actions that you specify do not account for all attributes in the item,
+      the item might not be encrypted and signed the way that you intend. More importantly, if your
+      attribute actions do not account for all attributes in the item, the item might not be
+      encrypted and signed the way that you intend. </para>
+    <para>If the attribute actions that you provide when decrypting an item differ from the
+      attribute actions that you provided when encrypting the item, the signature verification might
+      fail. This is a particular problem for distributed applications in which new attribute actions
+      might not have propagated to all hosts.</para>
+    <para>Signature validation errors are difficult to resolve. For help preventing them, take extra
+      precautions when changing your data model. For details, see <xref linkend="data-model" endterm="data-model.title" />.</para>
+  </section>
+  
+  <section id="mrp-ttl-delay"><info><title id="mrp-ttl-delay.title">Poor performance of the &MRP;</title></info>
+    <para><emphasis role="bold">Problem</emphasis>: Your application is less responsive, especially
+      after updating to a newer version of the &DDBEC;.</para>
+    <para><emphasis role="bold">Suggestion</emphasis>: Adjust the time-to-live value and cache
+      size.</para>
+    <para><emphasis role="bold">Details</emphasis></para>
+  <para>The &MRP; is designed to improve the performance of applications that use the &DDBEC; by
+      allowing limited reuse of cryptographic materials. When you configure the &MRP; for your
+      application, you have to balance improved performance with the security concerns that arise
+      from caching and reuse. </para>
+    <para>In newer versions of the &DDBEC;, the time-to-live (TTL) value determines how long cached
+      cryptographic material providers (CMPs) can be used. The TTL also determines how often the
+      &MRP; checks for a new version of the CMP. </para>
+    <para>If your TTL is too long, your application might violate your business rules or security
+      standards. If your TTL is too brief, frequent calls to the provider store can cause your
+      provider store to throttle requests from your application and other applications that share
+      your service account. To resolve this issue, adjust the TTL and cache size to a value that
+      meets your latency and availability goals and conforms to your security standards. For
+      details, see <xref linkend="most-recent-provider-ttl" endterm="most-recent-provider-ttl.title"
+      />.</para>
+  </section>
+  
+</chapter>

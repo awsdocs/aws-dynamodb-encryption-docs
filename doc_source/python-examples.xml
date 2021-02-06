@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "file://zonbook/docbookx.dtd" [
+  <!ENTITY % phrases-ddb-encrypt SYSTEM "shared/phrases-ddb-encrypt.ent">
+  %phrases-ddb-encrypt;
+  <!ENTITY % phrases-encryption-sdk SYSTEM "shared/phrases-encryption-sdk.ent">
+    %phrases-encryption-sdk;
+  <!ENTITY % phrases-kms SYSTEM "shared/phrases-kms.ent">
+    %phrases-kms;
+  <!ENTITY % xinclude SYSTEM "file://AWSShared/common/xinclude.mod">
+    %xinclude;
+  <!ENTITY % phrases-shared SYSTEM "file://AWSShared/common/phrases-shared.ent">
+    %phrases-shared;
+]>
+<section id="python-examples" role="topic">
+  <info>
+    <title id="python-examples.title">Example code for the &DDBEC; for Python</title>
+    <titleabbrev id="python-example-code.titleabbrev">Python examples</titleabbrev>
+    <abstract>
+      <para>Example code for learning how to use the &DDBEC; for Python.</para>
+    </abstract>
+  </info>
+
+
+  <para>The following examples show you how to use the &DDBEC; for Python to protect &DDB; data in
+    your application. You can find more examples (and contribute your own) in the <ulink
+    url="&url-ddbec-python;tree/master/examples">examples</ulink> directory of the <ulink
+    url="&url-ddbec-python;">aws-dynamodb-encryption-python</ulink> repository on GitHub.</para>
+
+
+  <para role="topiclist"><!-- TOPICLIST --></para>
+
+
+
+  <section id="python-example-table">
+    <info>
+      <title id="python-example-table.title">Use the EncryptedTable client helper class</title>
+    </info>
+    <para>The following example shows you how to use the <link linkend="direct-kms-provider">Direct
+      KMS Provider</link> with the <code>EncryptedTable</code> <link linkend="python-helpers">client
+      helper class</link>. This example uses the same <link linkend="concept-material-provider"
+      >cryptographic materials provider</link> as the <xref linkend="python-example-item-encryptor"
+      endterm="python-example-item-encryptor.title"/> example that follows. However, it uses the
+      <code>EncryptedTable</code> class instead of interacting directly with the lower-level <link
+      linkend="item-encryptor">item encryptor</link>.</para>
+    <para>By comparing these examples, you can see the work that the client helper class does for
+      you. This includes creating the <link linkend="encryption-context">&DDB; encryption
+      context</link> and making sure the primary key attributes are always signed, but never
+      encrypted. To create the encryption context and discover the primary key, the client helper
+      classes call the &DDB; <ulink url="&url-ddb-api;API_DescribeTable.html">DescribeTable</ulink>
+      operation. To run this code, you must have permission to call this operation.</para>
+    <para><emphasis role="bold">See the complete code sample</emphasis>: <ulink
+      url="&url-ddbec-python;blob/master/examples/src/aws_kms_encrypted_table.py"
+      >aws_kms_encrypted_table.py</ulink></para>
+    <variablelist>
+      <varlistentry>
+        <term>Step 1: Create the table</term>
+        <listitem>
+          <para>Start by creating an instance of a standard &DDB; table with the table name.</para>
+          <programlisting language="python">table_name='test-table'
+table = boto3.resource('dynamodb').Table(<replaceable>table_name</replaceable>)</programlisting>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>Step 2: Create a cryptographic materials provider</term>
+        <listitem>
+          <para>Create an instance of the <link linkend="crypto-materials-providers">cryptographic
+            materials provider</link> (CMP) that you selected.</para>
+          <para>This example uses the <link linkend="direct-kms-provider">Direct KMS
+            Provider</link>, but you can use any compatible CMP. To create a &direct-kms;,
+            specify a <ulink url="&url-kms-dev;concepts.html#master_keys">&CMKlong;</ulink> (&CMK;). This example uses the Amazon Resource Name (ARN) of the &CMK;, but you
+            can use any valid &CMK; identifier.</para>
+          <programlisting language="python">aws_cmk_id='&example-key-arn-1;'
+aws_kms_cmp = AwsKmsCryptographicMaterialsProvider(key_id=<replaceable>aws_cmk_id</replaceable>)</programlisting>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>Step 3: Create the attribute actions object</term>
+        <listitem>
+          <para><link linkend="attribute-actions">Attribute actions</link> tell the item encryptor
+            which actions to perform on each attribute of the item. The
+            <code>AttributeActions</code> object in this example encrypts and signs all items except
+            for the <code>test</code> attribute, which is ignored.</para>
+          <para>Do not specify attribute actions for the primary key attributes when you use a
+            client helper class. The <code>EncryptedTable</code> class signs, but never encrypts,
+            the primary key attributes.</para>
+          <programlisting language="python">actions = AttributeActions(
+    default_action=CryptoAction.ENCRYPT_AND_SIGN,
+    attribute_actions={'test': CryptoAction.DO_NOTHING}
+)</programlisting>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>Step 4: Create the encrypted table</term>
+        <listitem>
+          <para>Create the encrypted table using the standard table, the &direct-kms;, and
+            the attribute actions. This step completes the configuration. </para>
+          <programlisting language="python">encrypted_table = EncryptedTable(
+    table=table,
+    materials_provider=aws_kms_cmp,
+    attribute_actions=actions
+)</programlisting>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>Step 5: Put the plaintext item in the table</term>
+        <listitem>
+          <para>When you call the <code>put_item</code> method on the <code>encrypted_table</code>,
+            your table items are transparently encrypted, signed, and added to your &DDB;
+            table.</para>
+          <para>First, define the table item.</para>
+          <programlisting language="python">plaintext_item = {
+    'partition_attribute': 'value1',
+    'sort_attribute': 55
+    'example': 'data',
+    'numbers': 99,
+    'binary': Binary(b'\x00\x01\x02'),
+    'test': 'test-value'
+}</programlisting>
+          <para>Then, put it in the table.</para>
+          <programlisting language="python">encrypted_table.put_item(Item=plaintext_item)</programlisting>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+    <para>To get the item from the &DDB; table in its encrypted form, call the <code>get_item</code>
+      method on the <code>table</code> object. To get the decrypted item, call the
+      <code>get_item</code> method on the <code>encrypted_table</code> object.</para>
+  </section>
+
+
+
+  <section id="python-example-item-encryptor">
+    <info>
+      <title id="python-example-item-encryptor.title">Use the item encryptor</title>
+    </info>
+
+
+    <para>This example shows you how to interact directly with the <link linkend="item-encryptor"
+      >item encryptor</link> in the &DDBEC; when encrypting table items, instead of using the <link
+      linkend="python-helpers">client helper classes</link> that interact with the item encryptor
+      for you. </para>
+    <para>When you use this technique, you create the &DDB; encryption context and configuration
+      object (<code>CryptoConfig</code>) manually. Also, you encrypt the items in one call and put
+      them in your &DDB; table in a separate call. This allows you to customize your
+      <code>put_item</code> calls and use the &DDBEC; to encrypt and sign structured data that is
+      never sent to &DDB;.</para>
+    <para>This example uses the <link linkend="direct-kms-provider">&direct-kms;</link>, but
+      you can use any compatible CMP.</para>
+    <para><emphasis role="bold">See the complete code sample</emphasis>: <ulink
+      url="&url-ddbec-python;blob/master/examples/src/aws_kms_encrypted_item.py"
+      >aws_kms_encrypted_item.py</ulink></para>
+    <variablelist>
+      <varlistentry>
+        <term>Step 1: Create the table</term>
+        <listitem>
+          <para>Start by creating an instance of a standard &DDB; table resource with the table
+            name.</para>
+          <programlisting language="python">table_name='test-table'
+table = boto3.resource('dynamodb').Table(<replaceable>table_name</replaceable>)</programlisting>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>Step 2: Create a cryptographic materials provider</term>
+        <listitem>
+          <para>Create an instance of the <link linkend="crypto-materials-providers">cryptographic
+            materials provider</link> (CMP) that you selected.</para>
+          <para>This example uses the <link linkend="direct-kms-provider">Direct KMS
+            Provider</link>, but you can use any compatible CMP. To create a &direct-kms;,
+            specify a <ulink url="&url-kms-dev;concepts.html#master_keys">&CMKlong;</ulink> (&CMK;). This example uses the Amazon Resource Name (ARN) of the &CMK;, but you
+            can use any valid &CMK; identifier.</para>
+          <programlisting language="python">aws_cmk_id='&example-key-arn-1;'
+aws_kms_cmp = AwsKmsCryptographicMaterialsProvider(key_id=<replaceable>aws_cmk_id</replaceable>)</programlisting>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>Step 3: Use the TableInfo helper class</term>
+        <listitem>
+          <para>To get information about the table from &DDB;, create an instance of the <link
+            linkend="python-helpers">TableInfo</link> helper class. When you work directly with the
+            item encryptor, you need to create a <code>TableInfo</code> instance and call its
+            methods. The <link linkend="python-helpers">client helper classes</link> do this for
+            you.</para>
+          <para>The <code>refresh_indexed_attributes</code> method of <code>TableInfo</code> uses
+            the <ulink url="&url-ddb-api;API_DescribeTable.html">DescribeTable</ulink> &DDB;
+            operation to get real-time, accurate information about the table. This includes its
+            primary key and its local and global secondary indexes. The caller needs to have
+            permission to call <code>DescribeTable</code>.</para>
+          <programlisting language="python">table_info = TableInfo(name=<replaceable>table_name</replaceable>)
+table_info.refresh_indexed_attributes(table.meta.client)</programlisting>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>Step 4: Create the &DDB; encryption context</term>
+        <listitem>
+          <para>The <link linkend="encryption-context">&DDB; encryption context</link> contains
+            information about the table structure and how it is encrypted and signed. This example
+            creates a &DDB; encryption context explicitly, because it interacts with the item
+            encryptor. The <link linkend="python-helpers">client helper classes</link> create the
+            &DDB; encryption context for you. </para>
+          <para>To get the partition key and sort key, you can use the properties of the <link
+            linkend="python-helpers">TableInfo</link> helper class. </para>
+          <programlisting>index_key = {
+    'partition_attribute': 'value1',
+    'sort_attribute': 55
+}
+
+encryption_context = EncryptionContext(
+    table_name=<replaceable>table_name</replaceable>,
+    partition_key_name=table_info.primary_index.partition,
+    sort_key_name=table_info.primary_index.sort,
+    attributes=dict_to_ddb(index_key)
+)</programlisting>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>Step 5: Create the attribute actions object</term>
+        <listitem>
+          <para><link linkend="attribute-actions">Attribute actions</link> tell the item encryptor
+            which actions to perform on each attribute of the item. The
+            <code>AttributeActions</code> object in this example encrypts and signs all items except
+            for the primary key attributes, which are signed, but not encrypted, and the
+            <code>test</code> attribute, which is ignored.</para>
+          <para>When you interact directly with the item encryptor and your default action is
+            <code>ENCRYPT_AND_SIGN</code>, you must specify an alternative action for the primary
+            key. You can use the <code>set_index_keys</code> method, which uses
+            <code>SIGN_ONLY</code> for the primary key, or it uses <code>DO_NOTHING</code> if it's
+            the default action.</para>
+          <para>To specify the primary key, this example uses the index keys in the <link
+            linkend="python-helpers">TableInfo</link> object, which is populated by a call to &DDB;.
+            This technique is safer than hard-coding primary key names.</para>
+          <programlisting language="python">actions = AttributeActions(
+    default_action=CryptoAction.ENCRYPT_AND_SIGN,
+    attribute_actions={'test': CryptoAction.DO_NOTHING}
+)
+actions.set_index_keys(*table_info.protected_index_keys())</programlisting>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>Step 6: Create the configuration for the item</term>
+        <listitem>
+          <para>To configure the &DDBEC;, use the objects that you just created in a <ulink
+            url="&url-ddbec-pythondoc;lib/encrypted/config.html">CryptoConfig</ulink> configuration
+            for the table item. The client helper classes create the CryptoConfig for you. </para>
+          <programlisting language="python">crypto_config = CryptoConfig(
+    materials_provider=aws_kms_cmp,
+    encryption_context=encryption_context,
+    attribute_actions=actions
+)</programlisting>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>Step 7: Encrypt the item</term>
+        <listitem>
+          <para>This step encrypts and signs the item, but it doesn't put it in the &DDB; table. </para>
+          <para>When you use a client helper class, your items are transparently encrypted and
+            signed, and then added to your &DDB; table when you call the <code>put_item</code>
+            method of the helper class. When you use the item encryptor directly, the encrypt and
+            put actions are independent.</para>
+          <para>First, create a plaintext item.</para>
+          <programlisting language="python">plaintext_item = {
+    'partition_attribute': 'value1',
+    'sort_key': 55,
+    'example': 'data',
+    'numbers': 99,
+    'binary': Binary(b'\x00\x01\x02'),
+    'test': 'test-value'
+}</programlisting>
+          <para>Then, encrypt and sign it. The <code>encrypt_python_item</code> method requires the
+            <code>CryptoConfig</code> configuration object.</para>
+          <programlisting language="python">encrypted_item = encrypt_python_item(plaintext_item, crypto_config)</programlisting>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>Step 8: Put the item in the table</term>
+        <listitem>
+          <para>This step puts the encrypted and signed item in the &DDB; table.</para>
+          <programlisting language="python">table.put_item(Item=encrypted_item)</programlisting>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+    <para>To view the encrypted item, call the <code>get_item</code> method on the original
+      <code>table</code> object, instead of the <code>encrypted_table</code> object. It gets the
+      item from the DynamoDB table without verifying and decrypting it.</para>
+    <programlisting language="python">encrypted_item = table.get_item(Key=partition_key)['Item']</programlisting>
+    <para>The following image shows part of an example encrypted and signed table item.</para>
+    <para>The encrypted attribute values are binary data. The names and values of the primary key
+      attributes (<code>partition_attribute</code> and <code>sort_attribute</code>) and the
+      <code>test</code> attribute remain in plaintext. The output also shows the attribute that
+      contains the signature (<code>*amzn-ddb-map-sig*</code>) and the <link
+      linkend="material-description">materials description attribute</link>
+      (<code>*amzn-ddb-map-desc*</code>).</para>
+    <mediaobject>
+      <imageobject>
+        <imagedata fileref="images/encrypted-item-closeup.png" format="PNG"/>
+      </imageobject>
+      <textobject>
+        <phrase>An excerpt of an encrypted and signed item</phrase>
+      </textobject>
+    </mediaobject>
+  </section>
+</section>

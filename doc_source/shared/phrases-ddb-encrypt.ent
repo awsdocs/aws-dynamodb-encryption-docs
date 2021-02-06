@@ -1,0 +1,62 @@
+<!ENTITY DDBEClong 'Amazon DynamoDB Encryption Client'>
+<!ENTITY DDBEC 'DynamoDB Encryption Client'>
+
+<!ENTITY url-ddbec-java '&url-aws-github;aws-dynamodb-encryption-java/'>
+<!ENTITY url-ddbec-python '&url-aws-github;aws-dynamodb-encryption-python/'>
+<!ENTITY url-ddbec-dg '&url-awsdocs-github;aws-dynamodb-encryption-docs'>
+<!ENTITY url-ddbec-javadoc 'https://aws.github.io/aws-dynamodb-encryption-java/javadoc/'>
+<!ENTITY url-ddbec-pythondoc 'https://aws-dynamodb-encryption-python.readthedocs.io/en/latest/'>
+
+<!-- Proper Nouns -->
+<!ENTITY direct-kms-long 'Direct KMS Materials Provider'>
+<!ENTITY direct-kms 'Direct KMS Provider'>
+<!ENTITY MRP 'Most Recent Provider'>
+<!ENTITY static-cmp 'Static Provider'>
+<!ENTITY static-cmp-long 'Static Materials Provider'>
+<!ENTITY wrapped-cmp-long 'Wrapped Materials Provider'>
+<!ENTITY wrapped-cmp 'Wrapped Provider'>
+
+<!ENTITY primary-key-warning '<warning><para>Do not encrypt the primary key attributes. They must remain in plaintext so &DDB; can find
+    the item without running a full table scan.</para></warning>'>
+<!ENTITY encryption-context-note '<note><para>The <emphasis role="italic">&DDB; encryption context</emphasis> in the &DDBEC; is not
+related to the <emphasis role="italic">encryption context</emphasis> in &KMSlong; (&KMS;) and the &CryptoSDKlong;.</para></note>
+'>
+
+<!ENTITY url-crypto-tools-forum '&url-forum-domain;forum.jspa?forumID=302'>
+<!ENTITY crypto-tools-forum '<ulink url="&url-crypto-tools-forum;">AWS Crypto Tools Discussion Forum</ulink>'>
+
+<!ENTITY get-help-code '<para>To provide feedback on the &DDBEC;, file an issue in the <ulink
+          url="&url-ddbec-java;">aws-dynamodb-encryption-java</ulink> or <ulink
+            url="&url-ddbec-python;">aws-dynamodb-encryption-python</ulink> GitHub repository.</para>'>
+
+<!ENTITY help-with-docs '
+<para>To provide feedback on this documentation, use the feedback link
+          on any page. You can also file an issue or contribute to <ulink url="&url-ddbec-dg;"
+            >aws-dynamodb-encryption-docs</ulink>, the open-source repository for this documentation
+          on GitHub.</para>'>
+
+<!ENTITY kms-primary-key-note ' <note><para>When you use the &direct-kms;, the names and values of your primary key attributes
+      appear in plaintext in the <ulink url="&url-kms-dev;concepts.html#encrypt_context">&KMS;
+      encryption context</ulink> and &CTlong; logs of related &KMS; operations. However, the &DDBEC;
+      never exposes the plaintext of any encrypted attribute values.</para></note>' >
+
+<!ENTITY encrypted-item-example '
+<para>The following image shows a part of an example encrypted and signed table item.</para> <para>The encrypted attribute
+values are binary data. The names
+and values of the primary key attributes (<code>partition_attribute</code> and
+<code>sort_attribute</code>) and the <code>test</code> attribute remain in plaintext. The output also
+shows the attribute that contains the signature (<code>amzn-ddb-map-sig</code>) and the <link linkend="material-description">materials description attribute</link>
+      (<code>amzn-ddb-map-desc</code>).</para>
+    <mediaobject>
+      <imageobject>
+        <imagedata fileref="images/encrypted-item-closeup.png" format="PNG" scale="100"/>
+      </imageobject>
+      <textobject>
+        <phrase>An excerpt of an encrypted and signed item</phrase>
+      </textobject>
+    </mediaobject>'>
+
+<!ENTITY data-model-warning  'After you use your attribute actions to encrypt your table items, adding or removing attributes from your data model might cause a signature validation error that prevents you from decrypting your data. For a
+        detailed explanation, see <xref linkend="data-model" endterm="data-model.title"/>.'>
+        
+<!ENTITY mrp-update-version '2.0.0'>

@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "file://zonbook/docbookx.dtd"
+[
+  <!ENTITY % phrases-ddb-encrypt SYSTEM "shared/phrases-ddb-encrypt.ent">
+  %phrases-ddb-encrypt;
+   <!ENTITY % phrases-kms SYSTEM "shared/phrases-kms.ent">
+    %phrases-kms;  
+  <!ENTITY % xinclude SYSTEM "file://AWSShared/common/xinclude.mod">
+  %xinclude;
+  <!ENTITY % phrases-shared SYSTEM "file://AWSShared/common/phrases-shared.ent">
+  %phrases-shared;
+ ]>
+<section id="static-provider" role="topic">
+  <info>
+    <title id="static-provider.title">&static-cmp-long;</title>
+    <titleabbrev>&static-cmp;</titleabbrev>
+    <abstract>
+      <para>Learn about the &static-cmp-long; in the &DDBEC;.</para>
+    </abstract>
+  </info>
+  <para>The <emphasis role="italic">&static-cmp-long;</emphasis> (Static CMP) is a very simple <link
+      linkend="concept-material-provider">cryptographic materials provider</link> (CMP) that is
+    intended for testing, proof-of-concept demonstrations, and legacy compatibility.</para>
+  <para>To use the Static CMP to encrypt a table item, you supply an <ulink
+    url="https://en.wikipedia.org/wiki/Advanced_Encryption_Standard">Advanced Encryption
+    Standard</ulink> (AES) symmetric encryption key and a signing key or key pair. You must supply
+    the same keys to decrypt the encrypted item. The Static CMP does not perform any cryptographic
+    operations. Instead, it passes the encryption keys that you supply to the item encryptor
+    unchanged. The item encryptor encrypts the items directly under the encryption key. Then, it
+    uses the signing key directly to sign them. </para>
+  <para>Because the Static CMP does not generate any unique cryptographic materials, all table items
+    that you process are encrypted with the same encryption key and signed by the same signing key.
+    When you use the same key to encrypt the attributes values in numerous items or use the same key
+    or key pair to sign all items, you risk exceeding the cryptographic limits of the keys. </para>
+  <note>
+    <para>The <ulink
+      url="&url-ddbec-javadoc;com/amazonaws/services/dynamodbv2/datamodeling/encryption/providers/AsymmetricStaticProvider.html"
+      >Asymmetric Static Provider</ulink> in the Java library is not a static provider. It just
+      supplies alternate constructors for the <link linkend="wrapped-provider">Wrapped CMP</link>.
+      It's safe for production use, but you should use the Wrapped CMP directly whenever
+      possible.</para>
+  </note>
+
+  <para>The Static CMP is one of several <link linkend="concept-material-provider">cryptographic
+    materials provider</link> (CMPs) that the &DDBEC; supports. For information about the other
+    CMPs, see <xref linkend="crypto-materials-providers" endterm="crypto-materials-providers.title"
+    />.</para>
+  
+  <para><emphasis role="bold">For example code, see:</emphasis></para>
+  <itemizedlist>
+    <listitem>
+      <para>Java: <ulink
+        url="&url-ddbec-java;blob/master/examples/com/amazonaws/examples/SymmetricEncryptedItem.java"
+        >SymmetricEncryptedItem</ulink></para>
+    </listitem>
+  </itemizedlist>
+  <para role="topiclist"><!-- TOPICLIST --></para>
+  <section id="static-cmp-how-to-use">
+    <info>
+      <title id="static-cmp-how-to-use.title">How to use it</title>
+    </info>
+    <para>To create a static provider, supply an encryption key or key pair and a signing key or key
+      pair. You need to provide key material to encrypt and decrypt table items.</para>
+   <tablist>
+     <tablistentry>
+       <tabname>Java</tabname>
+       <tabcontent><programlisting language="java">// To encrypt
+SecretKey cek = ...;        // Encryption key
+SecretKey macKey =  ...;    // Signing key
+EncryptionMaterialsProvider provider = new SymmetricStaticProvider(cek, macKey);
+
+// To decrypt
+SecretKey cek = ...;        // Encryption key
+SecretKey macKey =  ...;    // Verification key
+EncryptionMaterialsProvider provider = new SymmetricStaticProvider(cek, macKey);</programlisting></tabcontent>
+     </tablistentry>
+     <tablistentry>
+       <tabname>Python</tabname>
+       <tabcontent><programlisting language="python"># You can provide encryption materials, decryption materials, or both
+encrypt_keys = EncryptionMaterials(
+    encryption_key = ...,
+    signing_key = ...
+)
+
+decrypt_keys = DecryptionMaterials(
+    decryption_key = ...,
+    verification_key = ...
+)
+
+static_cmp = StaticCryptographicMaterialsProvider(
+    encryption_materials=encrypt_keys
+    decryption_materials=decrypt_keys
+)</programlisting></tabcontent>
+     </tablistentry>
+   </tablist>
+  </section>
+  <section id="static-cmp-how-it-works">
+    <info>
+      <title id="static-cmp-how-it-works.title">How it works</title>
+    </info>
+    <para>The &static-cmp; passes the encryption and signing keys that you supply to the item encryptor, where they are used directly to encrypt and sign
+      your table items. Unless you supply different keys for each item, the same keys are used for every
+      item.</para>
+    <mediaobject>
+      <imageobject>
+        <imagedata fileref="images/staticCMP.png" format="PNG" scale="75"/>
+      </imageobject>
+      <textobject>
+        <phrase>The input, processing, and output of the &static-cmp-long; in the
+          &DDBEC;</phrase>
+      </textobject>
+    </mediaobject>
+    <!-- TOPICLIST -->
+    <para role="topiclist"/>
+    <section id="static-cmp-get-encryption-materials">
+      <info>
+        <title id="static-cmp-get-encryption-materials.title">Get encryption materials</title>
+      </info>
+      <para>This section describes in detail the inputs, outputs, and processing of the &static-cmp-long; (Static CMP) when it receives a request for
+        encryption materials.</para>
+      <para><emphasis role="bold">Input</emphasis> (from the application)</para>
+      <itemizedlist>
+        <listitem>
+          <para>An encryption key &endash; This must be a symmetric key, such as an <ulink
+            url="https://tools.ietf.org/html/rfc3394.html">Advanced Encryption Standard</ulink>
+            (AES) key. </para>
+        </listitem>
+        <listitem>
+          <para>A signing key &endash; This can be a symmetric key or an asymmetric key pair. </para>
+        </listitem>
+      </itemizedlist>
+      <para><emphasis role="bold">Input</emphasis> (from the item encryptor)</para>
+      <itemizedlist>
+        <listitem>
+          <para><link linkend="encryption-context">&DDB; encryption context</link></para>
+        </listitem>
+      </itemizedlist>
+      <para><emphasis role="bold">Output</emphasis> (to the item encryptor)</para>
+      <itemizedlist>
+        <listitem>
+          <para>The encryption key passed as input.</para>
+        </listitem>
+        <listitem>
+          <para>The signing key passed as input.</para>
+        </listitem>
+        <listitem>
+          <para>Actual material description: The <link linkend="material-description">requested material description</link>, if any, unchanged.</para>
+        </listitem>
+      </itemizedlist>
+    </section>
+    <section id="static-cmp-get-decryption-materials">
+      <info>
+        <title id="static-cmp-get-decryption-materials.title">Get decryption materials</title>
+      </info>
+      <para>This section describes in detail the inputs, outputs, and processing of the &static-cmp-long; (Static CMP) when it receives a request for
+        decryption materials.</para>
+      <para>Although it includes separate methods for getting encryption materials and getting decryption materials, the behavior is the same. </para>
+      <para><emphasis role="bold">Input</emphasis> (from the application)</para>
+      <itemizedlist>
+        <listitem>
+          <para>An encryption key &endash; This must be a symmetric key, such as an <ulink
+            url="https://tools.ietf.org/html/rfc3394.html">Advanced Encryption Standard</ulink>
+            (AES) key. </para>
+        </listitem>
+        <listitem>
+          <para>A signing key &endash; This can be a symmetric key or an asymmetric key pair. </para>
+        </listitem>
+      </itemizedlist>
+      <para><emphasis role="bold">Input</emphasis> (from the item encryptor)</para>
+      <itemizedlist>
+        <listitem>
+          <para><link linkend="encryption-context">&DDB; encryption context</link> (not used)</para>
+        </listitem>
+      </itemizedlist>
+      <para><emphasis role="bold">Output</emphasis> (to the item encryptor)</para>
+      <itemizedlist>
+        <listitem>
+          <para>The encryption key passed as input.</para>
+        </listitem>
+        <listitem>
+          <para>The signing key passed as input.</para>
+        </listitem>
+      </itemizedlist>
+    </section>
+  </section>
+</section>

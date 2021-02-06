@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "file://zonbook/docbookx.dtd"[
+   <!ENTITY % phrases-ddb-encrypt SYSTEM "shared/phrases-ddb-encrypt.ent">
+  %phrases-ddb-encrypt;
+  <!ENTITY % phrases-encryption-sdk SYSTEM "shared/phrases-encryption-sdk.ent">
+    %phrases-encryption-sdk;
+   <!ENTITY % phrases-kms SYSTEM "shared/phrases-kms.ent">
+    %phrases-kms;    
+  <!ENTITY % xinclude SYSTEM "file://AWSShared/common/xinclude.mod">
+    %xinclude;
+  <!ENTITY % phrases-shared SYSTEM "file://AWSShared/common/phrases-shared.ent">
+    %phrases-shared;
+]>
+<section id="java" role="topic">
+  <info>
+    <title id="java.title">&DDBEClong; for Java</title>
+    <titleabbrev id="java.titleabbrev">Java</titleabbrev>
+    <abstract>
+      <para>Download and install the &DDBEClong; for Java.</para>
+    </abstract>
+  </info>
+
+
+
+  <para>This topic explains how to install and use the &DDBEClong; for Java. For details about
+    programming with the &DDBEC;, see the <link linkend="java-examples">Java examples</link>, the
+    <ulink url="&url-ddbec-java;tree/master/examples">examples</ulink> in the
+    aws-dynamodb-encryption-java repository on GitHub, and the <ulink url="&url-ddbec-javadoc;"
+    >Javadoc</ulink> for the &DDBEC;.</para>
+
+  <para role="topiclist-abbrev"><!-- TOPICLIST --></para>
+
+  <section id="java-prerequisites">
+    <info>
+      <title id="java-prerequisites.title">Prerequisites</title>
+    </info>
+
+
+    <para>Before you install the &DDBEClong; for Java, be sure you have the following
+      prerequisites.</para>
+    <variablelist role="termdef">
+      <varlistentry>
+        <term>A Java development environment</term>
+        <listitem>
+          <para>You will need Java 8 or later. On the Oracle website, go to <ulink
+            url="https://www.oracle.com/technetwork/java/javase/downloads/index.html">Java SE
+            Downloads</ulink>, and then download and install the Java SE Development Kit
+            (JDK).</para>
+          <para>If you use the Oracle JDK, you must also download and install the <ulink
+            url="http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html"
+            >Java Cryptography Extension (JCE) Unlimited Strength Jurisdiction Policy
+            Files</ulink>.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>&Javalong;</term>
+        <listitem>
+          <para>The &DDBEC; requires the &DDB; module of the &Javalong; even if your application
+            doesn't interact with &DDB;. You can install the entire SDK or just this module. If you
+            are using Maven, add <code>aws-java-sdk-dynamodb</code> to your <code>pom.xml</code>
+            file. </para>
+          <para>For more information about installing and configuring the &Javalong;, see <ulink
+            url="&url-javaV2-dev;getting-started.html">&Javalong;</ulink>.</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </section>
+
+  <section id="java-installation">
+    <info>
+      <title id="java-installation.title">Installation</title>
+    </info>
+
+
+    <para>You can install the &DDBEClong; for Java in the following ways.</para>
+    <variablelist role="termdef">
+      <varlistentry>
+        <term>Manually</term>
+        <listitem>
+          <para>To install the &DDBEClong; for Java, clone or download the <ulink
+            url="&url-ddbec-java;">aws-dynamodb-encryption-java</ulink> GitHub repository.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>Using Apache Maven</term>
+        <listitem>
+          <para>The &DDBEClong; for Java is available through <ulink url="https://maven.apache.org/"
+            >Apache Maven</ulink> with the following dependency definition.</para>
+          <programlisting language="xml">&lt;dependency&gt;
+  &lt;groupId&gt;com.amazonaws&lt;/groupId&gt;
+  &lt;artifactId&gt;aws-dynamodb-encryption-java&lt;/artifactId&gt;
+  &lt;version&gt;<replaceable>version-number</replaceable>&lt;/version&gt;
+&lt;/dependency&gt;</programlisting>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+    <para>After you install the SDK, get started by looking at the example code in this guide and
+      the <ulink url="&url-ddbec-javadoc;">&DDBEC;
+      Javadoc</ulink> on GitHub.</para>
+  </section>
+
+  <xi:include href="java-using.xml"/>
+  <xi:include href="java-examples.xml"/>
+
+</section>

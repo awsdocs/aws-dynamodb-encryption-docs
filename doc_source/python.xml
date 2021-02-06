@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "file://zonbook/docbookx.dtd" [
+  <!ENTITY % phrases-ddb-encrypt SYSTEM "shared/phrases-ddb-encrypt.ent">
+  %phrases-ddb-encrypt;
+  <!ENTITY % phrases-encryption-sdk SYSTEM "shared/phrases-encryption-sdk.ent">
+    %phrases-encryption-sdk;
+   <!ENTITY % phrases-kms SYSTEM "shared/phrases-kms.ent">
+    %phrases-kms;    
+  <!ENTITY % xinclude SYSTEM "file://AWSShared/common/xinclude.mod">
+    %xinclude;
+  <!ENTITY % phrases-shared SYSTEM "file://AWSShared/common/phrases-shared.ent">
+    %phrases-shared;
+]>
+<section id="python" role="topic">
+  <info><title id="python.title">&DDBEC; for Python</title><titleabbrev id="python.titleabbrev">Python</titleabbrev>
+    <abstract>
+      <para>Download and install the &DDBEC; for Python.</para>
+    </abstract>
+  </info>
+  
+  
+  <para>This topic explains how to install and use the &DDBEC; for Python. You can find the code in
+    the <ulink url="&url-ddbec-python;">aws-dynamodb-encryption-python</ulink> repository on GitHub,
+    including complete and tested <ulink url="&url-ddbec-python;tree/master/examples/src">sample
+    code</ulink> to help you get started.</para>
+
+  <para role="topiclist-abbrev"><!-- TOPICLIST --></para>
+
+  <section id="python-prerequisites"><info><title id="python-prerequisites.title">Prerequisites</title></info>
+
+
+    <para>Before you install the &DDBEClong; for Python, be sure you have the following
+      prerequisites.</para>
+    <variablelist role="termdef">
+      <varlistentry>
+        <term>A supported version of Python</term>
+        <listitem>
+          <para>To use this library you need Python 2.7, or Python 3.4 or later. To download Python,
+            see <ulink url="https://www.python.org/downloads/">Python downloads</ulink>.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>The pip installation tool for Python</term>
+        <listitem>
+          <para>If you have Python 2.7.9 or later, or Python 3.4 or later, you already have
+            <emphasis role="bold">pip</emphasis>, although you might want to upgrade it. For more
+            information about upgrading or installing pip, see <ulink
+            url="https://pip.pypa.io/en/latest/installing/">Installation</ulink> in the <emphasis
+            role="bold">pip</emphasis> documentation.</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </section>
+
+  <section id="python-installation"><info><title id="python-installation.title">Installation</title></info>
+    
+
+    <para>Use <emphasis role="bold">pip</emphasis> to install the &DDBEClong; for Python, as shown
+      in the following examples.</para>
+    <variablelist role="termdef">
+      <varlistentry>
+        <term>To install the latest version</term>
+        <listitem>
+          <programlisting language="bash">pip install dynamodb-encryption-sdk</programlisting>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+    <para>For more details about using <emphasis role="bold">pip</emphasis> to install and upgrade
+      packages, see <ulink url="https://packaging.python.org/tutorials/installing-packages/"
+      >Installing Packages</ulink>.</para>
+    <para>The &DDBEC; requires the <ulink url="https://cryptography.io/en/latest/">cryptography
+      library</ulink> on all platforms. All versions of <emphasis role="bold">pip</emphasis> install
+      and build the <emphasis role="bold">cryptography</emphasis> library on Windows. <emphasis
+      role="bold">pip</emphasis> 8.1 and later installs and builds <emphasis role="bold"
+      >cryptography</emphasis> on Linux. If you are using an earlier version of <emphasis
+      role="bold">pip</emphasis> and your Linux environment doesn't have the tools needed to build
+      the <emphasis role="bold">cryptography</emphasis> library, you need to install them. For more
+      information, see <ulink
+      url="https://cryptography.io/en/latest/installation/#building-cryptography-on-linux">Building
+      cryptography on Linux</ulink>.</para>
+    <para>You can get the latest development version of the &DDBEC; from the <ulink
+      url="&url-ddbec-python;">aws-dynamodb-encryption-python</ulink> repository on GitHub.</para>
+    <para>After you install the &DDBEC;, get started by looking at the example Python code in this guide.</para>
+  </section>
+
+  <xi:include href="python-using.xml"/>
+  <xi:include href="python-examples.xml"/>
+
+</section>
