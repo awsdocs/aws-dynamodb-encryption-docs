@@ -7,9 +7,9 @@ To use the Static CMP to encrypt a table item, you supply an [Advanced Encryptio
 Because the Static CMP does not generate any unique cryptographic materials, all table items that you process are encrypted with the same encryption key and signed by the same signing key\. When you use the same key to encrypt the attributes values in numerous items or use the same key or key pair to sign all items, you risk exceeding the cryptographic limits of the keys\. 
 
 **Note**  
-The [Asymmetric Static Provider](https://aws.github.io/aws-dynamodb-encryption-java/javadoc/com/amazonaws/services/dynamodbv2/datamodeling/encryption/providers/AsymmetricStaticProvider.html) in the Java library is not a static provider\. It just supplies alternate constructors for the [Wrapped CMP](wrapped-provider.md)\. It's safe for production use, but you should use the Wrapped CMP directly whenever possible\.
+The [Asymmetric Static Provider](https://aws.github.io/aws-dynamodb-encryption-java/com/amazonaws/services/dynamodbv2/datamodeling/encryption/providers/AsymmetricStaticProvider.html) in the Java library is not a static provider\. It just supplies alternate constructors for the [Wrapped CMP](wrapped-provider.md)\. It's safe for production use, but you should use the Wrapped CMP directly whenever possible\.
 
-The Static CMP is one of several [cryptographic materials provider](concepts.md#concept-material-provider) \(CMPs\) that the DynamoDB Encryption Client supports\. For information about the other CMPs, see [How to choose a cryptographic materials provider](crypto-materials-providers.md)\.
+The Static CMP is one of several [cryptographic materials providers](concepts.md#concept-material-provider) \(CMPs\) that the DynamoDB Encryption Client supports\. For information about the other CMPs, see [How to choose a cryptographic materials provider](crypto-materials-providers.md)\.
 
 **For example code, see:**
 + Java: [SymmetricEncryptedItem](https://github.com/aws/aws-dynamodb-encryption-java/blob/master/examples/src/main/java/com/amazonaws/examples/SymmetricEncryptedItem.java)

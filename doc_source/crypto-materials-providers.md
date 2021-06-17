@@ -24,7 +24,7 @@ For details, see [Most Recent Provider](most-recent-provider.md)\.
 
 **Static Materials Provider**  
 The Static Materials Provider is designed for testing, proof\-of\-concept demonstrations, and legacy compatibility\. It doesn't generate any unique cryptographic materials for each item\. It returns the same encryption and signing keys that you supply, and those keys are used directly to encrypt, decrypt, and sign your table items\.   
-The [Asymmetric Static Provider](https://aws.github.io/aws-dynamodb-encryption-java/javadoc/com/amazonaws/services/dynamodbv2/datamodeling/encryption/providers/AsymmetricStaticProvider.html) in the Java library is not a static provider\. It just supplies alternate constructors for the [Wrapped CMP](wrapped-provider.md)\. It is safe for production use, but you should use the Wrapped CMP directly whenever possible\.
+The [Asymmetric Static Provider](https://aws.github.io/aws-dynamodb-encryption-java/com/amazonaws/services/dynamodbv2/datamodeling/encryption/providers/AsymmetricStaticProvider.html) in the Java library is not a static provider\. It just supplies alternate constructors for the [Wrapped CMP](wrapped-provider.md)\. It is safe for production use, but you should use the Wrapped CMP directly whenever possible\.
 
 **Topics**
 + [Direct KMS Materials Provider](direct-kms-provider.md)

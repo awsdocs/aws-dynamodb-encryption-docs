@@ -8,7 +8,7 @@ The following examples show you how to use the DynamoDB Encryption Client for Ja
 
 ## Using the DynamoDBEncryptor<a name="java-example-ddb-encryptor"></a>
 
-This example shows how to use the lower\-level [DynamoDBEncryptor](https://aws.github.io/aws-dynamodb-encryption-java/javadoc/com/amazonaws/services/dynamodbv2/datamodeling/encryption/DynamoDBEncryptor.html) with the [Direct KMS Provider](direct-kms-provider.md)\. The Direct KMS Provider generates and protects its cryptographic materials under an AWS Key Management Service \(AWS KMS\) [customer master key](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#master_keys) \(CMK\) that you specify\.
+This example shows how to use the lower\-level [DynamoDBEncryptor](https://aws.github.io/aws-dynamodb-encryption-java/com/amazonaws/services/dynamodbv2/datamodeling/encryption/DynamoDBEncryptor.html) with the [Direct KMS Provider](direct-kms-provider.md)\. The Direct KMS Provider generates and protects its cryptographic materials under an AWS Key Management Service \(AWS KMS\) [customer master key](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#master_keys) \(CMK\) that you specify\.
 
 You can use any compatible [cryptographic materials provider](concepts.md#concept-material-provider) \(CMP\) with the `DynamoDBEncryptor`, and you can use the Direct KMS Provider with the `DynamoDBMapper` and [AttributeEncryptor](java-using.md#attribute-encryptor)\.
 

@@ -6,11 +6,11 @@ The Wrapped CMP generates a unique item encryption key for each item\. It wraps 
 
 The Wrapped CMP is a secure implementation and a good choice for applications that can manage cryptographic materials\.
 
-The Wrapped CMP is one of several [cryptographic materials provider](concepts.md#concept-material-provider) \(CMPs\) that the DynamoDB Encryption Client supports\. For information about the other CMPs, see [How to choose a cryptographic materials provider](crypto-materials-providers.md)\.
+The Wrapped CMP is one of several [cryptographic materials providers](concepts.md#concept-material-provider) \(CMPs\) that the DynamoDB Encryption Client supports\. For information about the other CMPs, see [How to choose a cryptographic materials provider](crypto-materials-providers.md)\.
 
 **For example code, see:**
 + Java: [AsymmetricEncryptedItem](https://github.com/aws/aws-dynamodb-encryption-java/blob/master/examples/src/main/java/com/amazonaws/examples/AsymmetricEncryptedItem.java)
-+ Python: [wrapped\-rsa\-encrypted\-table](https://github.com/aws/aws-dynamodb-encryption-python/blob/master/examples/src/wrapped_rsa_encrypted_table.py), [wrapped\-symmetric\-encrypted\-table](https://github.com/aws/aws-dynamodb-encryption-python/blob/master/examples/src/wrapped_symmetric_encrypted_table.py)
++ Python: [wrapped\-rsa\-encrypted\-table](https://github.com/aws/aws-dynamodb-encryption-python/blob/master/examples/src/dynamodb_encryption_sdk_examples/wrapped_rsa_encrypted_table.py), [wrapped\-symmetric\-encrypted\-table](https://github.com/aws/aws-dynamodb-encryption-python/blob/master/examples/src/dynamodb_encryption_sdk_examples/wrapped_symmetric_encrypted_table.py)
 
 **Topics**
 + [How to use it](#wrapped-cmp-how-to-use)

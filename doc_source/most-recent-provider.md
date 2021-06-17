@@ -16,7 +16,7 @@ You can configure the MetaStore to use any type of internal CMP to protect the m
 
 **For example code, see:**
 + Java: [MostRecentEncryptedItem](https://github.com/aws/aws-dynamodb-encryption-java/blob/master/examples/src/main/java/com/amazonaws/examples/MostRecentEncryptedItem.java)
-+ Python: [most\_recent\_provider\_encrypted\_table](https://github.com/aws/aws-dynamodb-encryption-python/blob/master/examples/src/most_recent_provider_encrypted_table.py)
++ Python: [most\_recent\_provider\_encrypted\_table](https://github.com/aws/aws-dynamodb-encryption-python/blob/master/examples/src/dynamodb_encryption_sdk_examples/most_recent_provider_encrypted_table.py)
 
 **Topics**
 + [How to use it](#mrp-how-to-use-it)
