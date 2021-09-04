@@ -19,9 +19,9 @@ The DynamoDB Encryption Client for Python includes several client helper classes
 You can use the client helper classes instead of interacting directly with the lower\-level [item encryptor](concepts.md#item-encryptor)\. Use these classes unless you need to set advanced options in the item encryptor\.
 
 The client helper classes include:
-+ [EncryptedTable](https://aws-dynamodb-encryption-python.readthedocs.io/en/latest/lib/encrypted/table.html#module-dynamodb_encryption_sdk.encrypted.table) for applications that use the [Table](http://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/dynamodb.html#table) resource in DynamoDB to process one table at a time\.
-+ [EncryptedResource](https://aws-dynamodb-encryption-python.readthedocs.io/en/latest/lib/encrypted/resource.html) for applications that use the [Service Resource](http://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/dynamodb.html#service-resource) class in DynamoDB for batch processing\.
-+ [EncryptedClient](https://aws-dynamodb-encryption-python.readthedocs.io/en/latest/lib/encrypted/client.html) for applications that use the [lower\-level client](http://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/dynamodb.html#client) in DynamoDB\.
++ [EncryptedTable](https://aws-dynamodb-encryption-python.readthedocs.io/en/latest/lib/encrypted/table.html#module-dynamodb_encryption_sdk.encrypted.table) for applications that use the [Table](https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/dynamodb.html#table) resource in DynamoDB to process one table at a time\.
++ [EncryptedResource](https://aws-dynamodb-encryption-python.readthedocs.io/en/latest/lib/encrypted/resource.html) for applications that use the [Service Resource](https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/dynamodb.html#service-resource) class in DynamoDB for batch processing\.
++ [EncryptedClient](https://aws-dynamodb-encryption-python.readthedocs.io/en/latest/lib/encrypted/client.html) for applications that use the [lower\-level client](https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/dynamodb.html#client) in DynamoDB\.
 
 To use the client helper classes, the caller must have permission to call the DynamoDB [DescribeTable](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_DescribeTable.html) operation on the target table\.
 

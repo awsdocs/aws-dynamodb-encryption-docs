@@ -139,7 +139,7 @@ When you use the `DynamoDBEncryptor`, you assemble the DynamoDB encryption conte
 For example, the following code creates instances of the cryptographic materials provider \(CMP\) and the `DynamoDBEncryptor`\. Then it calls the `setEncryptionContextOverrideOperator` method of the `DynamoDBEncryptor`\. It uses the `overrideEncryptionContextTableName` operator, which overrides one table name\. When it is configured this way, the `AttributeEncryptor` creates a DynamoDB encryption context that includes `newTableName` in place of `oldTableName`\. For a complete example, see [EncryptionContextOverridesWithDynamoDBMapper\.java](https://github.com/aws/aws-dynamodb-encryption-java/blob/master/examples/src/main/java/com/amazonaws/examples/EncryptionContextOverridesWithDynamoDBMapper.java)\.
 
 ```
-final DirectKmsMaterialProvider cmp = new DirectKmsMaterialProvider(kms, cmkArn);
+final DirectKmsMaterialProvider cmp = new DirectKmsMaterialProvider(kms, keyArn);
 final DynamoDBEncryptor encryptor = DynamoDBEncryptor.getInstance(cmp);
 
 encryptor.setEncryptionContextOverrideOperator(EncryptionContextOperators.overrideEncryptionContextTableName(

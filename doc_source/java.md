@@ -18,7 +18,7 @@ If you use the Oracle JDK, you must also download and install the [Java Cryptogr
 
 **AWS SDK for Java**  
 The DynamoDB Encryption Client requires the DynamoDB module of the AWS SDK for Java even if your application doesn't interact with DynamoDB\. You can install the entire SDK or just this module\. If you are using Maven, add `aws-java-sdk-dynamodb` to your `pom.xml` file\.   
-For more information about installing and configuring the AWS SDK for Java, see [AWS SDK for Java](https://docs.aws.amazon.com/sdk-for-java/v2/developer-guide/getting-started.html)\.
+For more information about installing and configuring the AWS SDK for Java, see [AWS SDK for Java](https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/getting-started.html)\.
 
 ## Installation<a name="java-installation"></a>
 

@@ -13,10 +13,11 @@ This topic explains how to install and use the DynamoDB Encryption Client for Py
 Before you install the Amazon DynamoDB Encryption Client for Python, be sure you have the following prerequisites\.
 
 **A supported version of Python**  
-To use this library you need Python 2\.7, or Python 3\.4 or later\. To download Python, see [Python downloads](https://www.python.org/downloads/)\.
+Python 3\.5 or later is required by the Amazon DynamoDB Encryption Client for Python versions 3\.0\.*x* and later\. To download Python, see [Python downloads](https://www.python.org/downloads/)\.  
+Earlier versions of the Amazon DynamoDB Encryption Client for Python support Python 2\.7 and Python 3\.4, but we recommend that you use the latest version of the DynamoDB Encryption Client\.
 
 **The pip installation tool for Python**  
-If you have Python 2\.7\.9 or later, or Python 3\.4 or later, you already have **pip**, although you might want to upgrade it\. For more information about upgrading or installing pip, see [Installation](https://pip.pypa.io/en/latest/installing/) in the **pip** documentation\.
+Python 3\.5 and later include **pip**, although you might want to upgrade it\. For more information about upgrading or installing pip, see [Installation](https://pip.pypa.io/en/latest/installation/) in the **pip** documentation\.
 
 ## Installation<a name="python-installation"></a>
 

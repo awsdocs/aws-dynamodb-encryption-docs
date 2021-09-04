@@ -2,7 +2,7 @@
 
 The following table describes significant changes to this documentation\. In addition to these major changes, we also update the documentation frequently to improve the descriptions and examples, and to address the feedback that you send to us\. To be notified about significant changes, use the link in the upper right corner to subscribe to the RSS feed\.
 
-**Latest documentation update:** June 8, 2018 \(minor\)
+**Latest documentation update:** June 8, 2018 \(minor\)
 
 | Change | Description | Date | 
 | --- |--- |--- |

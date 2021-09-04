@@ -6,13 +6,13 @@ The *Most Recent Provider* is a [cryptographic materials provider](concepts.md#c
 The code associated with the `MostRecentProvider` symbol for the Most Recent Provider might store cryptographic materials in memory for the lifetime of the process\. It might allow a caller to use keys that they're no longer authorized to use\.   
 The `MostRecentProvider` symbol is deprecated in older supported versions of the DynamoDB Encryption Client and removed from version 2\.0\.0\. It is replaced by the `CachingMostRecentProvider` symbol\. For details, see [Updates to the Most Recent Provider](#mrp-versions)\.
 
-The Most Recent Provider is a good choice for applications that need to minimize calls to the provider store and its cryptographic source, and applications that can reuse some cryptographic materials without violating their security requirements\. For example, It allows you to protect your cryptographic materials under an [AWS Key Management Service](https://docs.aws.amazon.com/kms/latest/developerguide/) \(AWS KMS\) [customer master key](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#master_keys) without calling AWS KMS every time you encrypt or decrypt an item\.
+The Most Recent Provider is a good choice for applications that need to minimize calls to the provider store and its cryptographic source, and applications that can reuse some cryptographic materials without violating their security requirements\. For example, It allows you to protect your cryptographic materials under an [AWS KMS key](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#master_keys) in [AWS Key Management Service](https://docs.aws.amazon.com/kms/latest/developerguide/) \(AWS KMS\) without calling AWS KMS every time you encrypt or decrypt an item\.
 
 The provider store that you choose determines the type of CMPs that the Most Recent Provider uses and how often it gets a new CMP\. You can use any compatible provider store with the Most Recent Provider, including custom provider stores that you design\. 
 
 The DynamoDB Encryption Client includes a *MetaStore* that creates and returns [Wrapped Materials Providers](wrapped-provider.md) \(Wrapped CMPs\)\. The MetaStore saves multiple versions of the Wrapped CMPs that it generates in an internal DynamoDB table and protects them with client\-side encryption by an internal instance of the DynamoDB Encryption Client\. 
 
-You can configure the MetaStore to use any type of internal CMP to protect the materials in the table, including a [Direct KMS Provider](direct-kms-provider.md) that generates cryptographic materials protected by your AWS KMS customer master key, a Wrapped CMP that uses wrapping and signing keys that you supply, or a compatible custom CMP that you design\.
+You can configure the MetaStore to use any type of internal CMP to protect the materials in the table, including a [Direct KMS Provider](direct-kms-provider.md) that generates cryptographic materials protected by your AWS KMS key, a Wrapped CMP that uses wrapping and signing keys that you supply, or a compatible custom CMP that you design\.
 
 **For example code, see:**
 + Java: [MostRecentEncryptedItem](https://github.com/aws/aws-dynamodb-encryption-java/blob/master/examples/src/main/java/com/amazonaws/examples/MostRecentEncryptedItem.java)
@@ -38,9 +38,9 @@ Each Most Recent Provider has a name that identifies its CMPs in the MetaStore t
 // Set the name for MetaStore's internal table
 final String keyTableName = 'metaStoreTable'
 
-// Set the Region and CMK for AWS KMS
+// Set the Region and AWS KMS key
 final String region = 'us-west-2'
-final String cmkArn = 'arn:aws:kms:us-west-2:111122223333:key/1234abcd-12ab-34cd-56ef-1234567890ab'
+final String keyArn = 'arn:aws:kms:us-west-2:111122223333:key/1234abcd-12ab-34cd-56ef-1234567890ab'
 
 // Set the TTL and cache size
 final long ttlInMillis = 60000;
@@ -54,7 +54,7 @@ final AmazonDynamoDB ddb = AmazonDynamoDBClientBuilder.standard().withRegion(reg
 
 // Create an internal Direct KMS Provider for the MetaStore
 final AWSKMS kms = AWSKMSClientBuilder.standard().withRegion(region).build();
-final DirectKmsMaterialProvider kmsProv = new DirectKmsMaterialProvider(kms, cmkArn);
+final DirectKmsMaterialProvider kmsProv = new DirectKmsMaterialProvider(kms, keyArn);
 
 // Create an item encryptor for the MetaStore,
 // including the Direct KMS Provider
@@ -71,8 +71,8 @@ final CachingMostRecentProvider cmp = new CachingMostRecentProvider(metaStore, m
 #### [ Python ]
 
 ```
-# Designate an AWS KMS customer master key
-aws_cmk_id = 'arn:aws:kms:us-west-2:111122223333:key/1234abcd-12ab-34cd-56ef-1234567890ab'
+# Designate an AWS KMS key
+kms_key_id = 'arn:aws:kms:us-west-2:111122223333:key/1234abcd-12ab-34cd-56ef-1234567890ab'
 
 # Set the name for MetaStore's internal table
 meta_table_name = 'metaStoreTable'
@@ -84,12 +84,12 @@ material_name = 'testMRP'
 meta_table = boto3.resource('dynamodb').Table(meta_table_name)
 
 # Create an internal Direct KMS Provider for the MetaStore
-aws_kms_cmp = AwsKmsCryptographicMaterialsProvider(key_id=aws_cmk_id)
+kms_cmp = AwsKmsCryptographicMaterialsProvider(key_id=kms_key_id)
     
 # Create the MetaStore with the Direct KMS Provider
 meta_store = MetaStore(
     table=meta_table,
-    materials_provider=aws_kms_cmp
+    materials_provider=kms_cmp
 )
 
 # Create a Most Recent Provider using the MetaStore
@@ -134,7 +134,7 @@ The following diagram shows the components of the MetaStore and how it interacts
 
 The MetaStore generates the Wrapped CMPs, and then stores them \(in encrypted form\) in an internal DynamoDB table\. The partition key is the name of the Most Recent Provider material; the sort key its version number\. The materials in the table are protected by an internal DynamoDB Encryption Client, including an item encryptor and internal [cryptographic materials provider](concepts.md#concept-material-provider) \(CMP\)\.
 
-You can use any type of internal CMP in your MetaStore, including the a [Direct KMS Provider](wrapped-provider.md), a Wrapped CMP with cryptographic materials that you provide, or a compatible custom CMP\. If the internal CMP in your MetaStore is a Direct KMS Provider, your reusable wrapping and signing keys are protected under your [AWS Key Management Service](https://docs.aws.amazon.com/kms/latest/developerguide/) \(AWS KMS\) [customer master key](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#master_keys)\. The MetaStore calls AWS KMS every time it adds a new CMP version to its internal table or gets a CMP version from its internal table\.
+You can use any type of internal CMP in your MetaStore, including the a [Direct KMS Provider](wrapped-provider.md), a Wrapped CMP with cryptographic materials that you provide, or a compatible custom CMP\. If the internal CMP in your MetaStore is a Direct KMS Provider, your reusable wrapping and signing keys are protected under a [AWS KMS key](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#master_keys) in [AWS Key Management Service](https://docs.aws.amazon.com/kms/latest/developerguide/) \(AWS KMS\)\. The MetaStore calls AWS KMS every time it adds a new CMP version to its internal table or gets a CMP version from its internal table\.
 
 ### Setting a time\-to\-live value<a name="most-recent-provider-ttl"></a>
 
@@ -155,7 +155,7 @@ In the `MostRecentProvider`, the TTL determines how often the Most Recent Provid
 
 The TTL does not determine how often a new CMP version is created\. You create new CMP versions by [rotating the cryptographic materials](#most-recent-provider-rotate)\.
 
-An ideal TTL value varies with the application and its latency and availability goals\. A lower TTL improves your security profile by reducing the time that cryptographic materials are stored in memory\. Also, a lower TTL refreshes critical information more frequently\. For example, if your internal CMP is a [Direct KMS Provider](direct-kms-provider.md), it verifies more frequently that the caller is still authorized to use an AWS KMS customer master key\. 
+An ideal TTL value varies with the application and its latency and availability goals\. A lower TTL improves your security profile by reducing the time that cryptographic materials are stored in memory\. Also, a lower TTL refreshes critical information more frequently\. For example, if your internal CMP is a [Direct KMS Provider](direct-kms-provider.md), it verifies more frequently that the caller is still authorized to use an AWS KMS key\.
 
 However, if the TTL is too brief, the frequent calls to the provider store can increase your costs and cause your provider store to throttle requests from your application and other applications that share your service account\. You might also benefit from coordinating the TTL with the rate at which you rotate cryptographic materials\. 
 
@@ -201,7 +201,7 @@ When the item encryptor asks the Most Recent Provider for decryption materials, 
 
 1. The Most Recent Provider searches its cache for the version of CMP that was used to encrypt and sign the item\.
 + If it finds the matching version of the CMP is in its cache and the CMP has not exceeded the [time\-to\-live \(TTL\) value](#most-recent-provider-ttl), the Most Recent Provider uses the CMP to generate decryption materials\. Then, it returns the decryption materials to the item encryptor\. This operation does not require a call to the provider store or any other CMP\.
-+ If the matching version of the CMP is not in its cache, or if the cached CMK has exceeded its TTL value, the Most Recent Provider requests a CMP from its provider store\. It sends its material name and the encrypting CMP version number in the request\.
++ If the matching version of the CMP is not in its cache, or if the cached AWS KMS key has exceeded its TTL value, the Most Recent Provider requests a CMP from its provider store\. It sends its material name and the encrypting CMP version number in the request\.
 
   1. The provider store searches its persistent storage for the CMP by using the Most Recent Provider name as the partition key and the version number as the sort key\.
      + If the name and version number are not in its persistent storage, the provider store throws an exception\. If the provider store was used to generate the CMP, the CMP should be stored in its persistent storage, unless it was intentionally deleted\.

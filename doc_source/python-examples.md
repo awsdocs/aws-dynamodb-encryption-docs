@@ -24,11 +24,11 @@ table = boto3.resource('dynamodb').Table(table_name)
 
 Step 2: Create a cryptographic materials provider  
 Create an instance of the [cryptographic materials provider](crypto-materials-providers.md) \(CMP\) that you selected\.  
-This example uses the [Direct KMS Provider](direct-kms-provider.md), but you can use any compatible CMP\. To create a Direct KMS Provider, specify a [customer master key](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#master_keys) \(CMK\)\. This example uses the Amazon Resource Name \(ARN\) of the CMK, but you can use any valid CMK identifier\.  
+This example uses the [Direct KMS Provider](direct-kms-provider.md), but you can use any compatible CMP\. To create a Direct KMS Provider, specify an [AWS KMS key](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#master_keys)\. This example uses the Amazon Resource Name \(ARN\) of the AWS KMS key, but you can use any valid key identifier\.  
 
 ```
-aws_cmk_id='arn:aws:kms:us-west-2:111122223333:key/1234abcd-12ab-34cd-56ef-1234567890ab'
-aws_kms_cmp = AwsKmsCryptographicMaterialsProvider(key_id=aws_cmk_id)
+kms_key_id='arn:aws:kms:us-west-2:111122223333:key/1234abcd-12ab-34cd-56ef-1234567890ab'
+kms_cmp = AwsKmsCryptographicMaterialsProvider(key_id=kms_key_id)
 ```
 
 Step 3: Create the attribute actions object  
@@ -48,7 +48,7 @@ Create the encrypted table using the standard table, the Direct KMS Provider, an
 ```
 encrypted_table = EncryptedTable(
     table=table,
-    materials_provider=aws_kms_cmp,
+    materials_provider=kms_cmp,
     attribute_actions=actions
 )
 ```
@@ -95,11 +95,11 @@ table = boto3.resource('dynamodb').Table(table_name)
 
 Step 2: Create a cryptographic materials provider  
 Create an instance of the [cryptographic materials provider](crypto-materials-providers.md) \(CMP\) that you selected\.  
-This example uses the [Direct KMS Provider](direct-kms-provider.md), but you can use any compatible CMP\. To create a Direct KMS Provider, specify a [customer master key](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#master_keys) \(CMK\)\. This example uses the Amazon Resource Name \(ARN\) of the CMK, but you can use any valid CMK identifier\.  
+This example uses the [Direct KMS Provider](direct-kms-provider.md), but you can use any compatible CMP\. To create a Direct KMS Provider, specify an [AWS KMS key](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#master_keys)\. This example uses the Amazon Resource Name \(ARN\) of the AWS KMS key, but you can use any valid key identifier\.  
 
 ```
-aws_cmk_id='arn:aws:kms:us-west-2:111122223333:key/1234abcd-12ab-34cd-56ef-1234567890ab'
-aws_kms_cmp = AwsKmsCryptographicMaterialsProvider(key_id=aws_cmk_id)
+kms_key_id='arn:aws:kms:us-west-2:111122223333:key/1234abcd-12ab-34cd-56ef-1234567890ab'
+kms_cmp = AwsKmsCryptographicMaterialsProvider(key_id=kms_key_id)
 ```
 
 Step 3: Use the TableInfo helper class  
@@ -147,7 +147,7 @@ To configure the DynamoDB Encryption Client, use the objects that you just creat
 
 ```
 crypto_config = CryptoConfig(
-    materials_provider=aws_kms_cmp,
+    materials_provider=kms_cmp,
     encryption_context=encryption_context,
     attribute_actions=actions
 )

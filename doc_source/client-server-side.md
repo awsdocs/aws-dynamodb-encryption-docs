@@ -10,12 +10,12 @@ DynamoDB supports [encryption at rest](https://docs.aws.amazon.com/amazondynamod
 
 With server\-side encryption, your data is encrypted in transit over an HTTPS connection, decrypted at the DynamoDB endpoint, and then re\-encrypted before being stored in DynamoDB\.
 + **Encryption by default\.** DynamoDB transparently encrypts and decrypts all tables when they are written to disk\. There is no option to enable or disable encryption at rest\. 
-+ **DynamoDB creates and manages the cryptographic keys\. **The unique key for each table is protected by an [AWS Key Management Service](https://docs.aws.amazon.com/kms/latest/developerguide/) \(AWS KMS\) customer master key that never leaves AWS KMS unencrypted\. By default, DynamoDB uses an [AWS owned CMK](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-owned-cmk) in the DynamoDB service account, but you can choose an [AWS managed CMK](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-managed-cmk) in your account to protect some or all of your tables\.
++ **DynamoDB creates and manages the cryptographic keys\. **The unique key for each table is protected by an [AWS KMS key](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#master_keys) that never leaves [AWS Key Management Service](https://docs.aws.amazon.com/kms/latest/developerguide/) \(AWS KMS\) unencrypted\. By default, DynamoDB uses an [AWS owned key](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-owned-cmk) in the DynamoDB service account, but you can choose an [AWS managed key](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-managed-cmk) or [customer managed key](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#customer-cmk) in your account to protect some or all of your tables\.
 + **All table data is encrypted on disk\. **When an encrypted table is saved to disk, DynamoDB encrypts all table data, including the [primary key](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.CoreComponents.html#HowItWorks.CoreComponents.PrimaryKey) and local and global [secondary indexes](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.CoreComponents.html#HowItWorks.CoreComponents.SecondaryIndexes)\. If your table has a sort key, some of the sort keys that mark range boundaries are stored in plaintext in the table metadata\.
 + **Objects related to tables are encrypted, too\.** Encryption at rest protects [DynamoDB streams](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Streams.html), [global tables](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GlobalTables.html), and [backups](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/BackupRestore.html) whenever they are written to durable media\.
 + **Your items are decrypted when you access them\. **When you access the table, DynamoDB decrypts the part of the table that includes your target item, and returns the plaintext item to you\.
 
- 
+ 
 
 **DynamoDB Encryption Client**
 
@@ -26,7 +26,7 @@ Client\-side encryption provides end\-to\-end protection for your data, in trans
 + **You determine how your data is protected **by [selecting a cryptographic materials provider](crypto-materials-providers.md) \(CMP\), or writing one of your own\. The CMP determines the encryption strategy used, including when unique keys are generated, and the encryption and signing algorithms that are used\.
 + **The DynamoDB Encryption Client doesn't encrypt the entire table\.** You can encrypt selected items in a table, or selected attribute values in some or all items\. However, the DynamoDB Encryption Client does not encrypt an entire item\. It does not encrypt attribute names, or the names or values of the primary key \(partition key and sort key\) attributes\. For details about what is encrypted \(and what is not\), see [Which fields are encrypted and signed?](encrypted-and-signed.md)\.
 
- 
+ 
 
 **AWS Encryption SDK**
 
