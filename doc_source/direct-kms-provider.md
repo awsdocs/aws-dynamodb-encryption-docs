@@ -54,7 +54,10 @@ kms_cmp = AwsKmsCryptographicMaterialsProvider(key_id=kms_key)
 
 ------
 
-If you are using DynamoDB global tables, you might want to encrypt your data under an AWS KMS multi\-Region key\. Multi\-Region keys are AWS KMS keys in different AWS Regions that can be used interchangeably because they have the same key ID and key material\. For details, see [Using multi\-Region keys](https://docs.aws.amazon.com/kms/latest/developerguide/multi-region-keys-overview.html) in the *AWS Key Management Service Developer Guide*\.
+If you are using [Amazon DynamoDB global tables](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GlobalTables.html), we recommend that you encrypt your data under an AWS KMS multi\-Region key\. Multi\-Region keys are AWS KMS keys in different AWS Regions that can be used interchangeably because they have the same key ID and key material\. For details, see [Using multi\-Region keys](https://docs.aws.amazon.com/kms/latest/developerguide/multi-region-keys-overview.html) in the *AWS Key Management Service Developer Guide*\.
+
+**Note**  
+If you are using the global tables [version 2017\.11\.29](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/globaltables.V1.html), you must set attribute actions so the reserved replication fields are not encrypted or signed\. For details, see [Issues with older version global tables](troubleshooting.md#fix-global-tables)\.
 
 To use a multi\-Region key with the DynamoDB Encryption Client, create a multi\-Region key and replicate it into the Regions in which your application runs\. Then configure the Direct KMS Provider to use the multi\-Region key in the Region in which the DynamoDB Encryption Client calls AWS KMS\.
 

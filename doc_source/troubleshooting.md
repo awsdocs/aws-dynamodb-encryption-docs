@@ -9,6 +9,7 @@ To provide feedback on this documentation, use the feedback link on any page\. Y
 **Topics**
 + [Access denied](#kms-permissions)
 + [Signature verification fails](#change-data-model)
++ [Issues with older version global tables](#fix-global-tables)
 + [Poor performance of the Most Recent Provider](#mrp-ttl-delay)
 
 ## Access denied<a name="kms-permissions"></a>
@@ -40,6 +41,25 @@ If the attribute actions that you specify do not account for all attributes in t
 If the attribute actions that you provide when decrypting an item differ from the attribute actions that you provided when encrypting the item, the signature verification might fail\. This is a particular problem for distributed applications in which new attribute actions might not have propagated to all hosts\.
 
 Signature validation errors are difficult to resolve\. For help preventing them, take extra precautions when changing your data model\. For details, see [Changing your data model](data-model.md)\.
+
+## Issues with older version global tables<a name="fix-global-tables"></a>
+
+**Problem**: Items in an older version Amazon DynamoDB global table cannot be decrypted because signature verification fails\.
+
+**Suggestion**: Set attribute actions so the reserved replication fields are not encrypted or signed\.
+
+**Details**
+
+You can use the DynamoDB Encryption Client with [DynamoDB global tables](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GlobalTables.html)\. We recommend that you use global tables with a [multi\-Region KMS key](https://docs.aws.amazon.com/kms/latest/developerguide/multi-region-keys-overview.html) and replicate the KMS key into all AWS Regions where the global table is replicated\.
+
+Beginning with global tables [version 2019\.11\.21](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/globaltables.V2.html), you can use global tables with the DynamoDB Encryption Client without any special configuration\. However, if you use global tables [version 2017\.11\.29](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/globaltables.V1.html), you must ensure that reserved replication fields are not encrypted or signed\.
+
+If you are using the global tables version 2017\.11\.29, you must set the attribute actions for the following attributes to `DO_NOTHING` in [Java](java-using.md#attribute-actions-java) or `@DoNotTouch` in [Python](python-using.md#python-attribute-actions)\.
++ `aws:rep:deleting`
++ `aws:rep:updatetime`
++ `aws:rep:updateregion`
+
+If you are using any other version of global tables, no action is required\.
 
 ## Poor performance of the Most Recent Provider<a name="mrp-ttl-delay"></a>
 

@@ -8,7 +8,8 @@ The DynamoDB Encryption Client has the following benefits:
 
 **Designed especially for DynamoDB applications**  
 You don’t need to be a cryptography expert to use the DynamoDB Encryption Client\. The implementations include helper methods that are designed to work with your existing DynamoDB applications\.   
-After you create and configure the required components, the DynamoDB Encryption Client transparently encrypts and signs your table items when you add them to a table, and verifies and decrypts them when you retrieve them\.
+After you create and configure the required components, the DynamoDB Encryption Client transparently encrypts and signs your table items when you add them to a table, and verifies and decrypts them when you retrieve them\.  
+The DynamoDB Encryption Client supports most Amazon DynamoDB features, including [global tables](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GlobalTables.html)\. However, you might need to make some configuration changes if you're using an older version of global tables\. For details, see [Issues with older version global tables](troubleshooting.md#fix-global-tables)\.\.
 
 **Includes secure encryption and signing**  
 The DynamoDB Encryption Client includes secure implementations that encrypt the attribute values in each table item using a unique encryption key, and then sign the item to protect it against unauthorized changes, such as adding or deleting attributes, or swapping encrypted values\.
