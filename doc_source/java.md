@@ -2,6 +2,9 @@
 
 This topic explains how to install and use the Amazon DynamoDB Encryption Client for Java\. For details about programming with the DynamoDB Encryption Client, see the [Java examples](java-examples.md), the [examples](https://github.com/aws/aws-dynamodb-encryption-java/tree/master/examples) in the aws\-dynamodb\-encryption\-java repository on GitHub, and the [Javadoc](https://aws.github.io/aws-dynamodb-encryption-java/) for the DynamoDB Encryption Client\.
 
+**Note**  
+DynamoDB Encryption Client for Java versions 1\.*x*\.*x* are in [end\-of\-support phase](what-is-ddb-encrypt.md#support) effective July 2022\. Upgrade to a newer version as soon as possible\.
+
 **Topics**
 + [Prerequisites](#java-prerequisites)
 + [Installation](#java-installation)

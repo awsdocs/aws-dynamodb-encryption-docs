@@ -2,7 +2,7 @@
 
 In DynamoDB, a [table](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.CoreComponents.html#HowItWorks.CoreComponents.TablesItemsAttributes) is a collection of items\. Each *item* is a collection of *attributes*\. Each attribute has a name and a value\.
 
-The DynamoDB Encryption Client encrypts the values of attributes\. Then, it calculates a signature over the attributes\. You can specify which attribute values to encrypt and which to include in the signature\. 
+The DynamoDB Encryption Client encrypts the values of attributes\. Then, it calculates a signature over the attributes\. You can specify which attribute values to encrypt and which to include in the signature\. However, the DynamoDB Encryption Client is designed to be implemented in new, unpopulated databases\. You need to add the encryption features to your DynamoDB applications before you send any data to DynamoDB\.
 
 Encryption protects the confidentiality of the attribute value\. Signing provides integrity of all signed attributes and their relationship to each other, and provides authentication\. It enables you to detect unauthorized changes to the item as a whole, including adding or deleting attributes, or substituting one encrypted value for another\.
 

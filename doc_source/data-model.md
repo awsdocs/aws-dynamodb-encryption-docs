@@ -2,6 +2,9 @@
 
 Every time you encrypt or decrypt an item, you need to provide [attribute actions](concepts.md#attribute-actions) that tell the DynamoDB Encryption Client which attributes to encrypt and sign, which attributes to sign \(but not encrypt\), and which to ignore\. Attribute actions are not saved in the encrypted item and the DynamoDB Encryption Client does not update your attribute actions automatically\.
 
+**Important**  
+The DynamoDB Encryption Client does not support the encryption of existing, unencrypted DynamoDB table data\.
+
 Whenever you change your data model, that is, when you add or remove attributes from your table items, you risk an error\. If the attribute actions that you specify do not account for all attributes in the item, the item might not be encrypted and signed the way that you intend\. More importantly, if the attribute actions that you provide when decrypting an item differ from the attribute actions that you provided when encrypting the item, the signature verification might fail\. 
 
 For example, if the attribute actions used to encrypt the item tell it to sign the `test` attribute, the signature in the item will include the `test` attribute\. But if the attribute actions used to decrypt the item do not account for the `test` attribute, the verification will fail because the client will try to verify a signature that does not include the `test` attribute\. 

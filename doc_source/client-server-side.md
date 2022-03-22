@@ -19,7 +19,7 @@ With server\-side encryption, your data is encrypted in transit over an HTTPS co
 
 **DynamoDB Encryption Client**
 
-Client\-side encryption provides end\-to\-end protection for your data, in transit and at rest, from its source to storage in DynamoDB\. Your plaintext data is never exposed to any third party, including AWS\. However, you need to add the encryption features to your DynamoDB applications\. 
+Client\-side encryption provides end\-to\-end protection for your data, in transit and at rest, from its source to storage in DynamoDB\. Your plaintext data is never exposed to any third party, including AWS\. However, the DynamoDB Encryption Client is designed to be implemented in new, unpopulated databases\. You need to add the encryption features to your DynamoDB applications before you send any data to DynamoDB\.
 + **Your data is protected in transit and at rest\.** It is never exposed to any third party, including AWS\.
 + **You can sign your table Items\.** You can direct the DynamoDB Encryption Client to calculate a signature over all or part of a table item, including the primary key attributes and the table name\. This signature allows you to detect unauthorized changes to the item as a whole, including adding or deleting attributes, or swapping attribute values\.
 + **You choose how your cryptographic keys are generated and protected\.** You can create and manage your keys, or use a cryptographic service, such as AWS Key Management Service or [AWS CloudHSM](https://docs.aws.amazon.com/cloudhsm/latest/userguide/), to generate and protect your keys\.
